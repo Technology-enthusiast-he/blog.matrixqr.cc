@@ -1,1 +1,3 @@
-
+## Blog & Guides
+- [Introducing MatrixQR](https://blog.matrixqr.cc/posts/The-pros-and-cons-of-static-QR-codes): The Pros and Cons of Static QR Codes.
+- [How to Create a Secure WiFi QR Code](https://blog.matrixqr.cc/posts/vcard-qr-setup): How to Create an International vCard QR Code for Apple Wallet.
