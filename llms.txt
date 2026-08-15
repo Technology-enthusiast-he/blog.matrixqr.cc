@@ -1,4 +1,4 @@
-# MatrixQR Resources
+# MatrixQR QR Code Generator
 
 ## Blog & Guides
 - [Introducing MatrixQR](https://blog.matrixqr.cc/posts/The-pros-and-cons-of-static-QR-codes): The Pros and Cons of Static QR Codes.
