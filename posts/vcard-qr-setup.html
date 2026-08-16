@@ -174,12 +174,17 @@
         </ul>
 
         <h2>2. Use vCard 3.0 or 4.0 Formats for Apple iOS Integration</h2>
-        <p>
-            iOS Wallet passes use strict formatting rules when rendering contact cards or generating embedded action links. Older formats like vCard 2.1 lack support for modern fields like profile pictures or multi-language social media handles.
-        </p>
-        <p>
-            Ensure your payload incorporates standard key-value tags such as <code>FN</code> (Formatted Name), <code>ORG</code> (Organization), <code>TEL;TYPE=CELL</code>, and <code>URL</code> links pointing directly to your business portfolio.
-        </p>
+
+<p>iOS Wallet passes use strict formatting rules when rendering contact cards or generating embedded action links. Older formats like vCard 2.1 lack support for modern fields like profile pictures or multi-language social media handles.</p>
+
+<p>Ensure your payload incorporates standard key-value tags such as:</p>
+
+<ul>
+    <li><code>FN</code> (Formatted Name)</li>
+    <li><code>ORG</code> (Organization)</li>
+    <li><code>TEL;TYPE=CELL</code> (Mobile Number)</li>
+    <li><code>URL</code> (Links pointing directly to your business portfolio)</li>
+</ul>
 
         <h2>3. Key Differences: Standard vCard vs. Apple Wallet Pass vCard</h2>
         <table class="table-custom">
