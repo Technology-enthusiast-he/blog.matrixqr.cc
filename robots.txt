@@ -3,10 +3,14 @@ User-agent: ClaudeBot
 User-agent: Googlebot
 User-agent: Baiduspider
 User-agent: ByteSpider
+User-agent: bingbot
 Allow: /
 
 User-agent: Scrapy
 User-agent: curl
 Disallow: /
+
+User-agent: *
+Allow: /
 
 Sitemap: https://blog.matrixqr.cc/sitemap.xml
