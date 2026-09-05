@@ -17,9 +17,9 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border: 1px solid #334155;
             color: #ffffff;
-            padding: 30px;
+            padding: 32px;
             border-radius: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .blog-category {
@@ -28,14 +28,14 @@
             font-weight: 700;
             letter-spacing: 1.2px;
             color: #38bdf8;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 800;
             line-height: 1.25;
-            margin: 0 0 10px 0;
+            margin: 0 0 12px 0;
             color: #ffffff;
         }
 
@@ -45,25 +45,26 @@
         }
 
         .intro-text {
-            font-size: 1.1rem;
+            font-size: 1.125rem;
             color: #cbd5e1;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
+            line-height: 1.75;
         }
 
         h2 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #f8fafc;
-            margin-top: 32px;
-            margin-bottom: 12px;
-            padding-left: 10px;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            padding-left: 12px;
             border-left: 4px solid #38bdf8;
         }
 
         .table-custom {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
+            margin: 28px 0;
             font-size: 0.95rem;
         }
 
@@ -71,54 +72,55 @@
             background-color: #0f172a;
             color: #ffffff;
             text-align: left;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-bottom: 1px solid #334155;
         }
 
         .table-custom td {
-            padding: 10px 14px;
+            padding: 12px 16px;
             border-bottom: 1px solid #1e293b;
             color: #cbd5e1;
         }
 
         .table-custom tr:nth-child(even) {
-            background-color: rgba(15, 23, 42, 0.4);
+            background-color: rgba(15, 23, 42, 0.5);
         }
 
         .callout-box {
             background-color: rgba(15, 23, 42, 0.8);
             border: 1px solid #0284c7;
             border-radius: 8px;
-            padding: 16px 20px;
-            margin: 24px 0;
+            padding: 20px 24px;
+            margin: 32px 0;
         }
 
         .callout-title {
             font-weight: 700;
             color: #38bdf8;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
-        /* 文章内列表暗黑风格调整 */
+        /* 文章列表与行内代码调优 */
         article ul {
             list-style-type: disc;
             padding-left: 1.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: #cbd5e1;
         }
         
         article ul li {
             margin-bottom: 0.5rem;
+            line-height: 1.65;
         }
 
-        /* 保证代码块可读性 */
         article code {
-            background-color: rgba(30, 41, 59, 0.8);
+            background-color: #1e293b;
             color: #38bdf8;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.875em;
-            border: 1px solid #334155;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-family: monospace;
         }
     </style>
 </head>
@@ -141,9 +143,9 @@
         </div>
     </header>
 
-    <!-- ✅ 核心修复：添加居中容器，最大宽度 800px（max-w-3xl）完美水平居中 -->
-    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-10">
-        <article>
+    <!-- ✅ 核心修复：统一主容器 max-w-4xl，使 Banner 与正文宽度严格对齐 -->
+    <main class="flex-1 w-full max-w-4xl mx-auto px-6 py-12">
+        <article class="w-full">
             <header class="header-banner">
                 <div class="blog-category">vCard & Mobile Wallet Guides</div>
                 <h1>How to Create an International vCard QR Code for Apple Wallet</h1>
@@ -154,8 +156,13 @@
                 Exchanging contact information during international trade shows, global networking events, or cross-border business meetings requires a solution that transcends physical paper cards. Integrating a standard <strong>vCard QR Code directly into Apple Wallet</strong> gives iOS users an instantly accessible, contactless digital business card. Here is your definitive guide to generating internationally compliant vCard QR codes that sync cleanly with Apple Wallet.
             </p>
 
-            <!-- 封面图 -->
-            <img src="images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp" alt="Free vCard QR Code Generator | Create QR Code for Contact Info" style="width: 100%; height: auto; display: block; border-radius: 8px;" class="my-6 border border-slate-800">
+            <!-- ✅ 修复：处理裂图展示（若图片不存在会显示优雅占位图） -->
+            <div class="my-8 rounded-lg overflow-hidden border border-slate-800 bg-slate-900">
+                <img src="./images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/1200x600/0f172a/38bdf8?text=vCard+QR+Code+Generator';" 
+                     alt="Free vCard QR Code Generator | Create QR Code for Contact Info" 
+                     class="w-full h-auto object-cover block">
+            </div>
 
             <h2>1. Standardize Country Codes for Global Compatibility</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
@@ -179,37 +186,39 @@
             </ul>
 
             <h2>3. Key Differences: Standard vCard vs. Apple Wallet Pass vCard</h2>
-            <table class="table-custom">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Standard Static vCard QR</th>
-                        <th>Apple Wallet Integrated vCard</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Offline Accessibility</strong></td>
-                        <td>Requires scanning each time</td>
-                        <td>Saved permanently in Wallet app</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Updating Contact Info</strong></td>
-                        <td>Requires re-printing new code</td>
-                        <td>Pass automatically refreshes payload</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Geofenced Lock Screen Notifications</strong></td>
-                        <td>Not supported</td>
-                        <td>Displays pass when near venue/office</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Cross-Platform Compatibility</strong></td>
-                        <td>Universal (iOS & Android)</td>
-                        <td>Optimized for iOS (Passbook format)</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="overflow-x-auto">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Standard Static vCard QR</th>
+                            <th>Apple Wallet Integrated vCard</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Offline Accessibility</strong></td>
+                            <td>Requires scanning each time</td>
+                            <td>Saved permanently in Wallet app</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Updating Contact Info</strong></td>
+                            <td>Requires re-printing new code</td>
+                            <td>Pass automatically refreshes payload</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Geofenced Lock Screen Notifications</strong></td>
+                            <td>Not supported</td>
+                            <td>Displays pass when near venue/office</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cross-Platform Compatibility</strong></td>
+                            <td>Universal (iOS & Android)</td>
+                            <td>Optimized for iOS (Passbook format)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <h2>4. Step-by-Step: Adding the QR Pass to Apple Wallet</h2>
             <ul>
@@ -220,7 +229,7 @@
 
             <div class="callout-box">
                 <div class="callout-title">💡 Pro Tip for International Networking</div>
-                <p class="text-slate-300">Always include a fallback web URL in your vCard's <code>URL;TYPE=WORK:</code> field. If a recipient uses a non-Apple device without Wallet pass support, the fallback page allows them to download a universal <code>.vcf</code> file with one click.</p>
+                <p class="text-slate-300 leading-relaxed">Always include a fallback web URL in your vCard's <code>URL;TYPE=WORK:</code> field. If a recipient uses a non-Apple device without Wallet pass support, the fallback page allows them to download a universal <code>.vcf</code> file with one click.</p>
             </div>
 
             <h2>Conclusion</h2>
@@ -241,7 +250,6 @@
 
     <script src="script.js"></script>
     <script>
-        // 初始化 Lucide 图标
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
