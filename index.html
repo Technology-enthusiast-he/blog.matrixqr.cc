@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    
+        
     <title>MatrixBlog | Premium Tech QR Code Studio - Free WiFi & vCard Generator</title>
     <meta name="description" content="Explore the official MatrixQR blog for deep dives into QR code security, dynamic tracking tech, digital business cards, and modern web innovation.">
     <meta name="keywords" content="QR Code Blog, Tech Insights, Dynamic QR Codes, Cybersecurity, Digital Business Card">
     <meta name="robots" content="index, follow">
 
-    
     <link rel="canonical" href="https://blog.matrixqr.cc/">
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="64x64">
-    
+
     <!-- Open Graph / Social Media Meta -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://blog.matrixqr.cc/">
@@ -21,7 +19,6 @@
     <meta property="og:description" content="Discover tutorials, security analysis, and technology trends behind the MatrixQR engine.">
     <meta property="og:image" content="https://blog.matrixqr.cc/assets/og-cover.png">
 
-    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -37,10 +34,9 @@
     }
     </script>
 
-    <!-- External Assets -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- ✅ 核心修复：1. 替换为稳定的 Tailwind v3 CDN；2. 删除了 style.css 引用 -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
 
@@ -56,8 +52,6 @@
             
             <nav class="hidden md:flex items-center gap-6 text-sm text-slate-400">
                 <a href="/posts/" class="text-cyan-400 font-semibold">All articles</a>
-                
-                
                 <a href="https://matrixqr.cc" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg font-medium border border-cyan-500/20 transition-all">Launch App ↗</a>
             </nav>
         </div>
@@ -75,13 +69,11 @@
         </div>
     </section>
 
-    <!-- Main WordPress-style Grid (Content + Sidebar) -->
+    <!-- Main Grid -->
     <div class="max-w-6xl mx-auto px-4 py-12 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
-        
-        <!-- Left: Blog Posts Stream (lg:col-span-8) -->
+        <!-- Left: Blog Posts Stream -->
         <main class="lg:col-span-8 space-y-8">
-            
-            <!-- Featured Post (WordPress Sticky Style) -->
+            <!-- Featured Post -->
             <article class="bg-slate-900/50 border border-slate-800 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-all group">
                 <div class="p-6 md:p-8 space-y-4">
                     <div class="flex items-center gap-3 text-xs text-cyan-400 font-semibold">
@@ -97,7 +89,6 @@
                     </p>
                     <div class="pt-2 flex items-center justify-between text-xs text-slate-500">
                         <span>By Matrix Security Team</span>
-                        
                     </div>
                 </div>
             </article>
@@ -111,16 +102,10 @@
                 </div>
                 <h3 class="text-xl font-bold text-slate-200 hover:text-cyan-400 transition-colors">
                     <a href="/posts/vcard-qr-setup">How to Create an International vCard QR Code for Apple Wallet</a>
-                    
                 </h3>
                 <p class="text-slate-400 text-sm leading-relaxed">
                     Learn how to generate vCard QR codes to seamlessly save contacts across platforms without installing any third-party apps.
-                    <div class="pt-2 flex items-center justify-between text-xs text-slate-500">
-                        
-                        
-                    </div>
                 </p>
-                
             </article>
 
             <!-- Standard Post 2 -->
@@ -137,13 +122,10 @@
                     A comprehensive comparison between offline static rendering and serverless dynamic redirect architecture.
                 </p>
             </article>
-
         </main>
 
-        <!-- Right: WordPress-Style Sidebar (lg:col-span-4) -->
+        <!-- Right: Sidebar -->
         <aside class="lg:col-span-4 space-y-6">
-            
-            <!-- Widget: App Callout -->
             <div class="bg-gradient-to-br from-slate-900 to-slate-950 border border-cyan-500/20 p-6 rounded-2xl space-y-3">
                 <h4 class="font-bold text-slate-100 flex items-center gap-2">
                     <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i> Try MatrixQR Studio
@@ -155,21 +137,24 @@
                     Open Free Generator
                 </a>
             </div>
-
-            
         </aside>
-
     </div>
 
     <!-- Footer -->
     <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-500 text-center">
-    <p>
-        © 2026 MatrixQR Studio. All rights reserved. 
-        <a href="https://matrixqr.cc" class="hover:text-cyan-400 transition-colors ml-2">Main Studio</a> | 
-        <a href="/posts/privacy-policy" class="hover:text-cyan-400 transition-colors ml-1">Privacy Policy</a>
-    </p>
-</footer>
+        <p>
+            © 2026 MatrixQR Studio. All rights reserved. 
+            <a href="https://matrixqr.cc" class="hover:text-cyan-400 transition-colors ml-2">Main Studio</a> | 
+            <a href="/posts/privacy-policy" class="hover:text-cyan-400 transition-colors ml-1">Privacy Policy</a>
+        </p>
+    </footer>
 
     <script src="script.js"></script>
+    <script>
+        // 初始化 Lucide 图标
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
