@@ -3,34 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+        
     <title>How to Create a Secure WiFi QR Code | MatrixQR</title>
     <meta name="description" content="Discover the pros and cons of static QR codes. Learn how static QR codes work, when to use them, and how they compare to dynamic QR codes for your business.">
     <meta name="keywords" content="Static QR Codes, Pros and Cons of Static QR Codes, Dynamic vs Static QR Codes, QR Code Marketing, Permanent QR Codes">
     
-    
+    <!-- ✅ 稳定版 Tailwind v3 CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js"></script>
-    <script>
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide) lucide.createIcons();
-        });
-    </script>
 
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #1e293b;
-            line-height: 1.65;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-        }
-
         .header-banner {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
             color: #ffffff;
             padding: 30px;
             border-radius: 12px;
@@ -61,33 +46,18 @@
 
         .intro-text {
             font-size: 1.1rem;
-            color: #334155;
+            color: #cbd5e1;
             margin-bottom: 24px;
         }
 
         h2 {
             font-size: 1.4rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #f8fafc;
             margin-top: 32px;
             margin-bottom: 12px;
             padding-left: 10px;
-            border-left: 4px solid #0284c7;
-        }
-
-        /* SINGLE IMAGE PLACEHOLDER */
-        .image-placeholder {
-            width: 100%;
-            height: 250px;
-            background-color: #f1f5f9;
-            border: 2px dashed #94a3b8;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 24px 0;
-            text-align: center;
-            color: #64748b;
+            border-left: 4px solid #38bdf8;
         }
 
         .table-custom {
@@ -102,20 +72,22 @@
             color: #ffffff;
             text-align: left;
             padding: 10px 14px;
+            border-bottom: 1px solid #334155;
         }
 
         .table-custom td {
             padding: 10px 14px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #1e293b;
+            color: #cbd5e1;
         }
 
         .table-custom tr:nth-child(even) {
-            background-color: #f8fafc;
+            background-color: rgba(15, 23, 42, 0.4);
         }
 
         .callout-box {
-            background-color: #f0f9ff;
-            border: 1px solid #bae6fd;
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid #0284c7;
             border-radius: 8px;
             padding: 16px 20px;
             margin: 24px 0;
@@ -123,15 +95,27 @@
 
         .callout-title {
             font-weight: 700;
-            color: #0369a1;
+            color: #38bdf8;
             margin-bottom: 6px;
+        }
+
+        /* 列表样式支持暗黑风 */
+        article ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+        }
+        
+        article ul li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
 
-    
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 mb-6">
+    <!-- 全宽 Header 顶部导航 -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 bg-gradient-to-tr from-cyan-500 to-emerald-400 rounded-lg flex items-center justify-center">
@@ -142,104 +126,107 @@
             
             <nav class="hidden md:flex items-center gap-6 text-sm text-slate-400">
                 <a href="./" class="text-cyan-400 font-semibold">All articles</a>
-                
-                
                 <a href="https://matrixqr.cc" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg font-medium border border-cyan-500/20 transition-all">Launch App ↗</a>
             </nav>
         </div>
     </header>
 
-    <article>
-        
-        <header class="header-banner">
-            <div class="blog-category">Digital Marketing & Tech Insights</div>
-            <h1>The Pros and Cons of Static QR Codes</h1>
-            <div class="meta-info">Published on August 12, 2026 • 6 min read</div>
-        </header>
+    <!-- ✅ 核心修复：添加居中容器，最大宽度 800px 完美居中 -->
+    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-10">
+        <article>
+            <header class="header-banner">
+                <div class="blog-category">Digital Marketing & Tech Insights</div>
+                <h1>The Pros and Cons of Static QR Codes</h1>
+                <div class="meta-info">Published on August 12, 2026 • 6 min read</div>
+            </header>
 
-        <p class="intro-text">
-            Quick Response (QR) codes have transformed how businesses seamlessly connect physical touchpoints with digital experiences. Whether you are browsing a restaurant menu, opening a promotional page, or connecting to Wi-Fi, QR codes are ubiquitous. However, not all QR codes are built the same. Before launching your next campaign, understanding <strong>the pros and cons of static QR codes</strong> is essential for choosing the right technology.
-        </p>
+            <p class="intro-text">
+                Quick Response (QR) codes have transformed how businesses seamlessly connect physical touchpoints with digital experiences. Whether you are browsing a restaurant menu, opening a promotional page, or connecting to Wi-Fi, QR codes are ubiquitous. However, not all QR codes are built the same. Before launching your next campaign, understanding <strong>the pros and cons of static QR codes</strong> is essential for choosing the right technology.
+            </p>
 
-        <!-- Static vs Dynamic QR Code Infographic -->
-        <img src="images/Wi-Fi-QR-Code-Generator.webp" alt="Static vs Dynamic QR Code Architecture"
-     style="width: 100%; height: auto; display: block; border-radius: 8px;">
+            <!-- 封面图片 -->
+            <img src="images/Wi-Fi-QR-Code-Generator.webp" alt="Static vs Dynamic QR Code Architecture" style="width: 100%; height: auto; display: block; border-radius: 8px;" class="my-6 border border-slate-800">
 
-        <h2>What is a Static QR Code?</h2>
-        <p>
-            A <strong>static QR code</strong> stores information directly within its data pattern (the black and white square pixels). Once generated, the encoded destination—such as a fixed URL, contact vCard, plain text, or Wi-Fi login details—is permanently fixed into the matrix. Unlike dynamic QR codes, static QR codes do not rely on short links or redirect servers.
-        </p>
+            <h2>What is a Static QR Code?</h2>
+            <p class="text-slate-300 leading-relaxed">
+                A <strong>static QR code</strong> stores information directly within its data pattern (the black and white square pixels). Once generated, the encoded destination—such as a fixed URL, contact vCard, plain text, or Wi-Fi login details—is permanently fixed into the matrix. Unlike dynamic QR codes, static QR codes do not rely on short links or redirect servers.
+            </p>
 
-        <h2>The Pros of Static QR Codes</h2>
-        <ul>
-            <li><strong>1. Completely Free and Cost-Effective:</strong> Static QR codes carry no recurring subscriptions or setup fees, making them ideal for individuals and small businesses.</li>
-            <li><strong>2. Permanent and Infinite Validity:</strong> Because the payload is embedded directly into the code, static QR codes never expire as long as the target content remains active.</li>
-            <li><strong>3. Zero Dependency on Third-Party Servers:</strong> Scanners decode the data locally, so service outages on third-party redirection platforms won't break your QR code.</li>
-            <li><strong>4. High Data Security and Privacy:</strong> With no tracking servers involved, user data is protected against unwanted tracking or data collection.</li>
-        </ul>
+            <h2>The Pros of Static QR Codes</h2>
+            <ul>
+                <li><strong>1. Completely Free and Cost-Effective:</strong> Static QR codes carry no recurring subscriptions or setup fees, making them ideal for individuals and small businesses.</li>
+                <li><strong>2. Permanent and Infinite Validity:</strong> Because the payload is embedded directly into the code, static QR codes never expire as long as the target content remains active.</li>
+                <li><strong>3. Zero Dependency on Third-Party Servers:</strong> Scanners decode the data locally, so service outages on third-party redirection platforms won't break your QR code.</li>
+                <li><strong>4. High Data Security and Privacy:</strong> With no tracking servers involved, user data is protected against unwanted tracking or data collection.</li>
+            </ul>
 
-        <h2>The Cons of Static QR Codes</h2>
-        <ul>
-            <li><strong>1. Content Cannot Be Edited:</strong> Once printed, you cannot change or update the destination link. Fixing a simple typo requires reprinting all marketing materials.</li>
-            <li><strong>2. Lack of Analytics and Tracking:</strong> Static QR codes offer no scan tracking—preventing you from analyzing scan counts, user location, or campaign performance.</li>
-            <li><strong>3. Higher Pattern Density:</strong> Storing larger amounts of data increases the density of the square matrix, making dense QR codes harder to scan from long distances.</li>
-        </ul>
+            <h2>The Cons of Static QR Codes</h2>
+            <ul>
+                <li><strong>1. Content Cannot Be Edited:</strong> Once printed, you cannot change or update the destination link. Fixing a simple typo requires reprinting all marketing materials.</li>
+                <li><strong>2. Lack of Analytics and Tracking:</strong> Static QR codes offer no scan tracking—preventing you from analyzing scan counts, user location, or campaign performance.</li>
+                <li><strong>3. Higher Pattern Density:</strong> Storing larger amounts of data increases the density of the square matrix, making dense QR codes harder to scan from long distances.</li>
+            </ul>
 
-        <h2>Static vs. Dynamic QR Codes Comparison</h2>
-        <table class="table-custom">
-            <thead>
-                <tr>
-                    <th>Feature</th>
-                    <th>Static QR Code</th>
-                    <th>Dynamic QR Code</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Editable Destination</strong></td>
-                    <td>No (Fixed forever)</td>
-                    <td>Yes (Editable anytime)</td>
-                </tr>
-                <tr>
-                    <td><strong>Scan Analytics</strong></td>
-                    <td>None</td>
-                    <td>Comprehensive</td>
-                </tr>
-                <tr>
-                    <td><strong>Expiration Risk</strong></td>
-                    <td>Never expires</td>
-                    <td>May expire if subscription ends</td>
-                </tr>
-                <tr>
-                    <td><strong>Cost</strong></td>
-                    <td>Free</td>
-                    <td>Paid / Subscription</td>
-                </tr>
-            </tbody>
-        </table>
+            <h2>Static vs. Dynamic QR Codes Comparison</h2>
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Static QR Code</th>
+                        <th>Dynamic QR Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Editable Destination</strong></td>
+                        <td>No (Fixed forever)</td>
+                        <td>Yes (Editable anytime)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scan Analytics</strong></td>
+                        <td>None</td>
+                        <td>Comprehensive</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Expiration Risk</strong></td>
+                        <td>Never expires</td>
+                        <td>May expire if subscription ends</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>Free</td>
+                        <td>Paid / Subscription</td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <div class="callout-box">
-            <div class="callout-title">💡 Ideal Use Cases for Static QR Codes</div>
-            <p>Static QR codes work best for permanent, non-changing data—such as Wi-Fi login access, personal vCard contacts, static email triggers, or one-time event details.</p>
-        </div>
+            <div class="callout-box">
+                <div class="callout-title">💡 Ideal Use Cases for Static QR Codes</div>
+                <p class="text-slate-300">Static QR codes work best for permanent, non-changing data—such as Wi-Fi login access, personal vCard contacts, static email triggers, or one-time event details.</p>
+            </div>
 
-        <h2>Conclusion</h2>
-        <p>
-            Understanding <strong>the pros and cons of static QR codes</strong> ensures you pick the right format. If you need a free, permanent link that won't rely on third-party servers, static QR codes are ideal. However, for dynamic business campaigns requiring analytics, flexibility, and editable links, dynamic QR codes are the clear choice.
-        </p>
-    </article>
-    
-    
-    <!-- Footer -->
+            <h2>Conclusion</h2>
+            <p class="text-slate-300 leading-relaxed">
+                Understanding <strong>the pros and cons of static QR codes</strong> ensures you pick the right format. If you need a free, permanent link that won't rely on third-party servers, static QR codes are ideal. However, for dynamic business campaigns requiring analytics, flexibility, and editable links, dynamic QR codes are the clear choice.
+            </p>
+        </article>
+    </main>
+
+    <!-- 全宽 Footer 页脚 -->
     <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-500 text-center">
-    <p>
-        © 2026 MatrixQR Studio. All rights reserved. 
-        <a href="https://matrixqr.cc" class="hover:text-cyan-400 transition-colors ml-2">Main Studio</a> | 
-        <a href="/posts/privacy-policy" class="hover:text-cyan-400 transition-colors ml-1">Privacy Policy</a>
-    </p>
-</footer>
+        <p>
+            © 2026 MatrixQR Studio. All rights reserved. 
+            <a href="https://matrixqr.cc" class="hover:text-cyan-400 transition-colors ml-2">Main Studio</a> | 
+            <a href="/posts/privacy-policy" class="hover:text-cyan-400 transition-colors ml-1">Privacy Policy</a>
+        </p>
+    </footer>
 
     <script src="script.js"></script>
-
+    <script>
+        // 初始化 Lucide 图标
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
