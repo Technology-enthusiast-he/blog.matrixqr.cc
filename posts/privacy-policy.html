@@ -3,30 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Privacy Policy | MatrixQR Blog</title>
     <meta name="description" content="Privacy Policy for MatrixQR Studio and MatrixQR Tech Blog. Learn how we handle client-side rendering and user data privacy.">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide) lucide.createIcons();
-        });
-    </script>
+
+    <!-- ✅ 稳定版 Tailwind v3 CDN & Icon 库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js"></script>
 
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #1e293b;
-            line-height: 1.65;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-        }
-
         .header-banner {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
             color: #ffffff;
             padding: 30px;
             border-radius: 12px;
@@ -44,26 +32,26 @@
         h2 {
             font-size: 1.3rem;
             font-weight: 700;
-            color: #0f172a;
+            color: #f8fafc;
             margin-top: 28px;
             margin-bottom: 10px;
             padding-left: 10px;
-            border-left: 4px solid #0284c7;
+            border-left: 4px solid #38bdf8;
         }
 
         .callout-box {
-            background-color: #f0f9ff;
-            border: 1px solid #bae6fd;
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid #0284c7;
             border-radius: 8px;
             padding: 16px 20px;
             margin: 20px 0;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
 
-    
-    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 mb-6">
+    <!-- 全宽 Header 顶部导航 -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-2 group">
                 <div class="w-8 h-8 bg-gradient-to-tr from-cyan-500 to-emerald-400 rounded-lg flex items-center justify-center">
@@ -73,54 +61,66 @@
             </a>
             
             <nav class="hidden md:flex items-center gap-6 text-sm text-slate-400">
-                <a href="./" class="hover:text-slate-200 transition-colors">All articles</a>
+                <a href="../" class="hover:text-slate-200 transition-colors">All articles</a>
                 <a href="https://matrixqr.cc" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 rounded-lg font-medium border border-cyan-500/20 transition-all">Launch App ↗</a>
             </nav>
         </div>
     </header>
 
-    <article>
-        <header class="header-banner">
-            <div class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2">Legal Information</div>
-            <h1>Privacy Policy</h1>
-            <div class="text-xs text-slate-400">Last updated: August 15, 2026</div>
-        </header>
+    <!-- ✅ 居中主内容容器 -->
+    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-10">
+        <article>
+            <header class="header-banner">
+                <div class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2">Legal Information</div>
+                <h1>Privacy Policy</h1>
+                <div class="text-xs text-slate-400">Last updated: August 15, 2026</div>
+            </header>
 
-        <p class="text-base text-slate-700 mb-4">
-            At <strong>MatrixQR Studio</strong> (accessible via <code>matrixqr.cc</code> and <code>blog.matrixqr.cc</code>), one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded, and how we use it.
-        </p>
+            <p class="text-base text-slate-300 mb-4 leading-relaxed">
+                At <strong>MatrixQR Studio</strong> (accessible via <code>matrixqr.cc</code> and <code>blog.matrixqr.cc</code>), one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded, and how we use it.
+            </p>
 
-        <div class="callout-box">
-            <div class="font-bold text-cyan-800 mb-1">🔒 100% Client-Side Processing</div>
-            <p class="text-sm text-slate-700">MatrixQR is engineered as a zero-backend, client-side web application. All QR code generation, vCard encoding, and custom parameters are processed locally inside your browser. We never transmit, store, or analyze your input data or generated QR contents on remote servers.</p>
-        </div>
+            <div class="callout-box">
+                <div class="font-bold text-cyan-400 mb-1">🔒 100% Client-Side Processing</div>
+                <p class="text-sm text-slate-300 leading-relaxed">MatrixQR is engineered as a zero-backend, client-side web application. All QR code generation, vCard encoding, and custom parameters are processed locally inside your browser. We never transmit, store, or analyze your input data or generated QR contents on remote servers.</p>
+            </div>
 
-        <h2>1. Log Files & Analytics</h2>
+            <h2>1. Log Files & Analytics</h2>
+            <p class="text-slate-300 leading-relaxed">
+                MatrixQR follows standard procedures of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+            </p>
+
+            <h2>2. Cookies and Web Beacons</h2>
+            <p class="text-slate-300 leading-relaxed">
+                Like any other website, MatrixQR uses basic local storage or session storage solely to preserve user interface preferences (such as selected language or dark mode state). We do not use persistent tracking cookies for cross-site behavioral profiling.
+            </p>
+
+            <h2>3. Third-Party Links & Hosting</h2>
+            <p class="text-slate-300 leading-relaxed">
+                Our website is hosted on Vercel and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) may gather technical headers necessary to deliver static assets efficiently. Please consult the respective Privacy Policies of these infrastructure providers for more detailed information.
+            </p>
+
+            <h2>4. Consent</h2>
+            <p class="text-slate-300 leading-relaxed">
+                By using our website, you hereby consent to our Privacy Policy and agree to its terms.
+            </p>
+        </article>
+    </main>
+
+    <!-- 全宽 Footer 页脚 -->
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-500 text-center">
         <p>
-            MatrixQR follows standard procedures of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+            © 2026 MatrixQR Studio. All rights reserved. 
+            <a href="https://matrixqr.cc" class="hover:text-cyan-400 transition-colors ml-2">Main Studio</a>
         </p>
-
-        <h2>2. Cookies and Web Beacons</h2>
-        <p>
-            Like any other website, MatrixQR uses basic local storage or session storage solely to preserve user interface preferences (such as selected language or dark mode state). We do not use persistent tracking cookies for cross-site behavioral profiling.
-        </p>
-
-        <h2>3. Third-Party Links & Hosting</h2>
-        <p>
-            Our website is hosted on Vercel and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) may gather technical headers necessary to deliver static assets efficiently. Please consult the respective Privacy Policies of these infrastructure providers for more detailed information.
-        </p>
-
-        <h2>4. Consent</h2>
-        <p>
-            By using our website, you hereby consent to our Privacy Policy and agree to its terms.
-        </p>
-    </article>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-500 text-center mt-12">
-        <p>© 2026 MatrixQR Studio. All rights reserved. <a href="https://matrixqr.cc" class="hover:text-cyan-400">Main Studio</a></p>
     </footer>
 
     <script src="../script.js"></script>
+    <script>
+        // 初始化 Lucide 图标
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
