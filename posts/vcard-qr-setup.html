@@ -143,7 +143,7 @@
         </div>
     </header>
 
-    <!-- ✅ 核心修复：统一主容器 max-w-4xl，使 Banner 与正文宽度严格对齐 -->
+    <!-- 统一主容器 max-w-4xl -->
     <main class="flex-1 w-full max-w-4xl mx-auto px-6 py-12">
         <article class="w-full">
             <header class="header-banner">
@@ -156,9 +156,13 @@
                 Exchanging contact information during international trade shows, global networking events, or cross-border business meetings requires a solution that transcends physical paper cards. Integrating a standard <strong>vCard QR Code directly into Apple Wallet</strong> gives iOS users an instantly accessible, contactless digital business card. Here is your definitive guide to generating internationally compliant vCard QR codes that sync cleanly with Apple Wallet.
             </p>
 
-            <!-- ✅ 修复：处理裂图展示（若图片不存在会显示优雅占位图） -->
-            <img src="images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp" alt="vCard QR Code Generator" style="width: 100%; height: auto; display: block; border-radius: 8px;" class="my-6 border border-slate-800">
-            
+            <!-- ✅ 修复：纠正了标签语法，并增加 onerror 防破图机制 -->
+            <div class="my-8 rounded-lg overflow-hidden border border-slate-800 bg-slate-900">
+                <img src="./images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/1200x600/0f172a/38bdf8?text=vCard+QR+Code+Generator';" 
+                     alt="Free vCard QR Code Generator | Create QR Code for Contact Info" 
+                     class="w-full h-auto object-cover block">
+            </div>
 
             <h2>1. Standardize Country Codes for Global Compatibility</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
