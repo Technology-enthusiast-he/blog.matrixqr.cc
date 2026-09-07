@@ -1,16 +1,20 @@
-User-agent: GPTBot
-User-agent: ClaudeBot
+# Allow Major Search Engines & AI Crawlers
 User-agent: Googlebot
+User-agent: bingbot
 User-agent: Baiduspider
 User-agent: ByteSpider
-User-agent: bingbot
+User-agent: GPTBot
+User-agent: ClaudeBot
 Allow: /
 
+# Block Common Scraping Tools
 User-agent: Scrapy
 User-agent: curl
 Disallow: /
 
+# General Rules for All Other Bots
 User-agent: *
 Allow: /
+Disallow: /api/
 
 Sitemap: https://blog.matrixqr.cc/sitemap.xml
