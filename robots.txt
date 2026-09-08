@@ -1,9 +1,19 @@
 # Allow Major Search Engines & AI Crawlers
 User-agent: Googlebot
+Allow: /
+
 User-agent: bingbot
+Allow: /
+
 User-agent: Baiduspider
+Allow: /
+
 User-agent: ByteSpider
+Allow: /
+
 User-agent: GPTBot
+Allow: /
+
 User-agent: ClaudeBot
 Allow: /
 
@@ -13,7 +23,6 @@ Disallow: /
 
 # General Rules for All Other Bots
 User-agent: *
-Allow: /
 Disallow: /api/
 
 Sitemap: https://blog.matrixqr.cc/sitemap.xml
