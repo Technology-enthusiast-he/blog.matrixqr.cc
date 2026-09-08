@@ -1,0 +1,23 @@
+name: "IndexNow Push"
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send IndexNow Request to Bing
+        run: |
+          curl -v -X POST "https://api.indexnow.org/indexnow" \
+          -H "Content-Type: application/json; charset=utf-8" \
+          -d '{
+            "host": "blog.matrixqr.cc",
+            "key": "128b266e75164b4d9796276d274dbf5d",
+            "keyLocation": "https://blog.matrixqr.cc/128b266e75164b4d9796276d274dbf5d.txt",
+            "urlList": [
+              "https://blog.matrixqr.cc/"
+            ]
+          }'
