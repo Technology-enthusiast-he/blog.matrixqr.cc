@@ -7,9 +7,8 @@ User-agent: GPTBot
 User-agent: ClaudeBot
 Allow: /
 
-# Block Common Scraping Tools
+# Block Specific Scraping Tools
 User-agent: Scrapy
-User-agent: curl
 Disallow: /
 
 # General Rules for All Other Bots
