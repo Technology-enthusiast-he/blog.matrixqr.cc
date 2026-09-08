@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
-    "postbuild": "next-sitemap"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1"
