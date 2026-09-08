@@ -3,7 +3,8 @@ name: "IndexNow Push"
 on:
   push:
     branches:
-      - main 
+      - main
+      - master
 
 jobs:
   indexnow:
@@ -21,3 +22,7 @@ jobs:
               "https://blog.matrixqr.cc/"
             ]
           }'
+
+      - name: Ping Google Sitemap
+        run: |
+          curl "https://www.google.com/ping?sitemap=https://blog.matrixqr.cc/sitemap.xml"
