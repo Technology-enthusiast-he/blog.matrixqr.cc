@@ -20,19 +20,37 @@
     <meta property="og:image" content="https://blog.matrixqr.cc/assets/og-cover.png">
 
     <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
       "@type": "Blog",
-      "name": "MatrixQR Tech Blog",
+      "@id": "https://blog.matrixqr.cc/#blog",
       "url": "https://blog.matrixqr.cc/",
+      "name": "MatrixQR Tech Blog",
       "description": "Tech insights, cyber security, and QR innovation articles.",
+      "inLanguage": "en-US",
       "publisher": {
-        "@type": "Organization",
-        "name": "MatrixQR Studio",
-        "url": "https://matrixqr.cc"
+        "@id": "https://www.matrixqr.cc/#organization"
       }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.matrixqr.cc/#organization",
+      "name": "MatrixQR Studio",
+      "url": "https://www.matrixqr.cc/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.matrixqr.cc/favicon.ico"
+      },
+      "sameAs": [
+        "https://www.producthunt.com/products/matrixqr",
+        "https://saasfame.com/item/matrixqr"
+      ]
     }
-    </script>
+  ]
+}
+</script>
 
     
     <link rel="stylesheet" href="/dist/output.css">
