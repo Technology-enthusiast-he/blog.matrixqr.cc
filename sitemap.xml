@@ -3,43 +3,25 @@
   <url>
     <loc>https://blog.matrixqr.cc/</loc>
     <lastmod>2026-09-08</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/image-to-qr-menu-guide</loc>
     <lastmod>2026-09-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/vcard-qr-setup</loc>
     <lastmod>2026-08-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/static-vs-dynamic-qr</loc>
     <lastmod>2026-08-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://blog.matrixqr.cc/posts/</loc>
-    <lastmod>2026-08-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/privacy-policy</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
   </url>
 </urlset>
