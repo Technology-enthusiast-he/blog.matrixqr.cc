@@ -19,59 +19,59 @@
     <meta property="og:image" content="https://blog.matrixqr.cc/assets/og-cover.png">
 
     <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@graph": [
+      "@type": "Blog",
+      "@id": "https://blog.matrixqr.cc/#blog",
+      "url": "https://blog.matrixqr.cc/",
+      "name": "MatrixQR Tech Blog",
+      "description": "Technical deep dives on client-side QR code generation, offline QR tools, WiFi/vCard security, and privacy-first web technologies.",
+      "inLanguage": "en-US",
+      "publisher": {
+        "@id": "https://www.matrixqr.cc/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://blog.matrixqr.cc/#faq",
+      "mainEntity": [
         {
-          "@type": "Blog",
-          "@id": "https://blog.matrixqr.cc/#blog",
-          "url": "https://blog.matrixqr.cc/",
-          "name": "MatrixQR Tech Blog",
-          "description": "Technical deep dives on client-side QR code generation, offline QR tools, WiFi/vCard security, and privacy-first web technologies.",
-          "inLanguage": "en-US",
-          "publisher": {
-            "@id": "https://www.matrixqr.cc/#organization"
+          "@type": "Question",
+          "name": "Why is client-side QR code generation more private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Client-side generation ensures your QR code payload (like WiFi passwords or contact info) never leaves your browser and is never uploaded to a server, eliminating server-side logging risks."
           }
         },
         {
-"@type": "FAQPage",
-"@id": "https://blog.matrixqr.cc/#faq",
-"mainEntity": [
-{
-"@type": "Question",
-"name": "Why is client-side QR code generation more private?",
-"acceptedAnswer": {
-"@type": "Answer",
-"text": "Client-side generation ensures your QR code payload (like WiFi passwords or contact info) never leaves your browser and is never uploaded to a server, eliminating server-side logging risks."
-}
-},
-{
-"@type": "Question",
-"name": "Does MatrixQR work offline?",
-"acceptedAnswer": {
-"@type": "Answer",
-"text": "Yes. After the initial page load, MatrixQR generates all QR codes locally in your browser, allowing full offline functionality."
-}
-}
-]
-},
-        {
-          "@type": "Organization",
-          "@id": "https://www.matrixqr.cc/#organization",
-          "name": "MatrixQR",
-          "url": "https://www.matrixqr.cc/",
-          "logo": {
-            "@type": "ImageObject",
-            "url": "https://www.matrixqr.cc/favicon.ico"
-          },
-          "sameAs": [
-            "https://www.producthunt.com/products/matrixqr",
-            "https://saasfame.com/item/matrixqr"
-          ]
+          "@type": "Question",
+          "name": "Does MatrixQR work offline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. After the initial page load, MatrixQR generates all QR codes locally in your browser, allowing full offline functionality."
+          }
         }
       ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://www.matrixqr.cc/#organization",
+      "name": "MatrixQR",
+      "url": "https://www.matrixqr.cc/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.matrixqr.cc/favicon.ico"
+      },
+      "sameAs": [
+        "https://www.producthunt.com/products/matrixqr",
+        "https://saasfame.com/item/matrixqr"
+      ]
     }
-    </script>
+  ]
+}
+</script>
 
     <link rel="stylesheet" href="/dist/output.css">
     <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js"></script>
