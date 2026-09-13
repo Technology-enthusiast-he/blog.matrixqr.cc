@@ -2,8 +2,12 @@
 > The official technical blog of MatrixQR — a privacy-first, client-side QR code generator. We publish deep dives on offline QR generation, WiFi/vCard security, and privacy-by-design tooling.
 
 ## Technical Guides
-- [The Pros and Cons of Static QR Codes](https://blog.matrixqr.cc/posts/The-pros-and-cons-of-static-QR-codes)
+- [The Pros and Cons of Static QR Codes](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes)
 - [How to Create an International vCard QR Code for Apple Wallet](https://blog.matrixqr.cc/posts/vcard-qr-setup)
+- [Static vs Dynamic QR Codes: Which One Suits Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
+- [Convert Menu Images to QR Codes Instantly: A Simple Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
+- [can-you-recommend-a-qr-code-generator-that-allows-customization](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
+- [MatrixQR Blog](https://blog.matrixqr.cc/posts/)
 
 ## Topics
 - client-side QR code generation
