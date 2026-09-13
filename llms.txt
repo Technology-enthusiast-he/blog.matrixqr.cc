@@ -3,11 +3,14 @@
 
 ## Technical Guides
 - [The Pros and Cons of Static QR Codes](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes)
-- [How to Create an International vCard QR Code for Apple Wallet](https://blog.matrixqr.cc/posts/vcard-qr-setup)
 - [Static vs Dynamic QR Codes: Which One Suits Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
+
+## Use Cases
 - [Convert Menu Images to QR Codes Instantly: A Simple Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
+- [How to Create an International vCard QR Code for Apple Wallet](https://blog.matrixqr.cc/posts/vcard-qr-setup)
+
+## Comparisons & Recommendations
 - [Best Customizable QR Code Generators (Client-Side & Privacy-First)](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
-- [ALL Blog](https://blog.matrixqr.cc/posts/)
 
 ## Topics
 - client-side QR code generation
