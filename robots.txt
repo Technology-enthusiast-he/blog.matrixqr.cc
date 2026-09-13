@@ -1,25 +1,34 @@
-# Block Specific Scraping Tools
+# Block aggressive scrapers
 User-agent: Scrapy
 Disallow: /
 
-# Allowed Main Bots & AI Crawlers
+# Allow major search engines
 User-agent: Googlebot
 User-agent: bingbot
 User-agent: Baiduspider
 User-agent: ByteSpider
+Allow: /
+Disallow: /api/
+
+# AI Search Engines & Assistants (CRITICAL for GEO)
 User-agent: GPTBot
 User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
 User-agent: ClaudeBot
-User-agent: PerplexityBot
 User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
 Allow: /
 Disallow: /api/
 
-# General Rules for All Other Bots
+# Google AI training bot
+User-agent: Google-Extended
+Allow: /
+
+# Fallback for all other bots
 User-agent: *
 Allow: /
 Disallow: /api/
 
-# Sitemap Location
+# Sitemap
 Sitemap: https://blog.matrixqr.cc/sitemap.xml
