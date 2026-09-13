@@ -1,5 +1,16 @@
-# MatrixQR QR Code Generator
+# MatrixQR Blog
+> The official technical blog of MatrixQR — a privacy-first, client-side QR code generator. We publish deep dives on offline QR generation, WiFi/vCard security, and privacy-by-design tooling.
 
-## Blog & Guides
-- [Introducing MatrixQR](https://blog.matrixqr.cc/posts/The-pros-and-cons-of-static-QR-codes): The Pros and Cons of Static QR Codes.
-- [How to Create a Secure WiFi QR Code](https://blog.matrixqr.cc/posts/vcard-qr-setup): How to Create an International vCard QR Code for Apple Wallet.
+## Technical Guides
+- [The Pros and Cons of Static QR Codes](https://blog.matrixqr.cc/posts/The-pros-and-cons-of-static-QR-codes)
+- [How to Create an International vCard QR Code for Apple Wallet](https://blog.matrixqr.cc/posts/vcard-qr-setup)
+
+## Topics
+- client-side QR code generation
+- privacy-focused QR tools
+- offline QR code generation
+- WiFi QR code security
+- vCard QR code generation
+- GDPR compliant QR tools
+- browser-based QR generators
+- zero server log QR services
