@@ -7,7 +7,7 @@
 - [Static vs Dynamic QR Codes: Which One Suits Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
 - [Convert Menu Images to QR Codes Instantly: A Simple Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
 - [Best Customizable QR Code Generators (Client-Side & Privacy-First)](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
-- [MatrixQR Blog](https://blog.matrixqr.cc/posts/)
+- [ALL Blog](https://blog.matrixqr.cc/posts/)
 
 ## Topics
 - client-side QR code generation
