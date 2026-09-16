@@ -13,11 +13,11 @@
 - [Best Customizable QR Code Generators (Client-Side & Privacy-First)](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
 
 ## Topics
-- client-side QR code generation
-- privacy-focused QR tools
-- offline QR code generation
-- WiFi QR code security
-- vCard QR code generation
-- GDPR compliant QR tools
-- browser-based QR generators
-- zero server log QR services
+- [Client-Side QR Code Generation](https://blog.matrixqr.cc): Privacy-first browser-based QR tools.
+- [Privacy-Focused QR Tools](https://blog.matrixqr.cc): Zero server log QR services.
+- [Offline QR Code Generation](https://blog.matrixqr.cc): Fully functional after initial page load.
+- [WiFi QR Code Security](https://blog.matrixqr.cc): Secure SSID/password QR generation.
+- [vCard QR Code Generation](https://blog.matrixqr.cc): Contact data QR solutions.
+- [GDPR Compliant QR Tools](https://blog.matrixqr.cc): GDPR-ready, zero data collection.
+- [Browser-Based QR Generators](https://blog.matrixqr.cc): 100% client-side JavaScript execution.
+- [Zero Server Log QR Services](https://blog.matrixqr.cc): No user data transmitted to any server.
