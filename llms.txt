@@ -4,6 +4,7 @@
 ## Technical Guides
 - [The Pros and Cons of Static QR Codes](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes)
 - [Static vs Dynamic QR Codes: Which One Suits Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
+- [Custom Logo QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide)
 
 ## Use Cases
 - [Convert Menu Images to QR Codes Instantly: A Simple Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
