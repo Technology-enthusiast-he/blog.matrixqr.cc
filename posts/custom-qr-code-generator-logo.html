@@ -232,6 +232,44 @@
          alt="Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo | MatrixQR Guide"
          class="w-full h-auto object-cover block">
                 </a>
+            <script>
+document.querySelectorAll('.preview-img').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position:fixed; inset:0;
+            background:rgba(0,0,0,.85);
+            display:flex; align-items:center; justify-content:center;
+            z-index:9999; cursor:zoom-out;
+        `;
+
+        const img = document.createElement('img');
+        img.src = a.href;
+        img.style.cssText = `
+            max-width:90vw; max-height:90vh;
+            border-radius:0.5rem;
+            box-shadow:0 25px 50px -12px rgba(0,0,0,.8);
+        `;
+
+       
+        const close = document.createElement('div');
+        close.innerHTML = '×';
+        close.style.cssText = `
+            position:fixed; top:20px; right:30px;
+            font-size:40px; color:#fff; cursor:pointer;
+            user-select:none;
+        `;
+        close.onclick = () => overlay.remove();
+
+        overlay.onclick = () => overlay.remove();
+        overlay.appendChild(img);
+        overlay.appendChild(close);
+        document.body.appendChild(overlay);
+    });
+});
+</script>
 
             <h2>Why Your Brand Needs a Custom QR Code Generator with Logo</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
@@ -301,6 +339,44 @@
          alt="Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo | MatrixQR Guide"
          class="w-full h-auto object-cover block">
                     </a>
+            <script>
+document.querySelectorAll('.preview-img').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position:fixed; inset:0;
+            background:rgba(0,0,0,.85);
+            display:flex; align-items:center; justify-content:center;
+            z-index:9999; cursor:zoom-out;
+        `;
+
+        const img = document.createElement('img');
+        img.src = a.href;
+        img.style.cssText = `
+            max-width:90vw; max-height:90vh;
+            border-radius:0.5rem;
+            box-shadow:0 25px 50px -12px rgba(0,0,0,.8);
+        `;
+
+       
+        const close = document.createElement('div');
+        close.innerHTML = '×';
+        close.style.cssText = `
+            position:fixed; top:20px; right:30px;
+            font-size:40px; color:#fff; cursor:pointer;
+            user-select:none;
+        `;
+        close.onclick = () => overlay.remove();
+
+        overlay.onclick = () => overlay.remove();
+        overlay.appendChild(img);
+        overlay.appendChild(close);
+        document.body.appendChild(overlay);
+    });
+});
+</script>
 
             <h2>Key Best Practices for Designing High-Converting QR Codes</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
