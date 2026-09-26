@@ -73,7 +73,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-5xl mx-auto px-4 py-10 flex-1 w-full space-y-8">
+    <main class="max-w-5xl mx-auto px-4 py-10 flex-1 w-full space-y-12">
         
         <!-- Archive Banner -->
         <div class="archive-header text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-6">
@@ -89,157 +89,113 @@
             </div>
         </div>
 
-        <!-- Table Container -->
-        <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
-            <div class="p-6 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 class="text-lg font-bold text-slate-100 flex items-center gap-2">
-                    <i data-lucide="archive" class="w-5 h-5 text-cyan-400"></i> Articles Archive
+        <!-- Section 1: Privacy & Security (隐私安全类) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-cyan-400"></i> Privacy & Security
                 </h2>
-                
-                <span class="text-xs text-slate-500">Sorted by publication date (Newest first)</span>
+                <span class="text-xs text-slate-500">Data protection, privacy policies, and security insights</span>
             </div>
-
-            <div class="overflow-x-auto">
-                <table class="archive-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 15%;">Date</th>
-                            <th style="width: 55%;">Article Title</th>
-                            <th style="width: 20%;">Category</th>
-                            <th style="width: 10%; text-align: right;">Read</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800/60 text-sm">
-
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-09-18">Sep 22, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/custom-qr-code-generator-logo" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    The Ultimate Guide to Using a Custom QR Code Generator with Logo
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">Boost Your Brand with Custom QR Codes Featuring Your Logo.</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">Digital Menu QR</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/custom-qr-code-generator-logo" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-09-18">Sep 18, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/custom-logo-qr-code-menu-guide" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    How to Add a Custom Logo to Your QR Code Menu (2026 Guide)
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">Learn how to create branded digital QR code menus with custom logos without compromising client-side privacy or scan reliability.</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">Digital Menu QR</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/custom-logo-qr-code-menu-guide" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-09-10">Sep 10, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/can-you-recommend-a-qr-code-generator-that-allows-customization" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    Can you recommend a QR code generator that allows for customization?
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">If you have ever asked, “Can you recommend a QR code generator that allows for customization?”, this guide is for you.</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">Digital Menu QR</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/can-you-recommend-a-qr-code-generator-that-allows-customization" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-09-07">Sep 07, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/image-to-qr-menu-guide" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    Menu QR Codes Made Easy: Step-by-Step Tutorial
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">Learn how to create a digital menu QR code in minutes. This step-by-step guide covers everything from generating the code to printing it for your restaurant tables—no coding skills required.</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">Digital Menu QR</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/image-to-qr-menu-guide" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-08-22">Aug 22, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/static-vs-dynamic-qr" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    Static vs Dynamic QR Codes: Which One Do You Need?
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">Compare static and dynamic QR codes in detail — learn the key differences, use cases, and which type is right for your business...</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">Digital Marketing</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/static-vs-dynamic-qr" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-08-13">Aug 13, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/vcard-qr-setup/" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    How to Create an International vCard QR Code for Apple Wallet
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">Learn how to build a globally compatible vCard QR Code that adds seamlessly into Apple Wallet...</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">vCard & Wallet</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/vcard-qr-setup/" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="text-slate-500 text-xs whitespace-nowrap">
-                                <time datetime="2026-08-12">Aug 12, 2026</time>
-                            </td>
-                            <td>
-                                <a href="/posts/the-pros-and-cons-of-static-qr-codes" class="font-bold text-slate-200 hover:text-cyan-400 transition-colors block">
-                                    The Pros and Cons of Static QR Codes
-                                </a>
-                                <p class="text-xs text-slate-400 line-clamp-1 mt-1">Discover the pros and cons of static QR codes, how they work, and when to use them for your business...</p>
-                            </td>
-                            <td>
-                                <span class="inline-block bg-slate-800 text-cyan-400 text-xs px-2.5 py-1 rounded-full border border-slate-700">Digital Marketing</span>
-                            </td>
-                            <td class="text-right">
-                                <a href="/posts/the-pros-and-cons-of-static-qr-codes" class="text-cyan-400 hover:underline text-xs font-semibold">View →</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="archive-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 55%;">Article Title</th>
+                                <th style="width: 20%;">Category</th>
+                                <th style="width: 10%; text-align: right;">Read</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-sm">
+                            <!-- 对应的文章后期放入此处 -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Section 2: Tool Comparisons (工具对比类) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+                    <i data-lucide="scale" class="w-5 h-5 text-cyan-400"></i> Tool Comparisons
+                </h2>
+                <span class="text-xs text-slate-500">In-depth reviews, feature side-by-sides, and recommendations</span>
+            </div>
+            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="archive-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 55%;">Article Title</th>
+                                <th style="width: 20%;">Category</th>
+                                <th style="width: 10%; text-align: right;">Read</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-sm">
+                            <!-- 对应的文章后期放入此处 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Restaurant & Dining (餐饮场景类) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+                    <i data-lucide="utensils" class="w-5 h-5 text-cyan-400"></i> Restaurant & Dining
+                </h2>
+                <span class="text-xs text-slate-500">Digital menu setups, table QR solutions, and hospitality tips</span>
+            </div>
+            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="archive-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 55%;">Article Title</th>
+                                <th style="width: 20%;">Category</th>
+                                <th style="width: 10%; text-align: right;">Read</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-sm">
+                            <!-- 对应的文章后期放入此处 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Tech & Guides (技术科普类) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-xl font-bold text-slate-100 flex items-center gap-2">
+                    <i data-lucide="book-open-check" class="w-5 h-5 text-cyan-400"></i> Tech & Guides
+                </h2>
+                <span class="text-xs text-slate-500">Technical tutorials, vCard standards, and QR specs</span>
+            </div>
+            <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="archive-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">Date</th>
+                                <th style="width: 55%;">Article Title</th>
+                                <th style="width: 20%;">Category</th>
+                                <th style="width: 10%; text-align: right;">Read</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-sm">
+                            <!-- 对应的文章后期放入此处 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
         <!-- Pagination -->
         <div class="flex items-center justify-between text-xs text-slate-400 pt-4 border-t border-slate-800/80">
@@ -252,7 +208,6 @@
 
     </main>
 
-    
     <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-300 text-center">
         <div class="max-w-6xl mx-auto flex flex-col items-center gap-2">
             <p>© 2026 MatrixQR Studio. All rights reserved.</p>
