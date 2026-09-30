@@ -1,81 +1,262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Articles - MatrixQR Blog</title>
-  <meta name="description" content="Browse all articles on QR technology, privacy-first routing, digital business cards, and modern QR code architecture.">
-  
-  
-  <link rel="stylesheet" href="/css/style.css">
-  
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "MatrixQR Blog - All Articles",
-    "description": "Index of all QR technology articles",
-    "url": "https://blog.matrixqr.cc/sitemap/"
-  }
-  </script>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+    <title>All Articles - MatrixQR Blog | Tech Insights & QR Code Guides</title>
+    <meta name="description" content="Browse all articles on QR technology, privacy-first routing, digital business cards, and modern QR code architecture.">
+    <meta name="keywords" content="QR Code Blog, Tech Insights, All Articles, Dynamic QR Codes, Digital Business Card">
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://blog.matrixqr.cc/posts/">
+    <link rel="icon" type="image/png" href="/favicon-64x64.png" sizes="64x64">
+
+    <!-- Open Graph / Social Media Meta -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.matrixqr.cc/posts/">
+    <meta property="og:title" content="All Articles - MatrixQR Blog">
+    <meta property="og:description" content="Browse every guide, tutorial, and deep dive on QR technology by MatrixQR Studio.">
+    <meta property="og:image" content="https://blog.matrixqr.cc/assets/og-cover.png">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://blog.matrixqr.cc/#website",
+          "url": "https://blog.matrixqr.cc/",
+          "name": "MatrixQR Blog",
+          "publisher": {
+            "@id": "https://blog.matrixqr.cc/#organization"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://blog.matrixqr.cc/#organization",
+          "name": "MatrixQR",
+          "url": "https://www.matrixqr.cc/",
+          "logo": "https://www.matrixqr.cc/favicon.ico"
+        },
+        {
+          "@type": "CollectionPage",
+          "@id": "https://blog.matrixqr.cc/posts/#webpage",
+          "url": "https://blog.matrixqr.cc/posts/",
+          "name": "All Articles - MatrixQR Blog",
+          "description": "Index of all QR technology articles",
+          "isPartOf": {
+            "@id": "https://blog.matrixqr.cc/#website"
+          }
+        }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="stylesheet" href="/dist/output.css">
+    <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js" defer></script>
 </head>
-<body>
+<body class="bg-[#05070f] text-slate-200 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black">
 
-  
-  <header>
-    <nav>
-      <a href="/">MatrixQR Blog</a>
-      <a href="/sitemap/">All Articles</a>
-      <a href="https://www.matrixqr.cc/">Main Site</a>
-    </nav>
-  </header>
+    <!-- Header Navigation -->
+    <header class="bg-[#080d1a]/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="https://blog.matrixqr.cc" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="qr-code" class="w-5 h-5 text-white"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-black text-xl tracking-wider text-white">MATRIX<span class="text-cyan-400">BLOG</span></span>
+                    <span class="text-[10px] text-slate-300 uppercase tracking-widest -mt-1 font-medium">Tech & Security</span>
+                </div>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="/posts/" class="text-cyan-400 flex items-center gap-1.5 font-bold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    Category
+                </a>
+                <a href="https://www.matrixqr.cc" class="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl transition-all shadow-md shadow-cyan-500/10 flex items-center gap-2">
+                    Launch App ↗
+                </a>
+            </nav>
+        </div>
+    </header>
 
-  <main>
-    <h1>All Articles</h1>
-    <p>Browse every guide, tutorial, and deep dive on QR technology by MatrixQR Studio.</p>
-
-    <section>
-      <h2>QR Technology & Architecture</h2>
-      <ul>
-        <li><a href="/posts/static-vs-dynamic-qr.html">Static vs Serverless Dynamic QR: A Complete Comparison</a></li>
-        <li><a href="/posts/privacy-qr-routing.html">Privacy-First QR Routing Architecture</a></li>
-      </ul>
+    <!-- Page Title Banner -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#0a1128] to-[#05070f] py-8 px-6 border-b border-slate-800/50">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-32 bg-cyan-500/10 blur-[80px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+            <div>
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-semibold mb-2">
+                    <i data-lucide="layers" class="w-3 h-3"></i> Article Index
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">
+                    All <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">Articles & Guides</span>
+                </h1>
+            </div>
+            <p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">
+                Browse every guide, tutorial, and deep dive on QR technology, privacy-first architectures, and dynamic integrations by MatrixQR Studio.
+            </p>
+        </div>
     </section>
 
-    <section>
-      <h2>Digital Business & Contacts</h2>
-      <ul>
-        <li><a href="/posts/vcard-qr-cross-platform.html">How vCard QR Codes Work Across iOS, Android & WeChat</a></li>
-      </ul>
-    </section>
+    <!-- Main Grid Content -->
+    <div class="max-w-7xl mx-auto px-6 py-12 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
+        
+        <!-- Left Column: Articles Directory -->
+        <main class="lg:col-span-8 space-y-12">
+            
+            <!-- Section 1: QR Technology & Architecture -->
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i data-lucide="cpu" class="w-5 h-5 text-cyan-400"></i>
+                    <h2 class="text-xl font-bold text-white tracking-wide">QR Technology & Architecture</h2>
+                </div>
+                <div class="grid gap-3">
+                    <a href="/posts/static-vs-dynamic-qr.html" class="group block bg-[#080d1a]/60 border border-slate-800/80 hover:border-cyan-500/40 rounded-xl p-4 transition-all duration-300 hover:bg-[#0a1128]/80">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-slate-200 group-hover:text-cyan-400 transition-colors">
+                                Static vs Serverless Dynamic QR: A Complete Comparison
+                            </h3>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                        </div>
+                    </a>
+                    <a href="/posts/privacy-qr-routing.html" class="group block bg-[#080d1a]/60 border border-slate-800/80 hover:border-cyan-500/40 rounded-xl p-4 transition-all duration-300 hover:bg-[#0a1128]/80">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-slate-200 group-hover:text-cyan-400 transition-colors">
+                                Privacy-First QR Routing Architecture
+                            </h3>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                        </div>
+                    </a>
+                </div>
+            </section>
 
-    <section>
-      <h2>Menu & Restaurant QR</h2>
-      <ul>
-        <li><a href="/posts/digital-menu-best-practices.html">Digital Menu QR: Static Image vs Hosted Menu</a></li>
-      </ul>
-    </section>
+            <!-- Section 2: Digital Business & Contacts -->
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i data-lucide="user-check" class="w-5 h-5 text-emerald-400"></i>
+                    <h2 class="text-xl font-bold text-white tracking-wide">Digital Business & Contacts</h2>
+                </div>
+                <div class="grid gap-3">
+                    <a href="/posts/vcard-qr-cross-platform.html" class="group block bg-[#080d1a]/60 border border-slate-800/80 hover:border-emerald-500/40 rounded-xl p-4 transition-all duration-300 hover:bg-[#0a1128]/80">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-slate-200 group-hover:text-emerald-400 transition-colors">
+                                How vCard QR Codes Work Across iOS, Android & WeChat
+                            </h3>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                        </div>
+                    </a>
+                </div>
+            </section>
 
-    <section>
-      <h2>Resources</h2>
-      <ul>
-        <li><a href="https://menu.matrixqr.cc/">Digital Menu QR Generator</a></li>
-        <li><a href="https://www.matrixqr.cc/">WiFi & vCard QR Generator</a></li>
-      </ul>
-    </section>
-  </main>
+            <!-- Section 3: Menu & Restaurant QR -->
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i data-lucide="utensils" class="w-5 h-5 text-amber-400"></i>
+                    <h2 class="text-xl font-bold text-white tracking-wide">Menu & Restaurant QR</h2>
+                </div>
+                <div class="grid gap-3">
+                    <a href="/posts/digital-menu-best-practices.html" class="group block bg-[#080d1a]/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-4 transition-all duration-300 hover:bg-[#0a1128]/80">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-slate-200 group-hover:text-amber-400 transition-colors">
+                                Digital Menu QR: Static Image vs Hosted Menu
+                            </h3>
+                            <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-500 group-hover:text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"></i>
+                        </div>
+                    </a>
+                </div>
+            </section>
 
-  
-  <footer>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/sitemap/">All Articles</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="https://www.matrixqr.cc/">Main Site</a>
-    </nav>
-    <p>© 2026 MatrixQR Studio. All rights reserved.</p>
-  </footer>
+            <!-- Section 4: External Tools & Resources -->
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i data-lucide="wrench" class="w-5 h-5 text-indigo-400"></i>
+                    <h2 class="text-xl font-bold text-white tracking-wide">Resources & Generators</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <a href="https://menu.matrixqr.cc/" class="group block bg-gradient-to-br from-[#0c1427] to-[#080d1a] border border-slate-800 hover:border-cyan-500/40 rounded-2xl p-5 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono uppercase text-cyan-400 font-semibold">Web App</span>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white group-hover:text-cyan-400 transition-colors">Digital Menu QR Generator</h3>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">Convert images into custom restaurant QR codes with logo support.</p>
+                    </a>
 
+                    <a href="https://www.matrixqr.cc/" class="group block bg-gradient-to-br from-[#0c1427] to-[#080d1a] border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-5 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-mono uppercase text-indigo-400 font-semibold">Main Studio</span>
+                            <i data-lucide="external-link" class="w-4 h-4 text-slate-400 group-hover:text-indigo-400 transition-colors"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-white group-hover:text-indigo-400 transition-colors">WiFi & vCard QR Generator</h3>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">Create instant encrypted WiFi access and custom digital vCards.</p>
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Right Column: Sidebar -->
+        <aside class="lg:col-span-4 space-y-6">
+            <div class="sticky top-28 bg-gradient-to-b from-[#0c1427] to-[#080d1a] border border-cyan-500/30 p-6 rounded-3xl space-y-4 shadow-xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400">
+                    <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+
+                <h4 class="font-bold text-lg text-white">Try MatrixQR Studio</h4>
+
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    Need a secure, client-side QR generator? No login required. Multi-language support built-in.
+                </p>
+
+                <a href="https://www.matrixqr.cc font-bold" class="block text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase transition-all shadow-lg shadow-cyan-500/10">
+                    Open Free Generator
+                </a>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Footer Area -->
+    <footer class="border-t border-slate-800/80 bg-[#03050a] py-10 px-6 text-xs text-slate-400 text-center">
+        <div class="max-w-7xl mx-auto space-y-4">
+            <p>© 2026 MatrixQR Studio. All rights reserved.</p>
+            
+            <div class="flex flex-wrap justify-center items-center gap-2 py-2">
+                <a href="https://www.matrixqr.cc" class="group inline-flex items-center gap-1.5 font-medium text-slate-300 hover:text-cyan-400 transition-colors py-1 px-2 rounded">
+                    <span class="group-hover:underline underline-offset-4 decoration-cyan-400/60">Main Studio</span>
+                </a>
+                
+                <span class="text-slate-700">|</span>
+                
+                <a href="https://www.matrixqr.cc/about" class="font-medium text-slate-300 hover:text-cyan-400 transition-colors py-1 px-2 rounded">
+                    About Us
+                </a>
+                
+                <span class="text-slate-700">|</span>
+                
+                <a href="https://menu.matrixqr.cc/" class="text-cyan-400 hover:underline flex items-center gap-1 py-1 px-2 rounded-md font-medium" title="Free Digital Menu QR Code Generator">
+                    Digital Menu QR
+                </a>
+                
+                <span class="text-slate-700">|</span>
+                
+                <a href="/posts/privacy-policy" class="hover:text-cyan-400 transition-colors py-1 px-2">
+                    Privacy Policy
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
