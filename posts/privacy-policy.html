@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Privacy Policy | MatrixQR Blog</title>
-    <meta name="description" content="Privacy Policy for MatrixQR Studio and MatrixQR Tech Blog. Learn how we handle client-side rendering and user data privacy.">
+    <meta name="description" content="Privacy Policy for MatrixQR Studio, MatrixQR Tech Blog, and Digital Menu Generator. Learn how we handle client-side rendering, menu image hosting, and user data privacy.">
 
     <link rel="canonical" href="https://blog.matrixqr.cc/posts/privacy-policy">
     <link rel="icon" type="image/png" href="/favicon-64x64.png" sizes="64x64">
@@ -86,12 +86,14 @@
             </header>
 
             <p class="text-base text-slate-300 mb-4 leading-relaxed">
-                At <strong>MatrixQR Studio</strong> (accessible via <code>matrixqr.cc</code> and <code>blog.matrixqr.cc</code>), one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded, and how we use it.
+                At <strong>MatrixQR Studio</strong> (accessible via <code>matrixqr.cc</code>, <code>blog.matrixqr.cc</code>, and <code>menu.matrixqr.cc</code>), one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded, and how we use it.
             </p>
 
             <div class="callout-box">
-                <div class="font-bold text-cyan-400 mb-1">🔒 100% Client-Side Processing</div>
-                <p class="text-sm text-slate-300 leading-relaxed">MatrixQR is engineered as a zero-backend, client-side web application. All QR code generation, vCard encoding, and custom parameters are processed locally inside your browser. We never transmit, store, or analyze your input data or generated QR contents on remote servers.</p>
+                <div class="font-bold text-cyan-400 mb-1">🔒 Client-Side Processing & Secure Media Hosting</div>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    Standard QR utilities (such as Wi-Fi, vCard, and text generators) operate with <strong>100% client-side processing</strong> in your browser—no data is sent to remote servers. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), user-uploaded menu images or PDFs are stored securely on distributed cloud storage solely to generate scannable access links.
+                </p>
             </div>
 
             <h2>1. Log Files & Analytics</h2>
@@ -104,19 +106,28 @@
                 Like any other website, MatrixQR uses basic local storage or session storage solely to preserve user interface preferences (such as selected language or dark mode state). We do not use persistent tracking cookies for cross-site behavioral profiling.
             </p>
 
-            <h2>3. Third-Party Links & Hosting</h2>
+            <h2>3. Digital Menu Image Hosting & Cloud Storage</h2>
             <p class="text-slate-300 leading-relaxed">
-                Our website is hosted on Vercel and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) may gather technical headers necessary to deliver static assets efficiently. Please consult the respective Privacy Policies of these infrastructure providers for more detailed information.
+                When using <code>menu.matrixqr.cc</code> to create menu QR codes, you may upload pre-designed menu files (such as JPG, PNG, WEBP, or PDF).
+            </p>
+            <ul class="list-disc list-inside text-slate-300 leading-relaxed space-y-2 mt-2">
+                <li><strong>Storage Provider:</strong> Uploaded menu files are hosted on encrypted, high-availability cloud object storage (Cloudflare R2 Infrastructure).</li>
+                <li><strong>Purpose:</strong> These files are stored solely to provide a public URL accessible via customer QR code scans.</li>
+                <li><strong>Data Minimization:</strong> We do not scan, extract, sell, or analyze menu content, text, or prices. Logo overlays and styling adjustments are rendered entirely inside your local browser Canvas.</li>
+            </ul>
+
+            <h2>4. Third-Party Links & Hosting</h2>
+            <p class="text-slate-300 leading-relaxed">
+                Our websites are hosted on Vercel, Cloudflare, and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) may gather technical headers necessary to deliver static assets efficiently. Please consult the respective Privacy Policies of these infrastructure providers for more detailed information.
             </p>
 
-            <h2>4. Consent</h2>
+            <h2>5. Consent</h2>
             <p class="text-slate-300 leading-relaxed">
-                By using our website, you hereby consent to our Privacy Policy and agree to its terms.
+                By using our website and tools, you hereby consent to our Privacy Policy and agree to its terms.
             </p>
         </article>
     </main>
 
-    
     <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-300 text-center">
         <div class="max-w-6xl mx-auto flex flex-col items-center gap-2">
             <p>© 2026 MatrixQR Studio. All rights reserved.</p>
@@ -143,30 +154,30 @@
         }
     </script>
     <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": {
-        "@type": "WebPage",
-        "@id": "https://blog.matrixqr.cc/"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Privacy Policy",
-      "item": {
-        "@type": "WebPage",
-        "@id": "https://blog.matrixqr.cc/posts/privacy-policy"
-      }
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": {
+            "@type": "WebPage",
+            "@id": "https://blog.matrixqr.cc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Privacy Policy",
+          "item": {
+            "@type": "WebPage",
+            "@id": "https://blog.matrixqr.cc/posts/privacy-policy"
+          }
+        }
+      ]
     }
-  ]
-}
-</script>
+    </script>
 </body>
 </html>
