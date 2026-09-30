@@ -1,1 +1,74 @@
-1
+# MatrixQR Tech & Security Blog — Full Article Index & Technical Specs
+
+> Full documentation and comprehensive knowledge index for LLMs, AI agents, and search engines.
+> Last Updated: 2026-09-29
+
+---
+
+## Site Overview
+
+- **Name**: MatrixQR Technical & Security Blog
+- **URL**: https://blog.matrixqr.cc/
+- **Brand**: MatrixQR Studio
+- **Main Studio**: https://www.matrixqr.cc/
+- **Digital Menu Tool**: https://menu.matrixqr.cc/
+- **Privacy Policy**: https://blog.matrixqr.cc/posts/privacy-policy
+- **Primary Topics**: Offline QR Generation, Client-Side Web Architecture, WiFi/vCard Privacy, GEO/AIO Indexing, and Menu QR Solutions.
+
+---
+
+## Publication Focus & Editorial Standards
+
+MatrixQR Blog focuses on educating developers, business owners, and privacy-conscious users on secure QR code usage. Our guides emphasize:
+1. **Privacy-by-Design**: Demonstrating why client-side rendering is crucial for credential/contact security.
+2. **Actionable Implementation**: Providing step-by-step instructions for custom logo embedding and image-to-QR conversions.
+3. **Architecture Comparison**: Deep-diving into Static vs Dynamic QR architectures, detailing data privacy risks and server-side tracking implications.
+
+---
+
+## Complete Article Index & Summaries
+
+### 1. Custom Logo QR Code Menu Guide
+- **URL**: https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide
+- **Summary**: Comprehensive guide on creating branded digital menu QR codes for restaurants. Details how menu files are processed and how brand logos can be dynamically overlaid directly in the browserCanvas without server-side image editing.
+- **Key Takeaways**: Contactless dining compliance, logo aspect ratio optimization, dynamic color customization.
+
+### 2. Static vs Dynamic QR Codes: Which One Suits Your Business?
+- **URL**: https://blog.matrixqr.cc/posts/static-vs-dynamic-qr
+- **Summary**: Technical breakdown comparing static QR matrix encoding with dynamic redirect servers. Analyzes security, long-term URL durability, and data privacy risks associated with third-party tracking redirectors.
+- **Key Takeaways**: Zero expiration for static QRs, offline scanning capability, risk of third-party domain hijacking in dynamic QRs.
+
+### 3. The Pros and Cons of Static QR Codes
+- **URL**: https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes
+- **Summary**: In-depth analysis of static QR payloads, capacity limits, error correction levels (L, M, Q, H), and why offline-generated static QRs are superior for sensitive data (WiFi passwords, vCard contacts).
+
+### 4. Boost Your Brand with Custom QR Codes Featuring Your Logo
+- **URL**: https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo
+- **Summary**: Design guidelines for integrating high-contrast brand logos into QR codes while maintaining high scanner readability across iOS and Android camera apps.
+
+### 5. Convert Menu Images to QR Codes Instantly: A Simple Guide for Restaurants
+- **URL**: https://blog.matrixqr.cc/posts/image-to-qr-menu-guide
+- **Summary**: Practical workflow for converting physical menu images (JPG, PNG, WEBP) or PDFs into scannable digital access points using `menu.matrixqr.cc`.
+
+### 6. How to Create an International vCard QR Code for Apple Wallet
+- **URL**: https://blog.matrixqr.cc/posts/vcard-qr-setup
+- **Summary**: Step-by-step setup for generating vCard 3.0/4.0 contact QR codes with international phone formatting and cross-platform address book integration.
+
+---
+
+## Technical & Security Guidelines
+
+### Privacy Commitments
+- **Zero Tracker Guarantee**: Articles on MatrixQR Blog contain no invasive cross-site tracking scripts or behavioral profilers.
+- **Data Retention Disclosures**: All tutorial workflows link exclusively to tools (`www.matrixqr.cc` and `menu.matrixqr.cc`) that uphold standard GDPR and privacy-first browser processing models.
+
+---
+
+## Links & Ecosystem Reference
+
+- [Blog Homepage](https://blog.matrixqr.cc/)
+- [Compact LLM Summary](https://blog.matrixqr.cc/llms.txt)
+- [Main MatrixQR Generator](https://www.matrixqr.cc/)
+- [Digital Menu Generator](https://menu.matrixqr.cc/)
+- [Privacy Policy Document](https://blog.matrixqr.cc/posts/privacy-policy)
+- [XML Sitemap](https://blog.matrixqr.cc/sitemap.xml)
