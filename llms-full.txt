@@ -54,6 +54,14 @@ MatrixQR Blog focuses on educating developers, business owners, and privacy-cons
 - **URL**: https://blog.matrixqr.cc/posts/vcard-qr-setup
 - **Summary**: Step-by-step setup for generating vCard 3.0/4.0 contact QR codes with international phone formatting and cross-platform address book integration.
 
+### 7. How We Secured Digital Menu QR Codes: Canvas Sanitization
+- **URL**: https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization
+- **Summary**: Learn how client-side Canvas sanitization protects digital menu QR code images and reduces unnecessary data exposure.
+
+### 8. Can you recommend a QR code generator that allows for customization?
+- **URL**: https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization
+- **Summary**: Looking for a powerful QR code generator with full design customization? Discover top tools for custom colors, logos, frames, and dynamic tracking.
+
 ---
 
 ## Technical & Security Guidelines
