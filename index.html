@@ -361,25 +361,26 @@
         </main>
 
         <!-- Right: Sidebar -->
-        <aside class="lg:col-span-4 space-y-6">
-            <div class="sticky top-28 bg-gradient-to-b from-[#0c1427] to-[#080d1a] border border-cyan-500/30 p-6 rounded-3xl space-y-4 shadow-xl relative overflow-hidden">
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <<aside class="lg:col-span-4 space-y-6">
+    <div class="sticky top-28 bg-gradient-to-b from-[#0c1427] to-[#080d1a] border border-cyan-500/30 p-6 rounded-3xl space-y-4 shadow-xl relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        
+        <!-- 图标容器：替换为内嵌 SVG -->
+        <div class="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+        </div>
 
-                <div class="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400">
-                    <i data-lucide="zap" class="w-5 h-5"></i>
-                </div>
-
-                <h3 class="font-bold text-lg text-white">Try MatrixQR Studio</h3>
-
-                <p class="text-xs text-slate-400 leading-relaxed">
-                    Need a secure, client-side WiFi, vCard, or Menu QR generator? No login required. 100% free and private.
-                </p>
-
-                <a href="https://www.matrixqr.cc/" class="block text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase transition-all shadow-lg shadow-cyan-500/10">
-                    Open Free Generator
-                </a>
-            </div>
-        </aside>
+        <h3 class="font-bold text-lg text-white">Try MatrixQR Studio</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+            Need a secure, client-side WiFi, vCard, or Menu QR generator? No login required. 100% free and private.
+        </p>
+        <a href="https://www.matrixqr.cc/" class="block text-center py-3 px-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase transition-all shadow-lg shadow-cyan-500/10">
+            Open Free Generator
+        </a>
+    </div>
+</aside>
     </div>
 
     <!-- Footer Area -->
