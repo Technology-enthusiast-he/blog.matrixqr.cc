@@ -2,18 +2,18 @@
 > The official technical blog of MatrixQR — a privacy-first, client-side QR code generator. We publish deep dives on offline QR generation, WiFi/vCard security, and privacy-by-design tooling.
 
 ## Technical Guides
-- [How We Secured Digital Menu QR Codes: Canvas Sanitization](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization)
-- [The Pros and Cons of Static QR Codes](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes)
-- [Static vs Dynamic QR Codes: Which One Suits Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
-- [Custom Logo QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide)
-- [Boost Your Brand with Custom QR Codes Featuring Your Logo](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo)
+- [Secure Digital Menu QR Codes with Client Canvas](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization)
+- [Pros and Cons of Static QR Codes: Privacy, Security & Uses](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes)
+- [Static vs Dynamic QR Codes: Which Is Best for Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
+- [How to Add a Custom Logo to Your QR Code Menu (2026)](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide)
+- [Free Custom QR Code Generator with Logo](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo)
 
 ## Use Cases
-- [Convert Menu Images to QR Codes Instantly: A Simple Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
-- [How to Create an International vCard QR Code for Apple Wallet](https://blog.matrixqr.cc/posts/vcard-qr-setup)
+- [Convert Menu Image to QR Code Free (No Signup)](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
+- [International vCard QR Code for Apple Wallet: Complete Guide](https://blog.matrixqr.cc/posts/vcard-qr-setup)
 
 ## Comparisons & Recommendations
-- [Best Customizable QR Code Generators (Client-Side & Privacy-First)](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
+- [5 Best Privacy-First Customizable QR Code Generators (2026)](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
 
 ## Topics
 - [Client-Side QR Code Generation](https://blog.matrixqr.cc/): Privacy-first browser-based QR tools.
