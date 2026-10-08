@@ -7,6 +7,7 @@
 - [Static vs Dynamic QR Codes: Which Is Best for Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr)
 - [How to Add a Custom Logo to Your QR Code Menu (2026)](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide)
 - [Free Custom QR Code Generator with Logo](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo)
+- [Introducing MatrixQR URL Generator: Fast, Free & 100% Client-Side Link QR Codes](https://blog.matrixqr.cc/posts/2026-10/introducing-matrixqr-url-generator)
 
 ## Use Cases
 - [Convert Menu Image to QR Code Free (No Signup)](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
