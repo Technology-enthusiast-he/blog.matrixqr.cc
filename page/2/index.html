@@ -223,6 +223,38 @@
         <!-- Left: Blog Posts Stream categorized by H2 Sections -->
         <main class="lg:col-span-8 space-y-12">
             
+            <!-- Section 1: Featured & Recommendation -->
+            <section class="space-y-6">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <i data-lucide="star" class="w-5 h-5 text-cyan-400"></i>
+                    Featured Technical Insights & Web Innovations
+                </h2>
+
+                <article class="relative bg-gradient-to-br from-[#0c1427] to-[#080d1a] border border-slate-800 rounded-3xl p-6 md:p-8 hover:border-cyan-500/40 transition-all duration-300 shadow-2xl group overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/10 transition-all"></div>
+                    
+                    <div class="space-y-4 relative z-10">
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="bg-cyan-500/10 border border-cyan-400/30 text-cyan-400 font-bold px-3 py-1 rounded-full uppercase tracking-wider">Recommendation</span>
+                            <span class="text-slate-400">•</span>
+                            <time datetime="2026-09-10" class="text-slate-400 font-mono">September 10, 2026</time>
+                        </div>
+
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-white group-hover:text-cyan-400 transition-colors leading-snug">
+                            <a href="/posts/can-you-recommend-a-qr-code-generator-that-allows-customization">5 Best Privacy-First Customizable QR Code Generators (2026)</a>
+                        </h3>
+
+                        <p class="text-slate-400 text-sm md:text-base leading-relaxed">
+                            Looking for a powerful QR code generator with full design customization? Discover top tools for custom colors, logos, frames, and dynamic tracking.
+                        </p>
+
+                        <div class="pt-4 flex items-center justify-between text-xs text-slate-300 border-t border-slate-800/80">
+                            <span class="font-medium text-slate-400">By MatrixQR Studio</span>
+                            <a href="/posts/can-you-recommend-a-qr-code-generator-that-allows-customization" class="text-cyan-400 font-medium group-hover:translate-x-1 transition-transform flex items-center gap-1">Read Article →</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
 
             <!-- Section 2: Security & Privacy Articles -->
             <section class="space-y-6">
@@ -231,7 +263,22 @@
                     QR Code Security & Client-Side Privacy
                 </h2>
 
-                
+                <div class="space-y-4">
+                    <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-indigo-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">
+                        <div class="flex items-center gap-2 text-xs">
+                             <span class="text-indigo-400 font-semibold uppercase tracking-wider bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-500/20">Security Tech</span>
+                             <span class="text-slate-400">•</span>
+                             <time datetime="2026-09-30" class="text-slate-400 font-mono">September 30, 2026</time>
+                        </div>
+
+                        <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
+                            <a href="/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization">Secure Digital Menu QR Codes with Client Canvas</a>
+                        </h3>
+
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Learn how client-side Canvas sanitization protects digital menu QR code images and reduces unnecessary data exposure.
+                        </p>
+                    </article>
 
                     <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-indigo-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">
                         <div class="flex items-center gap-2 text-xs">
@@ -241,7 +288,7 @@
                         </div>
 
                         <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
-                            <a href="/posts/the-pros-and-cons-of-static-qr-codes">The Pros and Cons of Static QR Codes</a>
+                            <a href="/posts/the-pros-and-cons-of-static-qr-codes">Pros and Cons of Static QR Codes: Privacy, Security & Uses</a>
                         </h3>
 
                         <p class="text-slate-400 text-sm leading-relaxed">
@@ -252,58 +299,84 @@
             </section>
 
             <!-- Section 3: Custom Logo & Digital Menu Solutions -->
+            <section class="space-y-6">                
+    <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">                    
+        <i data-lucide="layout-grid" class="w-5 h-5 text-amber-400"></i>                    
+        Digital Menu & Custom Logo QR Solutions                
+    </h2>
+    <div class="space-y-4">                    
+        <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">                        
+            <div class="flex items-center gap-2 text-xs">                             
+                <span class="text-amber-400 font-semibold uppercase tracking-wider bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/20">Branding Guide</span>                             
+                <!-- 新增的热门徽标 -->
+                <span class="inline-flex items-center gap-1 text-rose-400 font-semibold uppercase tracking-wider bg-rose-500/10 px-2.5 py-0.5 rounded-md border border-rose-500/20">
+                    <span class="text-xs">🔥</span> Hot
+                </span>
+                <span class="text-slate-400">•</span>                             
+                <time datetime="2026-09-22" class="text-slate-400 font-mono">September 22, 2026</time>                        
+            </div>
+            <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">                            
+                <a href="/posts/custom-qr-code-generator-logo">The Ultimate Guide to Using a Custom QR Code Generator with Logo</a>                        
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">                            
+                Boost Your Brand with Custom QR Codes Featuring Your Logo without compromising scan reliability or privacy.                        
+            </p>                    
+        </article>
+        <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">                        
+            <div class="flex items-center gap-2 text-xs">                            
+                <span class="text-amber-400 font-semibold uppercase tracking-wider bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/20">Restaurant Tech</span>                            
+                <span class="text-slate-400">•</span>                            
+                <time datetime="2026-09-18" class="text-slate-400 font-mono">September 18, 2026</time>                        
+            </div>
+            <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">                            
+                <a href="/posts/custom-logo-qr-code-menu-guide">How to Add a Custom Logo to Your QR Code Menu (2026)</a>                        
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">                            
+                Learn how to create branded digital QR code menus with custom store logos for seamless contactless dining.                        
+            </p>                    
+        </article>
+        <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-slate-700 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">                        
+            <div class="flex items-center gap-2 text-xs">                            
+                <span class="text-cyan-400 font-semibold uppercase tracking-wider bg-cyan-500/10 px-2.5 py-0.5 rounded-md border border-cyan-500/20">Tutorial</span>                            
+                <span class="text-slate-400">•</span>                            
+                <time datetime="2026-09-07" class="text-slate-400 font-mono">September 07, 2026</time>                        
+            </div>
+            <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">                            
+                <a href="/posts/image-to-qr-menu-guide">Convert Menu Image to QR Code Free (No Signup)</a>                        
+            </h3>
+            <p class="text-slate-400 text-sm leading-relaxed">                            
+                Learn how to create a digital menu QR code in minutes. Covers everything from image uploads to printing for restaurant tables.                        
+            </p>                    
+        </article>                
+    </div>            
+</section>
+
+            <!-- Section 4: vCard & Contact Standards -->
             <section class="space-y-6">
                 <h2 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                    <i data-lucide="layout-grid" class="w-5 h-5 text-amber-400"></i>
-                    Digital Menu & Custom Logo QR Solutions
+                    <i data-lucide="contact" class="w-5 h-5 text-emerald-400"></i>
+                    vCard & Apple Wallet Contact Standards
                 </h2>
 
-                <div class="space-y-4">
-                    <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">
-                        <div class="flex items-center gap-2 text-xs">
-                             <span class="text-amber-400 font-semibold uppercase tracking-wider bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/20">Branding Guide</span>
-                             <span class="text-slate-400">•</span>
-                             <time datetime="2026-09-22" class="text-slate-400 font-mono">September 22, 2026</time>
-                        </div>
+                <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-emerald-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">
+                    <div class="flex items-center gap-2 text-xs">
+                        <span class="text-emerald-400 font-semibold uppercase tracking-wider bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">vCard Standard</span>
+                        <span class="text-slate-400">•</span>
+                        <time datetime="2026-08-13" class="text-slate-400 font-mono">August 13, 2026</time>
+                    </div>
 
-                        <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
-                            <a href="/posts/custom-qr-code-generator-logo">The Ultimate Guide to Using a Custom QR Code Generator with Logo</a>
-                        </h3>
+                    <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
+                        <a href="/posts/vcard-qr-setup">International vCard QR Code for Apple Wallet: Complete Guide</a>
+                    </h3>
 
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            Boost Your Brand with Custom QR Codes Featuring Your Logo without compromising scan reliability or privacy.
-                        </p>
-                    </article>
-
-                    <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-amber-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">
-                        <div class="flex items-center gap-2 text-xs">
-                            <span class="text-amber-400 font-semibold uppercase tracking-wider bg-amber-500/10 px-2.5 py-0.5 rounded-md border border-amber-500/20">Restaurant Tech</span>
-                            <span class="text-slate-400">•</span>
-                            <time datetime="2026-09-18" class="text-slate-400 font-mono">September 18, 2026</time>
-                        </div>
-
-                        <h3 class="text-xl font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">
-                            <a href="/posts/custom-logo-qr-code-menu-guide">How to Add a Custom Logo to Your QR Code Menu (2026 Guide)</a>
-                        </h3>
-
-                        <p class="text-slate-400 text-sm leading-relaxed">
-                            Learn how to create branded digital QR code menus with custom store logos for seamless contactless dining.
-                        </p>
-                    </article>
-
-                </div>
-            </section>
-
-            
-            <div class="flex items-center justify-between mt-12 mb-10">
-  
-  <a class="border border-slate-700 rounded-full px-6 py-2 text-white hover:bg-zinc-200 hover:text-zinc-900 transition-colors duration-200" href="https://blog.matrixqr.cc/">
-    ← Previous
-  </a>
-  
-  <a class="border border-slate-700 rounded-full px-6 py-2 text-white opacity-50 cursor-not-allowed" href="/page/3/" aria-disabled="true" onclick="return false;">
-  Next →
-</a>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Learn how to generate vCard QR codes to seamlessly save contacts across platforms without installing third-party apps.
+                    </p>
+                </article>
+                
+        </section>
+            <div class="flex justify-center mt-12 mb-10">
+  <a class="border rounded-full px-6 py-2 text-white hover:bg-zinc-200 hover:text-zinc-900 transition-colors duration-200" href="/page/2/">Next →</a>
 </div>
 
         </main>
