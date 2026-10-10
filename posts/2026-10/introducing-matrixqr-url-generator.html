@@ -256,15 +256,41 @@
         article a:hover { color: #7dd3fc; }
     </style>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F2RCJE29QT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    <!-- Google tag (gtag.js) 延迟加载优化 -->
+<script>
+  // 定义加载函数
+  function loadGtag() {
+    if (window.gtagLoaded) return;
+    window.gtagLoaded = true;
 
-      gtag('config', 'G-F2RCJE29QT');
-    </script>
+    // 1. 动态注入 gtag 脚本
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-F2RCJE29QT';
+    document.head.appendChild(script);
+
+    // 2. 初始化数据层
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', 'G-F2RCJE29QT');
+  }
+
+  // 3. 触发策略：用户首次交互（滚动、点击、移动等）或 4 秒后自动加载
+  const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+  const triggerLoad = () => {
+    loadGtag();
+    events.forEach(event => window.removeEventListener(event, triggerLoad, { passive: true }));
+  };
+
+  events.forEach(event => {
+    window.addEventListener(event, triggerLoad, { once: true, passive: true });
+  });
+
+  // 保底机制：如果用户一直没有交互，页面加载 4 秒后也会自动加载统计脚本
+  setTimeout(loadGtag, 4000);
+</script>
 </head>
 <body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
 
