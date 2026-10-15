@@ -1,0 +1,56 @@
+name: Test Blog Generator
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run blog generator
+        run: node scripts/generate-blog.js
+
+      - name: Check generated JSON
+        run: |
+          node -e "
+          const fs = require('fs');
+          const posts = JSON.parse(fs.readFileSync('data/posts.json', 'utf8'));
+
+          if (!Array.isArray(posts)) {
+            throw new Error('posts.json is not an array');
+          }
+
+          console.log('Total indexed posts:', posts.length);
+
+          if (posts.length === 0) {
+            throw new Error('No posts were indexed');
+          }
+
+          for (const post of posts) {
+            if (!post.title || !post.datePublished || !post.url) {
+              throw new Error('Missing required fields: ' + JSON.stringify(post));
+            }
+          }
+
+          for (let i = 1; i < posts.length; i++) {
+            if (new Date(posts[i - 1].datePublished) < new Date(posts[i].datePublished)) {
+              throw new Error('Posts are not sorted newest first');
+            }
+          }
+
+          console.log('PASS: Required fields and date sorting are valid.');
+          console.log('First 5 posts:');
+          console.log(JSON.stringify(posts.slice(0, 5), null, 2));
+          "
