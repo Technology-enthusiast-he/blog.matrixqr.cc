@@ -132,14 +132,19 @@ function findHtmlFiles(dir, relativeDir = "") {
             entry.name.toLowerCase().endsWith(".html")
         ) {
             // Skip non-article pages located at the posts root.
-            if (
-                relativeDir === "" &&
-                ["index.html", "privacy-policy.html"].includes(
-                    entry.name.toLowerCase()
-                )
-            ) {
-                continue;
-            }
+            
+if (
+    (
+        relativeDir === "" &&
+        ["index.html", "privacy-policy.html"].includes(
+            entry.name.toLowerCase()
+        )
+    ) ||
+    relativePath.toLowerCase() === "page/2/index.html"
+) {
+    continue;
+}
+
 
             results.push(relativePath);
         }
