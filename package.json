@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "build": "node scripts/generate-blog.js && tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
-  },
+  "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+  "build": "node scripts/generate-blog.js && node scripts/update-homepage.js && tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+},
   "devDependencies": {
     "tailwindcss": "^3.4.1"
   }
