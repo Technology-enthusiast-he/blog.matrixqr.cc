@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MatrixQR Blog | Tech Insights on QR Code Security, WiFi & vCard</title>
 <meta name="description" content="Official MatrixQR blog. Deep dives into client-side QR code security, offline WiFi generators, vCard technical specs, and modern web innovation.">
-<!-- 你原来的 OG / Twitter / JSON-LD / GTAG 全部保留不动 -->
-<!-- ...（原head内容照旧）... -->
+<!-- 保留你原有的 OG / Twitter / JSON-LD / GTAG / 其他 meta -->
 <link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="stylesheet" href="/dist/output.css">
 <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js" defer></script>
@@ -16,9 +15,9 @@
 .animate-marquee:hover{animation-play-state:paused;}
 </style>
 
-<!-- ================== [B方案核心] 内联数据，彻底不fetch ================== -->
+<!-- ========== [B方案] 内联数据（已修：赋值+去逗号）========== -->
 <script>
-[
+window.MATRIX_POSTS = [
   {
     "slug": "paper-menus-vs-qr-louisiana",
     "title": "A Packed Seafood Spot Still Uses Paper Menus: Why Digital QR Codes Matter",
@@ -108,45 +107,38 @@
     "excerpt": "Integrating QR codes into packaging, marketing collateral, and customer touchpoints is no longer optional—it is a core business standard.",
     "tags": ["privacy", "architecture", "business"],
     "htmlFile": "/posts/static-vs-dynamic-qr"
-  },
-]
+  }
 ];
 </script>
-<!-- ================================================================ -->
+<!-- ======================================================== -->
 
-<script>/* 你原来的 GTAG 逻辑照旧 */</script>
+<!-- 你的 GTAG 代码放这里（原样） -->
 </head>
 
 <body class="bg-[#05070f] text-slate-200 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black">
 
-<!-- ===== Header / Hero / Marquee 全部原样不动（你原来的代码）===== -->
+<!-- ===== Header / Hero / Marquee（保留你原来的）===== -->
 <!-- ... -->
 
-<!-- ===== MAIN GRID（这里就是改动点②）===== -->
+<!-- ===== MAIN GRID ===== -->
 <div class="max-w-7xl mx-auto px-6 py-12 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
 <main class="lg:col-span-8">
-  <!-- 动态卡片挂载点（旧手写article全删了） -->
   <div id="blog-list" class="space-y-8"></div>
-  <!-- 翻页条 -->
   <div id="pager" class="mt-10 mb-6"></div>
 </main>
 
-<!-- Sidebar 原样不动 -->
-<aside class="lg:col-span-4 space-y-6">
-  <!-- Try MatrixQR Studio 区块照旧 -->
-</aside>
+<!-- Sidebar（保留你原来的 Try MatrixQR Studio 区块） -->
+<aside class="lg:col-span-4 space-y-6"></aside>
 </div>
 
-<!-- Footer 原样不动 -->
+<!-- Footer（保留你原来的） -->
 <!-- ... -->
 
-<!-- ================== [改动点③④] 底部脚本区 ================== -->
+<!-- ========== 引擎 + 渲染（已修：读 window.MATRIX_POSTS）========== -->
 <script src="/scripts/renderList.js"></script>
 <script src="/scripts/pagination.js"></script>
-
 <script>
 (function () {
-  // 1. 读页码（逻辑不变）
   const path = window.location.pathname.replace(/\/$/, '');
   let currentPage = 1;
   if (path.includes('/page/')) {
@@ -154,32 +146,28 @@
     currentPage = m ? parseInt(m[1], 10) : 1;
   }
 
-  // 2. 【关键变化】不 fetch 了！直接读内联数据
+  // 直接读内联数据，不再 fetch
   const posts = window.MATRIX_POSTS || [];
-  // 手动倒序（renderList里的sortDesc还在，但咱自己先排好）
-  const sorted = [...posts].sort((a,b) => new Date(b.date) - new Date(a.date));
-  // 临时挂回给 MatrixBlog 用（不破坏原有paginate/cardHTML）
-  window.__sortedPosts = sorted;
+  if (!posts.length) {
+    document.getElementById('blog-list').innerHTML =
+      '<p class="text-red-400 text-sm">⚠️ MATRIX_POSTS 数据为空，请检查内联 script。</p>';
+  }
 
-  // 3. 模拟原来的 .then 链，但不用 loadPosts 了
-  const { items, totalPages } = MatrixBlog.paginate(sorted, currentPage);
+  const { items, totalPages } = MatrixBlog.paginate(posts, currentPage);
 
-  // 越界保护
   if (currentPage > totalPages && totalPages >= 1) { window.location.href = '/'; return; }
 
   const listEl = document.getElementById('blog-list');
   if (items.length === 0) {
-    listEl.innerHTML = `<p class="text-slate-400 text-sm">No articles yet. Check back soon.</p>`;
+    listEl.innerHTML = '<p class="text-slate-400 text-sm">No articles yet. Check back soon.</p>';
   } else {
     listEl.innerHTML = items.map(MatrixBlog.cardHTML).join('');
   }
 
-  // 翻页（首页 baseUrl 空串）
   MatrixPager({ currentPage, totalPages, baseUrl: '' });
 })();
 </script>
 
-<!-- Lucide icons -->
 <script>
 if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 </script>
