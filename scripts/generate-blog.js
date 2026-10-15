@@ -3,8 +3,7 @@ const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
-const DATA_DIR = path.join(ROOT, "data");
-const OUTPUT_FILE = path.join(DATA_DIR, "posts.json");
+const OUTPUT_FILE = path.join(ROOT, "posts.json");
 
 const SITE_URL = "https://blog.matrixqr.cc";
 
@@ -221,9 +220,7 @@ posts.sort(
 // Create data directory
 // --------------------------------------------------
 
-if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-}
+
 
 // --------------------------------------------------
 // Write posts.json
