@@ -19,9 +19,10 @@ jobs:
         with:
           node-version: 22
 
-      - name: Run blog generator
-        run: node scripts/generate-blog.js
-             node scripts/update-homepage.js
+      - name: Run blog generator and homepage generator
+        run: |
+          node scripts/generate-blog.js
+          node scripts/update-homepage.js
 
       - name: Check generated JSON
         run: |
