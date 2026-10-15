@@ -1,146 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MatrixBlog - Tech & Security</title>
-  <meta name="description" content="Explore tutorials on privacy, dynamic routing architecture, client-side WiFi security, digital business cards, and modern QR technology."/>
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    body { background: #03050a; color: #e2e8f0; }
-    .marquee { animation: marquee 20s linear infinite; }
-    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MatrixQR Blog | Tech Insights on QR Code Security, WiFi & vCard</title>
+<meta name="description" content="Official MatrixQR blog. Deep dives into client-side QR code security, offline WiFi generators, vCard technical specs, and modern web innovation.">
+<!-- 你原来的 OG / Twitter / JSON-LD / GTAG 全部保留不动 -->
+<!-- ...（原head内容照旧）... -->
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
+<link rel="stylesheet" href="/dist/output.css">
+<script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js" defer></script>
+<style>
+@keyframes marquee {0%{transform:translateX(0%)}100%{transform:translateX(-50%)}}
+.animate-marquee{display:flex;width:200%;animation:marquee 25s linear infinite;}
+.animate-marquee:hover{animation-play-state:paused;}
+</style>
+
+<!-- ================== [B方案核心] 内联数据，彻底不fetch ================== -->
+<script>
+/* ==== 这里贴你 posts.json 的完整数组 ==== */
+window.MATRIX_POSTS = [
+  // 例：{"slug":"paper-menus...","title":"A Packed Seafood Spot...","date":"2026-10-15T00:00:00-05:00","htmlFile":"/posts/2026-10/...",...},
+  // ...其余10篇
+];
+</script>
+<!-- ================================================================ -->
+
+<script>/* 你原来的 GTAG 逻辑照旧 */</script>
 </head>
-<body class="min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="border-b border-slate-800/80 bg-[#03050a] sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-cyan-500/20">QR</div>
-        <div class="leading-tight">
-          <div class="text-xl font-black tracking-tight text-white">MATRIXBLOG</div>
-          <div class="text-[10px] uppercase tracking-[0.2em] text-slate-400">Tech & Security</div>
-        </div>
-      </div>
-      <div class="flex items-center gap-6">
-        <a href="/posts/" class="text-sm text-slate-300 hover:text-cyan-400 flex items-center gap-1.5"><i data-lucide="file-text" class="w-4 h-4"></i> All Articles</a>
-        <a href="https://www.matrixqr.cc/" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase px-4 py-2 transition-all shadow-lg shadow-cyan-500/10">Launch App ↗</a>
-      </div>
-    </div>
-  </header>
+<body class="bg-[#05070f] text-slate-200 min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-black">
 
-  <!-- Hero -->
-  <section class="relative border-b border-slate-800/80 bg-[radial-gradient(circle_at_30%_20%,rgba(6,182,212,0.15),transparent_50%)]">
-    <div class="max-w-7xl mx-auto px-6 py-12 grid lg:grid-cols-12 gap-8 items-center">
-      <div class="lg:col-span-7">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold tracking-wide mb-4">Innovation Hub</span>
-        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-white mb-4">MatrixQR <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Tech Insights & Security Articles</span></h1>
-      </div>
-      <div class="lg:col-span-5 text-slate-400 text-sm leading-relaxed">
-        Explore tutorials on privacy, dynamic routing architecture, client-side WiFi security, digital business cards, and modern QR technology.
-      </div>
-    </div>
-    <!-- Marquee (保留视觉) -->
-    <div class="overflow-hidden opacity-40 border-t border-slate-800/50 py-4 flex gap-6 marquee whitespace-nowrap">
-      <div class="flex gap-6 shrink-0">
-        <span class="text-slate-500 text-xs">DIGITAL BUSINESS CARD</span>
-        <span class="text-slate-500 text-xs">SECURE WIFI QR</span>
-        <span class="text-slate-500 text-xs">DYNAMIC MENU</span>
-        <span class="text-slate-500 text-xs">PRIVACY FIRST</span>
-      </div>
-      <div class="flex gap-6 shrink-0">
-        <span class="text-slate-500 text-xs">DIGITAL BUSINESS CARD</span>
-        <span class="text-slate-500 text-xs">SECURE WIFI QR</span>
-        <span class="text-slate-500 text-xs">DYNAMIC MENU</span>
-        <span class="text-slate-500 text-xs">PRIVACY FIRST</span>
-      </div>
-    </div>
-  </section>
+<!-- ===== Header / Hero / Marquee 全部原样不动（你原来的代码）===== -->
+<!-- ... -->
 
-  <!-- Main Content -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-12 grid lg:grid-cols-12 gap-10">
-    <div class="lg:col-span-8">
-      <!-- 动态列表容器 -->
-      <div id="blog-list" class="space-y-8"></div>
-      <!-- 翻页容器 -->
-      <div id="pager" class="mt-10 mb-6"></div>
-    </div>
+<!-- ===== MAIN GRID（这里就是改动点②）===== -->
+<div class="max-w-7xl mx-auto px-6 py-12 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 w-full">
+<main class="lg:col-span-8">
+  <!-- 动态卡片挂载点（旧手写article全删了） -->
+  <div id="blog-list" class="space-y-8"></div>
+  <!-- 翻页条 -->
+  <div id="pager" class="mt-10 mb-6"></div>
+</main>
 
-    <!-- Sidebar -->
-    <aside class="lg:col-span-4 space-y-6">
-      <div class="sticky top-24 rounded-2xl border border-slate-800/80 bg-slate-900/40 backdrop-blur p-6">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-4">
-          <i data-lucide="zap" class="w-5 h-5"></i>
-        </div>
-        <h3 class="text-xl font-bold text-white mb-2">Try MatrixQR Studio</h3>
-        <p class="text-slate-400 text-sm mb-5">Need a secure, client-side WiFi, vCard, or Menu QR generator? No login required. 100% free and private.</p>
-        <a href="https://www.matrixqr.cc/" class="block text-center bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase px-4 py-3 transition-all shadow-lg shadow-cyan-500/10">OPEN FREE GENERATOR</a>
-      </div>
-    </aside>
-  </main>
+<!-- Sidebar 原样不动 -->
+<aside class="lg:col-span-4 space-y-6">
+  <!-- Try MatrixQR Studio 区块照旧 -->
+</aside>
+</div>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800/80 bg-[#03050a] py-10 px-6 text-xs text-slate-400 text-center">
-    <div class="max-w-7xl mx-auto space-y-4">
-      <p>© 2026 MatrixQR Studio. All rights reserved.</p>
-      <div class="flex flex-wrap justify-center items-center gap-2 py-2">
-        <a href="https://www.matrixqr.cc/" class="text-slate-300 hover:text-cyan-400">Main Studio</a>
-        <span class="text-slate-700">|</span>
-        <a href="/posts/" class="text-slate-300 hover:text-cyan-400">All Articles</a>
-        <span class="text-slate-700">|</span>
-        <a href="https://www.matrixqr.cc/about" class="text-slate-300 hover:text-cyan-400">About Us</a>
-        <span class="text-slate-700">|</span>
-        <a href="https://menu.matrixqr.cc/" class="text-cyan-400 font-medium">Digital Menu QR</a>
-        <span class="text-slate-700">|</span>
-        <a href="/posts/privacy-policy" class="text-slate-300 hover:text-cyan-400">Privacy Policy</a>
-      </div>
-    </div>
-  </footer>
+<!-- Footer 原样不动 -->
+<!-- ... -->
 
-  <!-- 引擎脚本 -->
-  <script src="/scripts/renderList.js"></script>
-  <script src="/scripts/pagination.js"></script>
-  <script>
-    (function () {
-      const path = window.location.pathname.replace(/\/$/, '');
-      let currentPage = 1;
-      if (path.includes('/page/')) {
-        const m = path.match(/\/page\/(\d+)$/);
-        currentPage = m ? parseInt(m[1], 10) : 1;
-      }
-      // 确保全局对象存在
-      if (!window.MatrixBlog) {
-        document.getElementById('blog-list').innerHTML = '<p class="text-red-400 text-sm">Engine script missing.</p>';
-        return;
-      }
-      MatrixBlog.loadPosts()
-        .then(posts => {
-          const { items, totalPages } = MatrixBlog.paginate(posts, currentPage);
-          if (currentPage > totalPages && totalPages >= 1) {
-            window.location.href = '/';
-            return;
-          }
-          const listEl = document.getElementById('blog-list');
-          if (items.length === 0) {
-            listEl.innerHTML = `<p class="text-slate-400 text-sm">No articles yet. Check back soon.</p>`;
-          } else {
-            listEl.innerHTML = items.map(MatrixBlog.cardHTML).join('');
-          }
-          MatrixPager({ currentPage, totalPages, baseUrl: '' });
-        })
-        .catch(err => {
-          console.error('Blog load failed:', err);
-          document.getElementById('blog-list').innerHTML = `<p class="text-slate-400 text-sm">Articles are loading soon. Please check back later.</p>`;
-        });
-    })();
-  </script>
-  <script>
-    if (typeof lucide !== 'undefined') { lucide.createIcons(); }
-  </script>
+<!-- ================== [改动点③④] 底部脚本区 ================== -->
+<script src="/scripts/renderList.js"></script>
+<script src="/scripts/pagination.js"></script>
+
+<script>
+(function () {
+  // 1. 读页码（逻辑不变）
+  const path = window.location.pathname.replace(/\/$/, '');
+  let currentPage = 1;
+  if (path.includes('/page/')) {
+    const m = path.match(/\/page\/(\d+)$/);
+    currentPage = m ? parseInt(m[1], 10) : 1;
+  }
+
+  // 2. 【关键变化】不 fetch 了！直接读内联数据
+  const posts = window.MATRIX_POSTS || [];
+  // 手动倒序（renderList里的sortDesc还在，但咱自己先排好）
+  const sorted = [...posts].sort((a,b) => new Date(b.date) - new Date(a.date));
+  // 临时挂回给 MatrixBlog 用（不破坏原有paginate/cardHTML）
+  window.__sortedPosts = sorted;
+
+  // 3. 模拟原来的 .then 链，但不用 loadPosts 了
+  const { items, totalPages } = MatrixBlog.paginate(sorted, currentPage);
+
+  // 越界保护
+  if (currentPage > totalPages && totalPages >= 1) { window.location.href = '/'; return; }
+
+  const listEl = document.getElementById('blog-list');
+  if (items.length === 0) {
+    listEl.innerHTML = `<p class="text-slate-400 text-sm">No articles yet. Check back soon.</p>`;
+  } else {
+    listEl.innerHTML = items.map(MatrixBlog.cardHTML).join('');
+  }
+
+  // 翻页（首页 baseUrl 空串）
+  MatrixPager({ currentPage, totalPages, baseUrl: '' });
+})();
+</script>
+
+<!-- Lucide icons -->
+<script>
+if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+</script>
 </body>
 </html>
