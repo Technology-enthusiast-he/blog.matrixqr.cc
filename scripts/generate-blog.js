@@ -113,13 +113,43 @@ if (!fs.existsSync(POSTS_DIR)) {
     process.exit(1);
 }
 
-const files = fs
-    .readdirSync(POSTS_DIR, { withFileTypes: true })
-    .filter(entry =>
-        entry.isFile() &&
-        entry.name.toLowerCase().endsWith(".html")
-    )
-    .map(entry => entry.name);
+
+function findHtmlFiles(dir, relativeDir = "") {
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const results = [];
+
+    for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        const relativePath = path.posix.join(relativeDir, entry.name);
+
+        if (entry.isDirectory()) {
+            results.push(...findHtmlFiles(fullPath, relativePath));
+            continue;
+        }
+
+        if (
+            entry.isFile() &&
+            entry.name.toLowerCase().endsWith(".html")
+        ) {
+            // Skip non-article pages located at the posts root.
+            if (
+                relativeDir === "" &&
+                ["index.html", "privacy-policy.html"].includes(
+                    entry.name.toLowerCase()
+                )
+            ) {
+                continue;
+            }
+
+            results.push(relativePath);
+        }
+    }
+
+    return results;
+}
+
+const files = findHtmlFiles(POSTS_DIR);
+
 
 const posts = [];
 
