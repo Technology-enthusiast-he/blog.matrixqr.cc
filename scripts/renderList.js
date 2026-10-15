@@ -2,11 +2,10 @@ window.MatrixBlog = (() => {
   const PER_PAGE = 6;
 
   async function loadPosts() {
-    // 带版本戳防Vercel缓存旧JSON
-    const r = await fetch(`/posts.json?v=${Date.now()}`, { cache: 'no-cache' });
-    if (!r.ok) throw new Error('posts.json not found');
-    return r.json();
-  }
+  if (window.MATRIX_POSTS) return window.MATRIX_POSTS; // 有内联就直接用
+  const r = await fetch(`/posts.json?v=${Date.now()}`); // 兜底线上真通了再用
+  return r.json();
+}
 
   function sortDesc(posts) {
     return [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
