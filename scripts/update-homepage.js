@@ -1,3 +1,4 @@
+
 const fs = require("fs");
 const path = require("path");
 
@@ -7,10 +8,35 @@ const INDEX_FILE = path.join(ROOT, "index.html");
 
 const START_MARKER = "<!-- AUTO-POSTS-START -->";
 const END_MARKER = "<!-- AUTO-POSTS-END -->";
+const MAX_POSTS = 6;
+const SITE_ORIGIN = "https://blog.matrixqr.cc";
 
-// --------------------------------------------------
-// Helpers
-// --------------------------------------------------
+// Normalize URLs so /posts/example and
+// https://blog.matrixqr.cc/posts/example/ match.
+function normalizeUrl(value) {
+    if (!value) return "";
+
+    try {
+        const parsed = new URL(
+            String(value).replace(/&amp;/g, "&"),
+            SITE_ORIGIN
+        );
+
+        let pathname = parsed.pathname;
+
+        try {
+            pathname = decodeURIComponent(pathname);
+        } catch {
+            // Keep the original pathname if decoding fails.
+        }
+
+        pathname = pathname.replace(/\/+$/, "") || "/";
+
+        return pathname.toLowerCase();
+    } catch {
+        return String(value).trim().toLowerCase();
+    }
+}
 
 function escapeHtml(value = "") {
     return String(value)
@@ -25,7 +51,7 @@ function formatDate(dateString) {
     const date = new Date(dateString);
 
     if (Number.isNaN(date.getTime())) {
-        return dateString;
+        return String(dateString || "");
     }
 
     return new Intl.DateTimeFormat("en-US", {
@@ -36,35 +62,15 @@ function formatDate(dateString) {
     }).format(date);
 }
 
-function getRelativeUrl(url) {
-    try {
-        const parsed = new URL(url);
-        return parsed.pathname;
-    } catch {
-        return url;
+// Check required files.
+for (const file of [POSTS_FILE, INDEX_FILE]) {
+    if (!fs.existsSync(file)) {
+        console.error("ERROR: Required file not found:", file);
+        process.exit(1);
     }
 }
 
-// --------------------------------------------------
-// Check files
-// --------------------------------------------------
-
-if (!fs.existsSync(POSTS_FILE)) {
-    console.error("ERROR: posts.json not found:");
-    console.error(POSTS_FILE);
-    process.exit(1);
-}
-
-if (!fs.existsSync(INDEX_FILE)) {
-    console.error("ERROR: index.html not found:");
-    console.error(INDEX_FILE);
-    process.exit(1);
-}
-
-// --------------------------------------------------
-// Read posts
-// --------------------------------------------------
-
+// Read and validate posts.json.
 let posts;
 
 try {
@@ -80,23 +86,66 @@ if (!Array.isArray(posts)) {
     process.exit(1);
 }
 
-// --------------------------------------------------
-// Generate homepage cards
-// --------------------------------------------------
+// Read homepage and locate the automatic insertion area.
+const html = fs.readFileSync(INDEX_FILE, "utf8");
+const startIndex = html.indexOf(START_MARKER);
+const endIndex = html.indexOf(END_MARKER);
 
-const recentPosts = posts.slice(0, 6);
+if (
+    startIndex === -1 ||
+    endIndex === -1 ||
+    endIndex < startIndex
+) {
+    console.error("ERROR: Homepage markers are missing or misplaced.");
+    process.exit(1);
+}
 
-const generatedHtml = recentPosts
-    .map((post) => {
-        const title = escapeHtml(post.title);
-        const description = escapeHtml(post.description);
-        const date = formatDate(post.datePublished);
-        const datetime = escapeHtml(
-            String(post.datePublished).slice(0, 10)
-        );
-        const url = escapeHtml(getRelativeUrl(post.url));
+// Exclude the generated area when checking existing links.
+// This allows newly published posts to be detected on future builds.
+const existingHtml =
+    html.slice(0, startIndex) +
+    html.slice(endIndex + END_MARKER.length);
 
-        return `
+// Collect links already present elsewhere on the homepage.
+const existingUrls = new Set();
+const hrefPattern = /\bhref\s*=\s*["']([^"']+)["']/gi;
+let match;
+
+while ((match = hrefPattern.exec(existingHtml)) !== null) {
+    const url = normalizeUrl(match[1]);
+
+    if (url) {
+        existingUrls.add(url);
+    }
+}
+
+// Only generate cards for posts not already linked on the homepage.
+// Posts are expected to be sorted newest first by generate-blog.js.
+const newPosts = posts
+    .filter((post) => {
+        return post.url && !existingUrls.has(normalizeUrl(post.url));
+    })
+    .slice(0, MAX_POSTS);
+
+const generatedHtml = newPosts.map((post) => {
+    const title = escapeHtml(post.title || "Untitled");
+    const description = escapeHtml(post.description || "");
+    const date = formatDate(post.datePublished || "");
+    const datetime = escapeHtml(
+        String(post.datePublished || "").slice(0, 10)
+    );
+
+    let relativeUrl;
+
+    try {
+        relativeUrl = new URL(post.url, SITE_ORIGIN).pathname;
+    } catch {
+        relativeUrl = post.url;
+    }
+
+    const url = escapeHtml(relativeUrl);
+
+    return `
                 <article class="bg-[#080d1a]/60 border border-slate-800/80 hover:border-cyan-500/40 rounded-2xl p-6 transition-all duration-300 space-y-3 group hover:bg-[#0a1128]/80">
                     <div class="flex items-center gap-2 text-xs">
                         <span class="text-cyan-400 font-semibold uppercase tracking-wider bg-cyan-500/10 px-2.5 py-0.5 rounded-md border border-cyan-500/20">
@@ -114,37 +163,10 @@ const generatedHtml = recentPosts
                         ${description}
                     </p>
                 </article>`;
-    })
-    .join("\n");
+}).join("\n");
 
-// --------------------------------------------------
-// Update index.html
-// --------------------------------------------------
-
-const html = fs.readFileSync(INDEX_FILE, "utf8");
-
-const startIndex = html.indexOf(START_MARKER);
-const endIndex = html.indexOf(END_MARKER);
-
-if (startIndex === -1 || endIndex === -1) {
-    console.error("ERROR: Homepage markers not found.");
-    console.error("");
-    console.error("Please add:");
-    console.error(START_MARKER);
-    console.error(END_MARKER);
-    process.exit(1);
-}
-
-if (endIndex < startIndex) {
-    console.error("ERROR: Homepage markers are in the wrong order.");
-    process.exit(1);
-}
-
-const before = html.slice(
-    0,
-    startIndex + START_MARKER.length
-);
-
+// Replace only the content between the markers.
+const before = html.slice(0, startIndex + START_MARKER.length);
 const after = html.slice(endIndex);
 
 const updatedHtml =
@@ -156,17 +178,14 @@ const updatedHtml =
 
 fs.writeFileSync(INDEX_FILE, updatedHtml, "utf8");
 
-// --------------------------------------------------
-// Report
-// --------------------------------------------------
-
 console.log("");
 console.log("======================================");
 console.log(" MatrixQR Homepage Generator");
 console.log("======================================");
 console.log("");
 console.log(`Posts available: ${posts.length}`);
-console.log(`Posts displayed: ${recentPosts.length}`);
-console.log(`Updated:         ${INDEX_FILE}`);
+console.log(`Existing homepage links: ${existingUrls.size}`);
+console.log(`New cards displayed: ${newPosts.length}`);
+console.log(`Updated: ${INDEX_FILE}`);
 console.log("");
 console.log("Homepage update completed.");
