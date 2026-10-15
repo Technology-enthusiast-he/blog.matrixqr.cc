@@ -21,6 +21,7 @@ jobs:
 
       - name: Run blog generator
         run: node scripts/generate-blog.js
+             node scripts/update-homepage.js
 
       - name: Check generated JSON
         run: |
