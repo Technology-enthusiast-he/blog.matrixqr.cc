@@ -369,6 +369,20 @@ const securityDisplayPosts =
 
 const menuDisplayPosts =
     menuPosts.slice(0, MAX_POSTS_PER_SECTION);
+// Only mark displayed category posts as used.
+// Overflow posts can then appear in Latest Articles.
+usedAutoUrls.clear();
+
+for (const post of [
+    ...securityDisplayPosts,
+    ...menuDisplayPosts
+]) {
+    const url = normalizeUrl(post.url);
+
+    if (url) {
+        usedAutoUrls.add(url);
+    }
+}
 
 // Put overflow from Security/Menu back into Latest Articles.
 const overflowPosts = [
