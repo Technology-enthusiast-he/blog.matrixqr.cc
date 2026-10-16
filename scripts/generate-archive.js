@@ -365,6 +365,12 @@ function main() {
 
         html = updateSeo(html, page, totalPages);
 
+        // Mark generated archive pages for safe cleanup later.
+        html = html.replace(
+            /<\/body>/i,
+            "\n<!-- AUTO-GENERATED-ARCHIVE-PAGE -->\n</body>"
+        );
+
         const outputDir = page === 1
             ? POSTS_DIR
             : path.join(POSTS_DIR, "page", String(page));
