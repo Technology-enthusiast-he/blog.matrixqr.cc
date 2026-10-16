@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
   "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-  "build": "node scripts/generate-blog.js && node scripts/update-homepage.js && tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  "build": "node scripts/generate-blog.js && node scripts/update-homepage.js && node scripts/generate-pagination.js && tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
 },
   "devDependencies": {
     "tailwindcss": "^3.4.1"
