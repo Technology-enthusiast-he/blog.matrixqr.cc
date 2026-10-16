@@ -221,6 +221,15 @@ if (
     ].includes(rawCategory)
 ) {
     category = "Digital Menu & Branding";
+} else if (
+    [
+        "vcard",
+        "vcard & contact management",
+        "contact",
+        "contact management"
+    ].includes(rawCategory)
+) {
+    category = "vCard & Contact Management";
 }
 
 
