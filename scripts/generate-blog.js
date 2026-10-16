@@ -130,8 +130,11 @@ function findHtmlFiles(dir, relativeDir = "") {
             entry.isFile() &&
             entry.name.toLowerCase().endsWith(".html")
         ) {
-            // Skip non-article pages located at the posts root.
-            
+            // Skip archive pages and other non-article pages.
+const normalizedPath = relativePath
+    .replace(/\\/g, "/")
+    .toLowerCase();
+
 if (
     (
         relativeDir === "" &&
@@ -139,7 +142,8 @@ if (
             entry.name.toLowerCase()
         )
     ) ||
-    relativePath.toLowerCase() === "page/2/index.html"
+    normalizedPath === "page/index.html" ||
+    /^page\/\d+\/index\.html$/.test(normalizedPath)
 ) {
     continue;
 }
