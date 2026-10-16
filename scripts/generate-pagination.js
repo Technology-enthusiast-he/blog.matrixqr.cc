@@ -247,23 +247,35 @@ function main() {
         );
     }
 
-    const featuredAndCategories = homepage.slice(
-        sectionStart,
-        sectionEnd
+    
+const featuredAndCategories = homepage.slice(
+    sectionStart,
+    sectionEnd
+);
+
+const excludedUrls = new Set();
+
+// 只排除 posts.json 中真实存在的文章链接。
+// 不会把分类链接、导航链接等非文章链接当作文章。
+for (const post of posts) {
+    if (!post.url) continue;
+
+    const postUrl = normalizeUrl(post.url);
+    if (!postUrl) continue;
+
+    const postPath = getPostUrl(post);
+    const escapedPath = postPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const articleLinkPattern = new RegExp(
+        `href\\s*=\\s*["'](?:https?:\\/\\/[^"']+)?${escapedPath}\\/?(?:[?#][^"']*)?["']`,
+        "i"
     );
 
-    const excludedUrls = new Set();
-    const hrefPattern = /\bhref\s*=\s*["']([^"']+)["']/gi;
-
-    let match;
-
-    while (
-        (match = hrefPattern.exec(featuredAndCategories)) !== null
-    ) {
-        const url = normalizeUrl(match[1]);
-
-        if (url) excludedUrls.add(url);
+    if (articleLinkPattern.test(featuredAndCategories)) {
+        excludedUrls.add(postUrl);
     }
+}
+
 
     const uniquePosts = new Map();
 
