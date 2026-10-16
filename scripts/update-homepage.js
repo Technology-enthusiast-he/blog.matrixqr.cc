@@ -82,25 +82,13 @@ function normalizeCategory(value) {
 // Category rules.
 //
 // Security / privacy related articles.
+
 const SECURITY_CATEGORIES = [
-    "security",
-    "security tech",
-    "privacy",
-    "privacy tech",
-    "client side",
-    "client side privacy",
-    "security & privacy"
+    "qr code security & privacy"
 ];
 
-// Digital menu / branding related articles.
 const MENU_CATEGORIES = [
-    "digital menu",
-    "digital menus",
-    "branding",
-    "branding guide",
-    "custom logo",
-    "custom qr",
-    "menu"
+    "digital menu & branding"
 ];
 
 function getCategory(post) {
@@ -118,6 +106,7 @@ function isMenuPost(post) {
 
     return MENU_CATEGORIES.includes(category);
 }
+
 
 function getPostUrl(post) {
     if (!post || !post.url) return "";
