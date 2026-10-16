@@ -181,10 +181,44 @@ for (const file of files) {
             ? jsonLd.dateModified
             : datePublished;
 
-    const category =
-        jsonLd && jsonLd.articleSection
-            ? jsonLd.articleSection
-            : "General";
+    
+const rawCategory =
+    jsonLd && jsonLd.articleSection
+        ? jsonLd.articleSection.trim().toLowerCase()
+        : "general";
+
+let category = "General";
+
+if (
+    [
+        "security",
+        "security tech",
+        "privacy",
+        "privacy tech",
+        "client side",
+        "client side privacy",
+        "security & privacy",
+        "qr code security & privacy"
+    ].includes(rawCategory)
+) {
+    category = "QR Code Security & Privacy";
+} else if (
+    [
+        "restaurant",
+        "digital menu",
+        "digital menus",
+        "digital menu & restaurant technology",
+        "branding",
+        "branding guide",
+        "custom logo",
+        "custom qr",
+        "menu",
+        "digital menu & branding"
+    ].includes(rawCategory)
+) {
+    category = "Digital Menu & Branding";
+}
+
 
     const canonical =
         getCanonical(html) ||
