@@ -23,6 +23,9 @@ jobs:
       - name: Check JavaScript syntax
         run: node --check scripts/generate-llms.js
 
+      - name: Test HTML-to-Markdown conversion
+        run: node --test scripts/generate-llms.test.js
+
       - name: Install build dependencies
         run: npm install --no-package-lock
 
