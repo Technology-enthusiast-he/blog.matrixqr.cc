@@ -67,6 +67,23 @@ function markdown(source,url) {
     if(!href||!label)return inner;try{return "["+label+"]("+new URL(decode(href[1]),url).href+")";}catch{return label;}
   });
   const tick=String.fromCharCode(96);
+  // Convert HTML tables before generic tag removal so cell boundaries are preserved.
+  h=h.replace(/<table\b[^>]*>([\s\S]*?)<\/table\s*>/gi,(_,table)=>{
+    const rows=[];
+    for(const row of table.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr\s*>/gi)){
+      const cells=[...row[1].matchAll(/<(th|td)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi)];
+      if(!cells.length)continue;
+      const values=cells.map(cell=>decode(cell[2].replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim()).replace(/\|/g,"\\|"));
+      rows.push({values,header:cells.some(cell=>cell[1].toLowerCase()==="th")});
+    }
+    if(!rows.length)return "";
+    const lines=[];
+    rows.forEach((row,index)=>{
+      lines.push("| "+row.values.join(" | ")+" |");
+      if(index===0&&row.header)lines.push("| "+row.values.map(()=> "---").join(" | ")+" |");
+    });
+    return "\n\n"+lines.join("\n")+"\n\n";
+  });
   h=h.replace(/<pre\b[^>]*>([\s\S]*?)<\/pre\s*>/gi,(_,code)=>{
     const lm=code.match(/<code\b[^>]*class=["'][^"']*language-([a-z0-9_+-]+)[^"']*["']/i);
     const body=decode(code.replace(/<\/?code\b[^>]*>/gi,"").replace(/<[^>]+>/g,""));
@@ -85,7 +102,7 @@ function markdown(source,url) {
     .replace(/<li\b[^>]*>/gi,"\n- ").replace(/<th\b[^>]*>/gi," | ").replace(/<td\b[^>]*>/gi," | ")
     .replace(/<[^>]+>/g," ");
   return decode(h).replace(/\r/g,"").replace(/[ \t]+\n/g,"\n").replace(/\n[ \t]+/g,"\n")
-    .replace(/[ \t]{2,}/g," ").replace(/\n{3,}/g,"\n\n").replace(/^[ \t|]+|[ \t|]+$/gm,"").trim();
+    .replace(/[ \t]{2,}/g," ").replace(/\n{3,}/g,"\n\n").replace(/^[ \t]+|[ \t]+$/gm,"").trim();
 }
 function collect() {
   if(!fs.existsSync(POSTS))throw new Error("Posts directory not found: "+POSTS);
