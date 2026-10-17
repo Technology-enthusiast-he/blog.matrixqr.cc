@@ -80,7 +80,7 @@ function markdown(source,url) {
     const lines=[];
     rows.forEach((row,index)=>{
       lines.push("| "+row.values.join(" | ")+" |");
-      if(index===0&&row.header)lines.push("| "+row.values.map(()=> "---").join(" | ")+" |");
+      if(index===0)lines.push("| "+row.values.map(()=> "---").join(" | ")+" |");
     });
     return "\n\n"+lines.join("\n")+"\n\n";
   });
@@ -137,10 +137,17 @@ function renderFull(articles) {
   return lines.join("\n").replace(/\n{3,}/g,"\n\n");
 }
 function write(file,content){fs.writeFileSync(file,content.endsWith("\n")?content:content+"\n","utf8");}
-try{
-  const articles=collect(),short=renderShort(articles),full=renderFull(articles);
-  if(!short.includes("# MatrixQR Blog")||!full.includes("## Articles")||articles.some(a=>!full.includes(a.url)))throw new Error("Basic output validation failed.");
-  write(OUT,short);write(FULL,full);
-  console.log("[llms] Articles included: "+articles.length);
-  console.log("[llms] Updated llms.txt and llms-full.txt; duplicate URL and basic checks passed.");
-}catch(e){console.error("[llms] ERROR: "+e.message);process.exit(1);}
+module.exports = { markdown };
+
+if (require.main === module) {
+  try {
+    const articles=collect(),short=renderShort(articles),full=renderFull(articles);
+    if(!short.includes("# MatrixQR Blog")||!full.includes("## Articles")||articles.some(a=>!full.includes(a.url)))throw new Error("Basic output validation failed.");
+    write(OUT,short);write(FULL,full);
+    console.log("[llms] Articles included: "+articles.length);
+    console.log("[llms] Updated llms.txt and llms-full.txt; duplicate URL and basic checks passed.");
+  } catch(e) {
+    console.error("[llms] ERROR: "+e.message);
+    process.exit(1);
+  }
+}
