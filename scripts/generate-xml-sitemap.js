@@ -59,7 +59,7 @@ function main() {
         // The privacy policy is intentionally excluded from the XML sitemap.
         const pathname = (() => {
             try {
-                return new URL(post.url, SITE_URL).pathname.replace(/\\/+$/, "");
+                return new URL(post.url, SITE_URL).pathname.replace(/\/+$/, "");
             } catch {
                 return "";
             }
