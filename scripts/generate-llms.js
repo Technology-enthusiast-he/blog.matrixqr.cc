@@ -28,11 +28,17 @@ function articleJson(html) {
   for(const m of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)){try{const a=find(JSON.parse(m[1]));if(a)return a;}catch{}}
   return null;
 }
+function attributes(tag) {
+  const out = {};
+  for (const m of tag.matchAll(/([\\w:-]+)\\s*=\\s*(["'])([\\s\\S]*?)\\2/g)) out[m[1].toLowerCase()] = m[3];
+  return out;
+}
 function meta(html,key) {
-  if (key !== "description") return "";
-  const tag = html.match(/<meta\b[^>]*\bname=["']description["'][^>]*>/i);
-  const match = tag && tag[0].match(/\bcontent=["']([^"']*)["']/i);
-  return match ? decode(match[1]) : "";
+  for (const m of html.matchAll(/<meta\\b[^>]*>/gi)) {
+    const a = attributes(m[0]);
+    if ((a.name || "").toLowerCase() === key.toLowerCase() && a.content !== undefined) return decode(a.content);
+  }
+  return "";
 }
 function category(s="") {
   s=String(s).toLowerCase();
@@ -60,11 +66,11 @@ function markdown(source,url) {
     .replace(/<input\b[^>]*>/gi," ");
   h=h.replace(/<img\b([^>]*)>/gi,(_,a)=>{
     const s=a.match(/\bsrc=["']([^"']+)["']/i),alt=a.match(/\balt=["']([^"']*)["']/i);
-    if(!s)return "";return "\n!["+decode(alt?alt[1]:"")+"]("+new URL(decode(s[1]),url).href+")\n";
+    if(!s)return "";return "\n!["+decode(alt?alt[1]:"")+"](<"+new URL(decode(s[1]),url).href+">)\n";
   });
   h=h.replace(/<a\b([^>]*)>([\s\S]*?)<\/a\s*>/gi,(_,a,inner)=>{
     const href=a.match(/\bhref=["']([^"']+)["']/i),label=inner.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
-    if(!href||!label)return inner;try{return "["+label+"]("+new URL(decode(href[1]),url).href+")";}catch{return label;}
+    if(!href||!label)return inner;try{return "["+label+"](<"+new URL(decode(href[1]),url).href+">)";}catch{return label;}
   });
   const tick=String.fromCharCode(96);
   // Convert HTML tables before generic tag removal so cell boundaries are preserved.
@@ -114,7 +120,7 @@ function collect() {
     const title=String(j.headline||(h1?h1[1].replace(/<[^>]+>/g," "):"")).replace(/\s+/g," ").trim();
     const date=String(j.datePublished||"").trim(),urlMatch=html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
     const url=urlMatch?decode(urlMatch[1]):SITE+"/posts/"+f.rel.replace(/\.html$/i,"");
-    const body=markdown(m[1],url),desc=String(j.description||meta(html,"description")||"").trim();
+    const body=markdown(m[1],url),desc=String(meta(html,"description")||j.description||"").trim();
     if(!title||!date||!body){console.warn("[llms] Skipped "+f.rel+": missing title, publication date, or body.");continue;}
     list.push({title,date,modified:String(j.dateModified||date),url,description:desc,category:category(j.articleSection||""),body});
   }
@@ -137,7 +143,7 @@ function renderFull(articles) {
   return lines.join("\n").replace(/\n{3,}/g,"\n\n");
 }
 function write(file,content){fs.writeFileSync(file,content.endsWith("\n")?content:content+"\n","utf8");}
-module.exports = { markdown };
+module.exports = { markdown, meta };
 
 if (require.main === module) {
   try {
