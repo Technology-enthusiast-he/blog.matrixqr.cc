@@ -21,16 +21,18 @@ function decodeHtmlEntities(str = "") {
 }
 
 function getMetaContent(html, name) {
-    const regex = new RegExp(
-        `<meta\\s+[^>]*name=["']${name}["'][^>]*content=["']([^"']*)["'][^>]*>`,
-        "i"
-    );
-
-    const match = html.match(regex);
-
-    return match ? decodeHtmlEntities(match[1]) : "";
+    for (const match of html.matchAll(/<meta\b[^>]*>/gi)) {
+        const tag = match[0];
+        const attrs = {};
+        for (const attr of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) {
+            attrs[attr[1].toLowerCase()] = attr[3];
+        }
+        if ((attrs.name || "").toLowerCase() === name.toLowerCase() && attrs.content !== undefined) {
+            return decodeHtmlEntities(attrs.content);
+        }
+    }
+    return "";
 }
-
 function getCanonical(html) {
     const match = html.match(
         /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i
@@ -171,9 +173,11 @@ for (const file of files) {
         (jsonLd && jsonLd.headline) ||
         getTitle(html);
 
+    // The HTML meta description is the canonical editorial source. JSON-LD is a fallback.
     const description =
+        getMetaContent(html, "description") ||
         (jsonLd && jsonLd.description) ||
-        getMetaContent(html, "description");
+        "";
 
     const datePublished =
         jsonLd && jsonLd.datePublished

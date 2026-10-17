@@ -1,6 +1,7 @@
 name: Test Blog Generator
 
 on:
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -19,10 +20,92 @@ jobs:
         with:
           node-version: 22
 
-      - name: Run blog generator and homepage generator
+      - name: Check JavaScript syntax
         run: |
-          node scripts/generate-blog.js
-          node scripts/update-homepage.js
+          node --check scripts/generate-llms.js
+          node --check scripts/check-article-links.js
+
+      - name: Test HTML-to-Markdown conversion
+        run: node --test scripts/generate-llms.test.js
+
+      - name: Install build dependencies
+        run: npm install --no-package-lock
+
+      - name: Run full site build
+        run: npm run build
+
+      - name: Check article links, images, and external URLs online
+        run: node scripts/check-article-links.js
+
+      - name: Publish link-check report to job summary
+        if: always()
+        run: |
+          if [ -f article-link-report.md ]; then
+            cat article-link-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Link-check report was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload link-check report
+        if: always() && hashFiles('article-link-report.md') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: article-link-report
+          path: article-link-report.md
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Check generated LLMs files
+        run: |
+          node -e "
+          const fs = require('fs');
+          const short = fs.readFileSync('llms.txt', 'utf8');
+          const full = fs.readFileSync('llms-full.txt', 'utf8');
+          const urls = [...full.matchAll(/^- URL: (https?:\\/\\/\\S+)$/gm)].map(m => m[1]);
+          if (!short.startsWith('# MatrixQR Blog')) throw new Error('llms.txt has an invalid heading');
+          if (!full.startsWith('# MatrixQR Blog — Full Article Text')) throw new Error('llms-full.txt has an invalid heading');
+          if (full.includes('Zero Tracker Guarantee')) throw new Error('Outdated absolute privacy claim remains');
+          if (!urls.length) throw new Error('No article URLs were generated');
+          if (new Set(urls).size !== urls.length) throw new Error('Duplicate article URLs were generated');
+          const articleHtml = fs.readFileSync('posts/2026-10/traditional-menus-digital-menu-qr-code.html', 'utf8');
+          if (!/<table\\b/i.test(articleHtml)) throw new Error('Table regression fixture has no source HTML table');
+          if (!full.includes('| Consideration | Traditional Paper Menu | Digital Menu QR Code |')) throw new Error('HTML table was not converted to a Markdown table');
+          if (!full.includes('| --- | --- | --- |')) throw new Error('Markdown table header separator is missing');
+          console.log('PASS: LLMs files are readable; article URLs:', urls.length);
+          console.log('PASS: source HTML table is represented as a Markdown table.');
+          "
+      
+      - name: Check sitemap URL coverage
+        run: |
+          node -e "
+          const fs = require('fs');
+          const posts = JSON.parse(fs.readFileSync('posts.json', 'utf8'));
+          const xml = fs.readFileSync('sitemap.xml', 'utf8');
+          const urls = new Set([...xml.matchAll(/<loc>([\\s\\S]*?)<\\/loc>/g)].map(m => m[1].replace(/&amp;/g, '&').trim()));
+          const expected = posts
+            .filter(post => {
+              try { return new URL(post.url).pathname.replace(/\\/+$/, '') !== '/posts/privacy-policy'; }
+              catch { return false; }
+            })
+            .map(post => post.url);
+          const missing = expected.filter(url => !urls.has(url));
+          if (missing.length) throw new Error('Article URLs missing from sitemap: ' + missing.join(', '));
+          if (!urls.has('https://blog.matrixqr.cc/')) throw new Error('Homepage URL missing from sitemap');
+          if (fs.existsSync('posts/index.html') && !urls.has('https://blog.matrixqr.cc/posts/')) {
+            throw new Error('Generated archive page missing from sitemap');
+          }
+          const numberedPages = [];
+          if (fs.existsSync('posts/page')) {
+            for (const name of fs.readdirSync('posts/page')) {
+              if (/^\\d+$/.test(name) && fs.existsSync('posts/page/' + name + '/index.html')) {
+                numberedPages.push('https://blog.matrixqr.cc/posts/page/' + name + '/');
+              }
+            }
+          }
+          const missingPages = numberedPages.filter(url => !urls.has(url));
+          if (missingPages.length) throw new Error('Generated archive pagination missing from sitemap: ' + missingPages.join(', '));
+          console.log('PASS: sitemap contains', expected.length, 'eligible article URLs and required generated pages.');
+          "
 
       - name: Check generated JSON
         run: |

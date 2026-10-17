@@ -1,0 +1,43 @@
+name: Check Article Links
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 5 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  check-links:
+    name: Check article links, images, and external URLs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check article links, images, and external URLs
+        run: node scripts/check-article-links.js
+
+      - name: Publish link-check report to job summary
+        if: always()
+        run: |
+          if [ -f article-link-report.md ]; then
+            cat article-link-report.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Link-check report was not generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload link-check report
+        if: always() && hashFiles('article-link-report.md') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: article-link-report
+          path: article-link-report.md
+          if-no-files-found: error
+          retention-days: 14
