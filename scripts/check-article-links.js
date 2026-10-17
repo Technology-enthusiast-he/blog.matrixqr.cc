@@ -51,6 +51,10 @@ function normalizeMarkdownUrl(value) {
   return url;
 }
 
+function resolveSiteUrl(raw, pageUrl) {
+  return stripFragment(new URL(raw, pageUrl).href);
+}
+
 function collectFromHtml(file) {
   const html = fs.readFileSync(file, 'utf8');
   const pageUrl = canonicalUrl(html, file);
@@ -65,7 +69,7 @@ function collectFromHtml(file) {
     const raw = attrs[attr].trim();
     if (!raw || /^(data:|javascript:|mailto:|tel:|#)/i.test(raw)) continue;
     try {
-      links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw, pageUrl).href), raw });
+      links.push({ source: path.relative(ROOT, file), url: resolveSiteUrl(raw, pageUrl), raw });
     } catch {
       links.push({ source: path.relative(ROOT, file), url: raw, raw, invalid: true });
     }
@@ -189,4 +193,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, classify, normalizeMarkdownUrl };
+module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, classify, normalizeMarkdownUrl, resolveSiteUrl };
