@@ -42,7 +42,7 @@ test("does not turn a normal paragraph into a table", () => {
 test("keeps parentheses in URLs inside valid Markdown link destinations", () => {
   const html = '<p>Read <a href="https://en.wikipedia.org/wiki/Phishing#QR_code_phishing_(quishing)">quishing</a>.</p>';
   const output = markdown(html, URL);
-  assert.match(output, /\\[quishing\\]\\(<https:\/\/en\\.wikipedia\\.org\/wiki\/Phishing#QR_code_phishing_\\(quishing\\)>\\)/);
+  assert.match(output, /\\[quishing\\]\\(https:\/\/en\\.wikipedia\\.org\/wiki\/Phishing#QR_code_phishing_\\\\\(quishing\\\\\)\\)/);
 });
 
 test("reads meta descriptions with apostrophes and either attribute order", () => {
