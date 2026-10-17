@@ -66,11 +66,11 @@ function markdown(source,url) {
     .replace(/<input\b[^>]*>/gi," ");
   h=h.replace(/<img\b([^>]*)>/gi,(_,a)=>{
     const s=a.match(/\bsrc=["']([^"']+)["']/i),alt=a.match(/\balt=["']([^"']*)["']/i);
-    if(!s)return "";return "\n!["+decode(alt?alt[1]:"")+"](<"+new URL(decode(s[1]),url).href+">)\n";
+    if(!s)return "";return "\n!["+decode(alt?alt[1]:"")+"]("+new URL(decode(s[1]),url).href.replace(/\(/g,"\\(").replace(/\)/g,"\\)")+")\n";
   });
   h=h.replace(/<a\b([^>]*)>([\s\S]*?)<\/a\s*>/gi,(_,a,inner)=>{
     const href=a.match(/\bhref=["']([^"']+)["']/i),label=inner.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
-    if(!href||!label)return inner;try{return "["+label+"](<"+new URL(decode(href[1]),url).href+">)";}catch{return label;}
+    if(!href||!label)return inner;try{return "["+label+"]("+new URL(decode(href[1]),url).href.replace(/\(/g,"\\(").replace(/\)/g,"\\)")+")";}catch{return label;}
   });
   const tick=String.fromCharCode(96);
   // Convert HTML tables before generic tag removal so cell boundaries are preserved.
