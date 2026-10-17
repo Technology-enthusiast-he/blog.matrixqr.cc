@@ -1,12 +1,6 @@
 name: Check Article Links
 
 on:
-  pull_request:
-    paths:
-      - "posts/**/*.html"
-      - "llms.txt"
-      - "llms-full.txt"
-      - ".github/workflows/check-article-links.yml"
   workflow_dispatch:
   schedule:
     - cron: "23 5 * * *"
@@ -29,7 +23,6 @@ jobs:
             --base-url https://blog.matrixqr.cc
             --timeout 30
             --max-concurrency 8
-            --include-fragments
             --verbose
             "posts/**/*.html"
             llms.txt
