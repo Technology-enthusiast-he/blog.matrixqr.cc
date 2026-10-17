@@ -4,10 +4,7 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const POSTS = path.join(ROOT, 'posts');
 const SITE = 'https://blog.matrixqr.cc';
-const INPUTS = [
-  path.join(ROOT, 'llms.txt'),
-  path.join(ROOT, 'llms-full.txt'),
-];
+const INPUTS = [path.join(ROOT, 'llms.txt'), path.join(ROOT, 'llms-full.txt')];
 const REPORT = path.join(ROOT, 'article-link-report.md');
 const CONCURRENCY = Number(process.env.LINK_CHECK_CONCURRENCY || 8);
 const TIMEOUT_MS = Number(process.env.LINK_CHECK_TIMEOUT_MS || 30000);
@@ -24,9 +21,7 @@ function walk(dir) {
 
 function attributes(tag) {
   const out = {};
-  for (const m of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) {
-    out[m[1].toLowerCase()] = m[3];
-  }
+  for (const m of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) out[m[1].toLowerCase()] = m[3];
   return out;
 }
 
@@ -42,6 +37,10 @@ function stripFragment(value) {
   return hash >= 0 ? value.slice(0, hash) : value;
 }
 
+function normalizeMarkdownUrl(value) {
+  return value.replace(/\\([()])/g, '$1').replace(/[.,;]+$/, '');
+}
+
 function collectFromHtml(file) {
   const html = fs.readFileSync(file, 'utf8');
   const pageUrl = canonicalUrl(html, file);
@@ -50,15 +49,13 @@ function collectFromHtml(file) {
   for (const match of html.matchAll(tagRe)) {
     const tag = match[0];
     const attrs = attributes(tag);
-    const attr = match[1].toLowerCase() === 'a' ? 'href'
-      : match[1].toLowerCase() === 'link' ? 'href'
-      : 'src';
+    const name = match[1].toLowerCase();
+    const attr = name === 'a' || name === 'link' ? 'href' : 'src';
     if (!attrs[attr]) continue;
     const raw = attrs[attr].trim();
     if (!raw || /^(data:|javascript:|mailto:|tel:|#)/i.test(raw)) continue;
     try {
-      const url = new URL(raw, pageUrl).href;
-      links.push({ source: path.relative(ROOT, file), url: stripFragment(url), raw });
+      links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw, pageUrl).href), raw });
     } catch {
       links.push({ source: path.relative(ROOT, file), url: raw, raw, invalid: true });
     }
@@ -69,19 +66,13 @@ function collectFromHtml(file) {
 function collectFromMarkdown(file) {
   const text = fs.readFileSync(file, 'utf8');
   const links = [];
-  for (const match of text.matchAll(/!?\[[^\]]*\]\((<[^>]+>|[^)\s]+)(?:\s+["'][^)]*["'])?\)/g)) {
-    let raw = match[1];
-    if (raw.startsWith('<') && raw.endsWith('>')) raw = raw.slice(1, -1);
-    if (/^(data:|javascript:|mailto:|tel:|#)/i.test(raw)) continue;
+  for (const match of text.matchAll(/https?:\/\/[^\s<>]+/g)) {
+    const raw = normalizeMarkdownUrl(match[0]);
     try {
-      links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw, SITE).href), raw });
+      links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw).href), raw });
     } catch {
       links.push({ source: path.relative(ROOT, file), url: raw, raw, invalid: true });
     }
-  }
-  for (const match of text.matchAll(/https?:\/\/[^\s)>]+/g)) {
-    const raw = match[0].replace(/[.,;]+$/, '');
-    links.push({ source: path.relative(ROOT, file), url: stripFragment(raw), raw });
   }
   return links;
 }
@@ -133,7 +124,6 @@ function classify(result) {
 
 async function main() {
   if (!fs.existsSync(POSTS)) throw new Error('Posts directory not found');
-
   const files = walk(POSTS);
   let items = [];
   for (const file of files) items.push(...collectFromHtml(file));
@@ -153,12 +143,10 @@ async function main() {
   for (const result of results) groups[classify(result)].push(result);
 
   const lines = [
-    '# Article Link Check Report',
-    '',
+    '# Article Link Check Report', '',
     `Checked: ${new Date().toISOString()}`,
     `Inputs: ${files.length} article HTML files + ${INPUTS.filter(fs.existsSync).length} generated LLM files`,
-    `Unique URLs: ${results.length}`,
-    '',
+    `Unique URLs: ${results.length}`, '',
     `- OK: ${groups.ok.length}`,
     `- Broken (404/410): ${groups.broken.length}`,
     `- Network errors: ${groups.network.length}`,
@@ -166,13 +154,12 @@ async function main() {
     `- Invalid URLs: ${groups.invalid.length}`,
   ];
 
-  const sections = [
+  for (const [title, group] of [
     ['Broken (404/410)', groups.broken],
     ['Network errors', groups.network],
     ['Other HTTP warnings', groups.warning],
     ['Invalid URLs', groups.invalid],
-  ];
-  for (const [title, group] of sections) {
+  ]) {
     if (!group.length) continue;
     lines.push('', `## ${title}`, '');
     for (const item of group) lines.push(`- ${item.url} — ${item.error || item.status} — ${item.source}`);
@@ -182,10 +169,7 @@ async function main() {
   console.log(`Checked ${results.length} unique URLs from ${files.length} article files.`);
   console.log(`OK=${groups.ok.length} broken=${groups.broken.length} network=${groups.network.length} warnings=${groups.warning.length} invalid=${groups.invalid.length}`);
   console.log(`Report: ${path.relative(ROOT, REPORT)}`);
-
-  if (groups.broken.length || groups.invalid.length) {
-    process.exitCode = 1;
-  }
+  if (groups.broken.length || groups.invalid.length) process.exitCode = 1;
 }
 
 if (require.main === module) {
@@ -195,4 +179,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, classify };
+module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, classify, normalizeMarkdownUrl };
