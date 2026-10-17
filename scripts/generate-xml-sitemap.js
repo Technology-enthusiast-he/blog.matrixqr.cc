@@ -56,6 +56,17 @@ function main() {
     addUrl(SITE_URL + "/", new Date().toISOString());
 
     for (const post of posts) {
+        // The privacy policy is intentionally excluded from the XML sitemap.
+        const pathname = (() => {
+            try {
+                return new URL(post.url, SITE_URL).pathname.replace(/\\/+$/, "");
+            } catch {
+                return "";
+            }
+        })();
+
+        if (pathname === "/posts/privacy-policy") continue;
+
         addUrl(post.url, post.dateModified || post.datePublished);
     }
 
