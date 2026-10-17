@@ -1,6 +1,6 @@
 # MatrixQR Blog — Full Article Text
 
- > Machine-readable Markdown edition of MatrixQR Blog articles. Site navigation, scripts, and layout markup are excluded.
+> Machine-readable Markdown edition of MatrixQR Blog articles. Site navigation, scripts, and layout markup are excluded.
 
 ## Site Information
 
