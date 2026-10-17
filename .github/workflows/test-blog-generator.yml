@@ -21,7 +21,9 @@ jobs:
           node-version: 22
 
       - name: Check JavaScript syntax
-        run: node --check scripts/generate-llms.js
+        run: |
+          node --check scripts/generate-llms.js
+          node --check scripts/check-article-links.js
 
       - name: Test HTML-to-Markdown conversion
         run: node --test scripts/generate-llms.test.js
@@ -33,23 +35,7 @@ jobs:
         run: npm run build
 
       - name: Check article links, images, and external URLs online
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: >-
-            --base-url https://blog.matrixqr.cc
-            --timeout 30
-            --max-concurrency 8
-            --verbose
-            "posts/**/*.html"
-            llms.txt
-            llms-full.txt
-          fail: true
-          failIfEmpty: true
-          format: markdown
-          jobSummary: true
-          output: lychee-report.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/check-article-links.js
 
       - name: Check generated LLMs files
         run: |
@@ -64,7 +50,7 @@ jobs:
           if (!urls.length) throw new Error('No article URLs were generated');
           if (new Set(urls).size !== urls.length) throw new Error('Duplicate article URLs were generated');
           const articleHtml = fs.readFileSync('posts/2026-10/traditional-menus-digital-menu-qr-code.html', 'utf8');
-          if (!/<table\b/i.test(articleHtml)) throw new Error('Table regression fixture has no source HTML table');
+          if (!/<table\\b/i.test(articleHtml)) throw new Error('Table regression fixture has no source HTML table');
           if (!full.includes('| Consideration | Traditional Paper Menu | Digital Menu QR Code |')) throw new Error('HTML table was not converted to a Markdown table');
           if (!full.includes('| --- | --- | --- |')) throw new Error('Markdown table header separator is missing');
           console.log('PASS: LLMs files are readable; article URLs:', urls.length);
@@ -77,10 +63,10 @@ jobs:
           const fs = require('fs');
           const posts = JSON.parse(fs.readFileSync('posts.json', 'utf8'));
           const xml = fs.readFileSync('sitemap.xml', 'utf8');
-          const urls = new Set([...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/g)].map(m => m[1].replace(/&amp;/g, '&').trim()));
+          const urls = new Set([...xml.matchAll(/<loc>([\\s\\S]*?)<\\/loc>/g)].map(m => m[1].replace(/&amp;/g, '&').trim()));
           const expected = posts
             .filter(post => {
-              try { return new URL(post.url).pathname.replace(/\/+$/, '') !== '/posts/privacy-policy'; }
+              try { return new URL(post.url).pathname.replace(/\\/+$/, '') !== '/posts/privacy-policy'; }
               catch { return false; }
             })
             .map(post => post.url);
@@ -93,7 +79,7 @@ jobs:
           const numberedPages = [];
           if (fs.existsSync('posts/page')) {
             for (const name of fs.readdirSync('posts/page')) {
-              if (/^\d+$/.test(name) && fs.existsSync('posts/page/' + name + '/index.html')) {
+              if (/^\\d+$/.test(name) && fs.existsSync('posts/page/' + name + '/index.html')) {
                 numberedPages.push('https://blog.matrixqr.cc/posts/page/' + name + '/');
               }
             }
