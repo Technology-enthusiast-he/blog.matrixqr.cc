@@ -1,0 +1,43 @@
+name: Check Article Links
+
+on:
+  pull_request:
+    paths:
+      - "posts/**/*.html"
+      - "llms.txt"
+      - "llms-full.txt"
+      - ".github/workflows/check-article-links.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "23 5 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  check-links:
+    name: Check article links, images, and external URLs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check links in all article HTML and generated LLM files
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --base-url https://blog.matrixqr.cc
+            --timeout 30
+            --max-concurrency 8
+            --include-fragments
+            --verbose
+            "posts/**/*.html"
+            llms.txt
+            llms-full.txt
+          fail: true
+          failIfEmpty: true
+          format: markdown
+          jobSummary: true
+          output: lychee-report.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
