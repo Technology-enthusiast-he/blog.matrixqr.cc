@@ -21,10 +21,10 @@ function decodeHtmlEntities(str = "") {
 }
 
 function getMetaContent(html, name) {
-    for (const match of html.matchAll(/<meta\\b[^>]*>/gi)) {
+    for (const match of html.matchAll(/<meta\b[^>]*>/gi)) {
         const tag = match[0];
         const attrs = {};
-        for (const attr of tag.matchAll(/([\\w:-]+)\\s*=\\s*(["'])([\\s\\S]*?)\\2/g)) {
+        for (const attr of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) {
             attrs[attr[1].toLowerCase()] = attr[3];
         }
         if ((attrs.name || "").toLowerCase() === name.toLowerCase() && attrs.content !== undefined) {
