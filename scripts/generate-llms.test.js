@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { markdown } = require("./generate-llms");
+const { markdown, meta } = require("./generate-llms");
 
 const URL = "https://blog.matrixqr.cc/posts/test-article";
 
@@ -37,4 +37,15 @@ test("preserves an empty cell and keeps columns aligned", () => {
 test("does not turn a normal paragraph into a table", () => {
   const output = markdown("<p>Just a normal paragraph.</p>", URL);
   assert.equal(output, "Just a normal paragraph.");
+});
+
+test("keeps parentheses in URLs inside valid Markdown link destinations", () => {
+  const html = '<p>Read <a href="https://en.wikipedia.org/wiki/Phishing#QR_code_phishing_(quishing)">quishing</a>.</p>';
+  const output = markdown(html, URL);
+  assert.match(output, /\\[quishing\\]\\(<https:\/\/en\\.wikipedia\\.org\/wiki\/Phishing#QR_code_phishing_\\(quishing\\)>\\)/);
+});
+
+test("reads meta descriptions with apostrophes and either attribute order", () => {
+  assert.equal(meta(`<meta name="description" content="Here wasn't a QR code.">`, "description"), "Here wasn't a QR code.");
+  assert.equal(meta('<meta content="A second description" name="description">', "description"), "A second description");
 });
