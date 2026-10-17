@@ -23,11 +23,11 @@ jobs:
       - name: Check JavaScript syntax
         run: node --check scripts/generate-llms.js
 
-      - name: Run blog, homepage, and LLMs generators
-        run: |
-          node scripts/generate-blog.js
-          node scripts/update-homepage.js
-          node scripts/generate-llms.js
+      - name: Install build dependencies
+        run: npm install --no-package-lock
+
+      - name: Run full site build
+        run: npm run build
 
       - name: Check generated LLMs files
         run: |
