@@ -66,29 +66,13 @@ The main advantage of a restaurant QR menu is straightforward: customers can acc
 
 ## Digital Menu vs. Traditional Menu: A Practical Comparison
 
-Consideration
-Traditional Paper Menu
-Digital Menu QR Code
-
-**Access**
-Requires a physical copy
-Scan and view on a smartphone
-
-**Menu quantity**
-Limited by the number of printed copies
-One displayed QR code can serve many guests
-
-**Staff workload**
-Menus may need to be distributed and collected
-Guests can access the menu independently
-
-**Updates**
-Usually requires reprinting when information changes
-Can point to an updated digital menu when the destination is changed
-
-**Customer choice**
-Familiar physical format
-Convenient for guests who prefer their phones
+| Consideration | Traditional Paper Menu | Digital Menu QR Code |
+| --- | --- | --- |
+| **Access** | Requires a physical copy | Scan and view on a smartphone |
+| **Menu quantity** | Limited by the number of printed copies | One displayed QR code can serve many guests |
+| **Staff workload** | Menus may need to be distributed and collected | Guests can access the menu independently |
+| **Updates** | Usually requires reprinting when information changes | Can point to an updated digital menu when the destination is changed |
+| **Customer choice** | Familiar physical format | Convenient for guests who prefer their phones |
 
 This comparison does not mean that paper menus are obsolete. Some guests prefer printed menus, and some restaurants may have reasons to keep them. The more useful conclusion is that **restaurants can offer both options** and let customers choose the format that works best for them.
 
