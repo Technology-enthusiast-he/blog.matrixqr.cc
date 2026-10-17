@@ -38,7 +38,17 @@ function stripFragment(value) {
 }
 
 function normalizeMarkdownUrl(value) {
-  return value.replace(/\\([()])/g, '$1').replace(/[.,;]+$/, '');
+  let url = value.replace(/\\([()])/g, '$1').replace(/[.,;]+$/, '');
+  let depth = 0;
+  for (const char of url) {
+    if (char === '(') depth++;
+    else if (char === ')') depth--;
+  }
+  while (depth < 0 && url.endsWith(')')) {
+    url = url.slice(0, -1);
+    depth++;
+  }
+  return url;
 }
 
 function collectFromHtml(file) {
