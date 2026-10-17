@@ -115,7 +115,7 @@ function renderShort(articles) {
   return lines.join("\n");
 }
 function renderFull(articles) {
-  const lines=["# MatrixQR Blog — Full Article Text",","> Machine-readable Markdown edition of MatrixQR Blog articles. Site navigation, scripts, and layout markup are excluded.","","## Site Information","","- Blog: https://blog.matrixqr.cc/","- Main QR generator: https://www.matrixqr.cc/","- Digital menu tool: https://menu.matrixqr.cc/","- Privacy policy: https://blog.matrixqr.cc/posts/privacy-policy","- Article count: "+articles.length,"","## Articles",""];
+  const lines=["# MatrixQR Blog — Full Article Text","","> Machine-readable Markdown edition of MatrixQR Blog articles. Site navigation, scripts, and layout markup are excluded.","","## Site Information","","- Blog: https://blog.matrixqr.cc/","- Main QR generator: https://www.matrixqr.cc/","- Digital menu tool: https://menu.matrixqr.cc/","- Privacy policy: https://blog.matrixqr.cc/posts/privacy-policy","- Article count: "+articles.length,"","## Articles",""];
   for(const a of articles){lines.push("## "+a.title,"","- URL: "+a.url,"- Published: "+a.date,"- Updated: "+a.modified,"- Category: "+a.category);if(a.description)lines.push("- Description: "+a.description);lines.push("",a.body,"","---","");}
   return lines.join("\n").replace(/\n{3,}/g,"\n\n");
 }
