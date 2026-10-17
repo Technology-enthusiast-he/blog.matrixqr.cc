@@ -16,21 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check links in all article HTML and generated LLM files
-        uses: lycheeverse/lychee-action@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          args: >-
-            --base-url https://blog.matrixqr.cc
-            --timeout 30
-            --max-concurrency 8
-            --verbose
-            "posts/**/*.html"
-            llms.txt
-            llms-full.txt
-          fail: true
-          failIfEmpty: true
-          format: markdown
-          jobSummary: true
-          output: lychee-report.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 22
+
+      - name: Check article links, images, and external URLs
+        run: node scripts/check-article-links.js
