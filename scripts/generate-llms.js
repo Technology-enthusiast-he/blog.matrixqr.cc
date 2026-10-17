@@ -30,8 +30,8 @@ function articleJson(html) {
 }
 function meta(html,key) {
   if (key !== "description") return "";
-  const tag = html.match(/<meta\\b[^>]*\\bname=["']description["'][^>]*>/i);
-  const match = tag && tag[0].match(/\\bcontent=["']([^"']*)["']/i);
+  const tag = html.match(/<meta\b[^>]*\bname=["']description["'][^>]*>/i);
+  const match = tag && tag[0].match(/\bcontent=["']([^"']*)["']/i);
   return match ? decode(match[1]) : "";
 }
 function category(s="") {
