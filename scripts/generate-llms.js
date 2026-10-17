@@ -30,11 +30,11 @@ function articleJson(html) {
 }
 function attributes(tag) {
   const out = {};
-  for (const m of tag.matchAll(/([\\w:-]+)\\s*=\\s*(["'])([\\s\\S]*?)\\2/g)) out[m[1].toLowerCase()] = m[3];
+  for (const m of tag.matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) out[m[1].toLowerCase()] = m[3];
   return out;
 }
 function meta(html,key) {
-  for (const m of html.matchAll(/<meta\\b[^>]*>/gi)) {
+  for (const m of html.matchAll(/<meta\b[^>]*>/gi)) {
     const a = attributes(m[0]);
     if ((a.name || "").toLowerCase() === key.toLowerCase() && a.content !== undefined) return decode(a.content);
   }
