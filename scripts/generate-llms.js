@@ -29,8 +29,10 @@ function articleJson(html) {
   return null;
 }
 function meta(html,key) {
-  const re=new RegExp('<meta\\b(?=[^>]*\\bname=["\\']'+key+'["\\'])[^>]*\\bcontent=["\\']([^"\\']*)["\\'][^>]*>','i');
-  const m=html.match(re);return m?decode(m[1]):"";
+  if (key !== "description") return "";
+  const tag = html.match(/<meta\\b[^>]*\\bname=["']description["'][^>]*>/i);
+  const match = tag && tag[0].match(/\\bcontent=["']([^"']*)["']/i);
+  return match ? decode(match[1]) : "";
 }
 function category(s="") {
   s=String(s).toLowerCase();
