@@ -32,6 +32,26 @@ jobs:
       - name: Run full site build
         run: npm run build
 
+      - name: Check article links, images, and external URLs online
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --base-url https://blog.matrixqr.cc
+            --timeout 30
+            --max-concurrency 8
+            --include-fragments
+            --verbose
+            "posts/**/*.html"
+            llms.txt
+            llms-full.txt
+          fail: true
+          failIfEmpty: true
+          format: markdown
+          jobSummary: true
+          output: lychee-report.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check generated LLMs files
         run: |
           node -e "
