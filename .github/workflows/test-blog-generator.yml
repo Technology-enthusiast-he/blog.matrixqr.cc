@@ -1,6 +1,7 @@
 name: Test Blog Generator
 
 on:
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -19,10 +20,29 @@ jobs:
         with:
           node-version: 22
 
-      - name: Run blog generator and homepage generator
+      - name: Check JavaScript syntax
+        run: node --check scripts/generate-llms.js
+
+      - name: Run blog, homepage, and LLMs generators
         run: |
           node scripts/generate-blog.js
           node scripts/update-homepage.js
+          node scripts/generate-llms.js
+
+      - name: Check generated LLMs files
+        run: |
+          node -e "
+          const fs = require('fs');
+          const short = fs.readFileSync('llms.txt', 'utf8');
+          const full = fs.readFileSync('llms-full.txt', 'utf8');
+          const urls = [...full.matchAll(/^- URL: (https?:\\/\\/\\S+)$/gm)].map(m => m[1]);
+          if (!short.startsWith('# MatrixQR Blog')) throw new Error('llms.txt has an invalid heading');
+          if (!full.startsWith('# MatrixQR Blog — Full Article Text')) throw new Error('llms-full.txt has an invalid heading');
+          if (full.includes('Zero Tracker Guarantee')) throw new Error('Outdated absolute privacy claim remains');
+          if (!urls.length) throw new Error('No article URLs were generated');
+          if (new Set(urls).size !== urls.length) throw new Error('Duplicate article URLs were generated');
+          console.log('PASS: LLMs files are readable; article URLs:', urls.length);
+          "
 
       - name: Check generated JSON
         run: |
