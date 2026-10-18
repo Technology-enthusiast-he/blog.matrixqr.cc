@@ -95,6 +95,30 @@ function collectMarkdownDestinations(text) {
   return { matches, consumed };
 }
 
+function maskMarkdownCode(text) {
+  const chars = text.split('');
+  let i = 0;
+  while (i < text.length) {
+    if (text[i] !== '`') {
+      i++;
+      continue;
+    }
+
+    let runEnd = i + 1;
+    while (runEnd < text.length && text[runEnd] === '`') runEnd++;
+    const fence = text.slice(i, runEnd);
+    const close = text.indexOf(fence, runEnd);
+    if (close < 0) {
+      i = runEnd;
+      continue;
+    }
+
+    for (let j = i; j < close + fence.length; j++) chars[j] = ' ';
+    i = close + fence.length;
+  }
+  return chars.join('');
+}
+
 function collectFromHtml(file) {
   const html = fs.readFileSync(file, 'utf8');
   const pageUrl = canonicalUrl(html, file);
@@ -130,10 +154,11 @@ function collectFromMarkdown(file) {
     }
   }
 
+  const maskedText = maskMarkdownCode(text);
   const isConsumed = index => consumed.some(([start, end]) => index >= start && index < end);
-  for (const match of text.matchAll(/https?:\/\/[^\s<>]+/g)) {
+  for (const match of maskedText.matchAll(/https?:\/\/[^\s<>]+/g)) {
     if (isConsumed(match.index)) continue;
-    const raw = normalizeMarkdownUrl(match[0]);
+    const raw = normalizeMarkdownUrl(text.slice(match.index, match.index + match[0].length));
     try {
       links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw).href), raw });
     } catch {
@@ -249,4 +274,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, collectMarkdownDestinations, classify, normalizeMarkdownUrl, resolveSiteUrl };
+module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, collectMarkdownDestinations, classify, maskMarkdownCode, normalizeMarkdownUrl, resolveSiteUrl };
