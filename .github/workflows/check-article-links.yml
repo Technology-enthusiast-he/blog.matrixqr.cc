@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Test Markdown URL parser
+        run: npm run test:links
+
       - name: Check article links, images, and external URLs
         run: node scripts/check-article-links.js
 
