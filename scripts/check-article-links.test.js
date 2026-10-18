@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const test = require('node:test');
 const {
   collectMarkdownDestinations,
+  maskMarkdownCode,
   normalizeMarkdownUrl,
 } = require('./check-article-links');
 
@@ -49,4 +50,18 @@ test('does not include the next Markdown link in the previous URL', () => {
     'https://example.com/one',
     'https://example.com/two',
   ]);
+});
+
+test('masks URLs inside inline Markdown code', () => {
+  const text = 'Use `https://yourdomain.com` as an example.';
+  const masked = maskMarkdownCode(text);
+  assert.equal(masked.includes('https://yourdomain.com'), false);
+  assert.equal(masked.length, text.length);
+});
+
+test('masks URLs inside fenced Markdown code', () => {
+  const text = '```\nhttps://example.com/api\n```\n';
+  const masked = maskMarkdownCode(text);
+  assert.equal(masked.includes('https://example.com/api'), false);
+  assert.equal(masked.length, text.length);
 });
