@@ -38,21 +38,61 @@ function stripFragment(value) {
 }
 
 function normalizeMarkdownUrl(value) {
-  let url = value.replace(/\\([()])/g, '$1').replace(/[.,;]+$/, '');
-  let depth = 0;
-  for (const char of url) {
-    if (char === '(') depth++;
-    else if (char === ')') depth--;
-  }
-  while (depth < 0 && url.endsWith(')')) {
-    url = url.slice(0, -1);
-    depth++;
-  }
+  let url = value.trim().replace(/^<|>$/g, '').replace(/\\([()<>])/g, '$1');
+  url = url.replace(/[.,;:!?]+$/, '');
   return url;
 }
 
-function resolveSiteUrl(raw, pageUrl) {
-  return stripFragment(new URL(raw, pageUrl).href);
+function readMarkdownDestination(text, start) {
+  let i = start;
+  while (i < text.length && /\s/.test(text[i])) i++;
+  if (text[i] === '<') {
+    const end = text.indexOf('>', i + 1);
+    if (end < 0) return null;
+    return { end: end + 1, value: text.slice(i, end + 1) };
+  }
+
+  const valueStart = i;
+  let depth = 0;
+  while (i < text.length) {
+    const char = text[i];
+    if (char === '\\') {
+      i += 2;
+      continue;
+    }
+    if (char === '(') {
+      depth++;
+    } else if (char === ')') {
+      if (depth === 0) return { end: i + 1, value: text.slice(valueStart, i) };
+      depth--;
+    } else if (/\s/.test(char) && depth === 0) {
+      return { end: i, value: text.slice(valueStart, i) };
+    }
+    i++;
+  }
+  return null;
+}
+
+function collectMarkdownDestinations(text) {
+  const matches = [];
+  const consumed = [];
+  let i = 0;
+  while (i < text.length) {
+    const open = text.indexOf('](', i);
+    if (open < 0) break;
+    const destination = readMarkdownDestination(text, open + 2);
+    if (!destination) {
+      i = open + 2;
+      continue;
+    }
+    const raw = normalizeMarkdownUrl(destination.value);
+    if (/^https?:\/\//i.test(raw)) {
+      matches.push(raw);
+      consumed.push([open + 2, destination.end - 1]);
+    }
+    i = destination.end;
+  }
+  return { matches, consumed };
 }
 
 function collectFromHtml(file) {
@@ -80,7 +120,19 @@ function collectFromHtml(file) {
 function collectFromMarkdown(file) {
   const text = fs.readFileSync(file, 'utf8');
   const links = [];
+  const { matches, consumed } = collectMarkdownDestinations(text);
+
+  for (const raw of matches) {
+    try {
+      links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw).href), raw });
+    } catch {
+      links.push({ source: path.relative(ROOT, file), url: raw, raw, invalid: true });
+    }
+  }
+
+  const isConsumed = index => consumed.some(([start, end]) => index >= start && index < end);
   for (const match of text.matchAll(/https?:\/\/[^\s<>]+/g)) {
+    if (isConsumed(match.index)) continue;
     const raw = normalizeMarkdownUrl(match[0]);
     try {
       links.push({ source: path.relative(ROOT, file), url: stripFragment(new URL(raw).href), raw });
@@ -89,6 +141,10 @@ function collectFromMarkdown(file) {
     }
   }
   return links;
+}
+
+function resolveSiteUrl(raw, pageUrl) {
+  return stripFragment(new URL(raw, pageUrl).href);
 }
 
 function unique(items) {
@@ -193,4 +249,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, classify, normalizeMarkdownUrl, resolveSiteUrl };
+module.exports = { canonicalUrl, collectFromHtml, collectFromMarkdown, collectMarkdownDestinations, classify, normalizeMarkdownUrl, resolveSiteUrl };
