@@ -1,0 +1,61 @@
+name: Update LLMs files
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "posts/**/*.html"
+      - "scripts/generate-llms.js"
+      - "scripts/filter-llms-external-links.js"
+      - "package.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-llms:
+    name: Generate and commit LLMs files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate LLMs files
+        run: |
+          node scripts/generate-llms.js
+          node scripts/filter-llms-external-links.js
+
+      - name: Validate generated LLMs files
+        run: |
+          node --test scripts/generate-llms.test.js scripts/filter-llms-external-links.test.js
+          node -e "
+          const fs = require('fs');
+          const short = fs.readFileSync('llms.txt', 'utf8');
+          const full = fs.readFileSync('llms-full.txt', 'utf8');
+          if (!short.startsWith('# MatrixQR Blog')) throw new Error('Invalid llms.txt heading');
+          if (!full.startsWith('# MatrixQR Blog — Full Article Text')) throw new Error('Invalid llms-full.txt heading');
+          if (/\\]\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) {
+            throw new Error('Third-party Markdown link remains in llms-full.txt');
+          }
+          console.log('PASS: generated LLMs files contain only first-party Markdown links.');
+          "
+
+      - name: Commit generated LLMs files
+        run: |
+          if git diff --quiet -- llms.txt llms-full.txt; then
+            echo "No LLMs file changes detected."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add llms.txt llms-full.txt
+          git commit -m "chore: update generated LLMs files"
+          git push
