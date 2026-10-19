@@ -38,17 +38,42 @@ jobs:
       - name: Validate generated LLMs files
         run: |
           node --test scripts/generate-llms.test.js scripts/filter-llms-external-links.test.js
-          node -e "
+          node - <<'NODE'
           const fs = require('fs');
-          const short = fs.readFileSync('llms.txt', 'utf8');
-          const full = fs.readFileSync('llms-full.txt', 'utf8');
-          if (!short.startsWith('# MatrixQR Blog')) throw new Error('Invalid llms.txt heading');
-          if (!full.startsWith('# MatrixQR Blog — Full Article Text')) throw new Error('Invalid llms-full.txt heading');
-          if (/\\]\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) {
-            throw new Error('Third-party Markdown link remains in llms-full.txt');
+          const allowed = new Set([
+            'blog.matrixqr.cc',
+            'www.matrixqr.cc',
+            'matrixqr.cc',
+            'menu.matrixqr.cc',
+          ]);
+          const files = ['llms.txt', 'llms-full.txt'];
+          const urlPattern = /https?:\/\/[^\s<>'"`\]\}]+/gi;
+
+          for (const file of files) {
+            const text = fs.readFileSync(file, 'utf8');
+            if (file === 'llms.txt' && !text.startsWith('# MatrixQR Blog')) {
+              throw new Error('Invalid llms.txt heading');
+            }
+            if (file === 'llms-full.txt' && !text.startsWith('# MatrixQR Blog — Full Article Text')) {
+              throw new Error('Invalid llms-full.txt heading');
+            }
+
+            for (const match of text.matchAll(urlPattern)) {
+              const candidate = match[0].replace(/[.,!?;:]+$/, '');
+              let parsed;
+              try {
+                parsed = new URL(candidate);
+              } catch {
+                continue;
+              }
+              if (parsed.protocol !== 'https:' || !allowed.has(parsed.hostname.toLowerCase())) {
+                throw new Error(`Third-party URL remains in ${file}: ${candidate}`);
+              }
+            }
           }
-          console.log('PASS: generated LLMs files contain only first-party Markdown links.');
-          "
+
+          console.log('PASS: llms.txt and llms-full.txt contain only allowed first-party HTTPS URLs.');
+          NODE
 
       - name: Commit generated LLMs files
         run: |
@@ -61,5 +86,3 @@ jobs:
           git add llms.txt llms-full.txt
           git commit -m "chore: update generated LLMs files"
           git push
-
-      # Workflow test: changing this workflow file must trigger the feature-branch run.
