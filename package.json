@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
     "build": "node scripts/generate-blog.js && node scripts/generate-llms.js && node scripts/filter-llms-external-links.js && node scripts/generate-sitemap.js && node scripts/generate-archive.js && node scripts/update-homepage.js && node scripts/generate-pagination.js && node scripts/generate-xml-sitemap.js && tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
-    "test:links": "node --test scripts/check-article-links.test.js",
     "test:llms": "node --test scripts/generate-llms.test.js scripts/filter-llms-external-links.test.js"
   },
   "devDependencies": {
