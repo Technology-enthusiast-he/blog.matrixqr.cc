@@ -94,9 +94,47 @@ function filterMarkdownLinks(text) {
   return { text: output, removed };
 }
 
+function stripTrailingUrlPunctuation(url) {
+  let value = url;
+  let trailing = "";
+  while (/[.,!?;:]$/.test(value)) {
+    trailing = value.slice(-1) + trailing;
+    value = value.slice(0, -1);
+  }
+  while (value.endsWith(")")) {
+    const opens = (value.match(/\(/g) || []).length;
+    const closes = (value.match(/\)/g) || []).length;
+    if (closes <= opens) break;
+    trailing = ")" + trailing;
+    value = value.slice(0, -1);
+  }
+  return { url: value, trailing };
+}
+
+function filterBareExternalUrls(text) {
+  const urlPattern = /https?:\/\/[^\s<>'"`\]\}]+/gi;
+  let removed = 0;
+  const output = text.replace(urlPattern, (candidate) => {
+    const { url, trailing } = stripTrailingUrlPunctuation(candidate);
+    if (isFirstPartyUrl(url)) return candidate;
+    removed++;
+    return trailing;
+  });
+  return { text: output, removed };
+}
+
+function filterExternalUrls(text) {
+  const links = filterMarkdownLinks(text);
+  const bare = filterBareExternalUrls(links.text);
+  return {
+    text: bare.text,
+    removed: links.removed + bare.removed,
+  };
+}
+
 function filterFile(file) {
   const source = fs.readFileSync(file, "utf8");
-  const result = filterMarkdownLinks(source);
+  const result = filterExternalUrls(source);
   if (result.text !== source) {
     fs.writeFileSync(file, result.text.endsWith("\n") ? result.text : result.text + "\n", "utf8");
   }
@@ -109,7 +147,13 @@ if (require.main === module) {
     if (!fs.existsSync(file)) throw new Error(`LLM file not found: ${file}`);
     removed += filterFile(file);
   }
-  console.log(`[llms] Removed ${removed} third-party Markdown link(s); first-party MatrixQR links were preserved.`);
+  console.log(`[llms] Removed ${removed} third-party URL(s); first-party MatrixQR URLs were preserved.`);
 }
 
-module.exports = { ALLOWED_HOSTS, filterMarkdownLinks, isFirstPartyUrl };
+module.exports = {
+  ALLOWED_HOSTS,
+  filterBareExternalUrls,
+  filterExternalUrls,
+  filterMarkdownLinks,
+  isFirstPartyUrl,
+};
