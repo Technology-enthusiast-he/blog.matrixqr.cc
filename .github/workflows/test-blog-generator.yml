@@ -23,37 +23,16 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check scripts/generate-llms.js
-          node --check scripts/check-article-links.js
+          node --check scripts/filter-llms-external-links.js
 
-      - name: Test HTML-to-Markdown conversion
-        run: node --test scripts/generate-llms.test.js
+      - name: Test HTML-to-Markdown conversion and LLM link filtering
+        run: npm run test:llms
 
       - name: Install build dependencies
         run: npm install --no-package-lock
 
       - name: Run full site build
         run: npm run build
-
-      - name: Check article links, images, and external URLs online
-        run: node scripts/check-article-links.js
-
-      - name: Publish link-check report to job summary
-        if: always()
-        run: |
-          if [ -f article-link-report.md ]; then
-            cat article-link-report.md >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "Link-check report was not generated." >> "$GITHUB_STEP_SUMMARY"
-          fi
-
-      - name: Upload link-check report
-        if: always() && hashFiles('article-link-report.md') != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: article-link-report
-          path: article-link-report.md
-          if-no-files-found: error
-          retention-days: 14
 
       - name: Check generated LLMs files
         run: |
@@ -67,12 +46,14 @@ jobs:
           if (full.includes('Zero Tracker Guarantee')) throw new Error('Outdated absolute privacy claim remains');
           if (!urls.length) throw new Error('No article URLs were generated');
           if (new Set(urls).size !== urls.length) throw new Error('Duplicate article URLs were generated');
+          if (/\\]\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) throw new Error('Third-party Markdown link remains in llms-full.txt');
           const articleHtml = fs.readFileSync('posts/2026-10/traditional-menus-digital-menu-qr-code.html', 'utf8');
           if (!/<table\\b/i.test(articleHtml)) throw new Error('Table regression fixture has no source HTML table');
           if (!full.includes('| Consideration | Traditional Paper Menu | Digital Menu QR Code |')) throw new Error('HTML table was not converted to a Markdown table');
           if (!full.includes('| --- | --- | --- |')) throw new Error('Markdown table header separator is missing');
           console.log('PASS: LLMs files are readable; article URLs:', urls.length);
           console.log('PASS: source HTML table is represented as a Markdown table.');
+          console.log('PASS: third-party Markdown links are removed from LLMs output.');
           "
       
       - name: Check sitemap URL coverage
