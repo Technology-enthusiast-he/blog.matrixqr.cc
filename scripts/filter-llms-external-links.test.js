@@ -1,6 +1,11 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { filterMarkdownLinks, isFirstPartyUrl } = require("./filter-llms-external-links");
+const {
+  filterBareExternalUrls,
+  filterExternalUrls,
+  filterMarkdownLinks,
+  isFirstPartyUrl,
+} = require("./filter-llms-external-links");
 
 test("recognizes MatrixQR domains as first-party", () => {
   assert.equal(isFirstPartyUrl("https://blog.matrixqr.cc/posts/example"), true);
@@ -39,4 +44,39 @@ test("preserves ordinary text and non-http Markdown destinations", () => {
   const result = filterMarkdownLinks(input);
   assert.equal(result.text, input);
   assert.equal(result.removed, 0);
+});
+
+test("removes bare third-party URLs from normal prose", () => {
+  const input = "Use https://yourdomain.com and https://track.saas.com/x9z3 for testing.";
+  const result = filterBareExternalUrls(input);
+  assert.equal(result.text, "Use  and  for testing.");
+  assert.equal(result.removed, 2);
+});
+
+test("removes bare third-party URLs from inline code", () => {
+  const input = "A cloud tool may receive `https://track.saas.com/x9z3` while an example uses `https://yourdomain.com`.";
+  const result = filterBareExternalUrls(input);
+  assert.equal(result.text, "A cloud tool may receive `` while an example uses ``.");
+  assert.equal(result.removed, 2);
+});
+
+test("preserves first-party bare URLs", () => {
+  const input = "Visit https://www.matrixqr.cc/ or https://blog.matrixqr.cc/posts/privacy-policy.";
+  const result = filterBareExternalUrls(input);
+  assert.equal(result.text, input);
+  assert.equal(result.removed, 0);
+});
+
+test("preserves punctuation after a removed external URL", () => {
+  const input = "Reference: https://example.com/test, then continue.";
+  const result = filterBareExternalUrls(input);
+  assert.equal(result.text, "Reference: , then continue.");
+  assert.equal(result.removed, 1);
+});
+
+test("filters both Markdown and bare external URLs in one pass", () => {
+  const input = "Read [W3C](https://www.w3.org/TR/2dcontext/) or visit https://example.com directly.";
+  const result = filterExternalUrls(input);
+  assert.equal(result.text, "Read W3C or visit  directly.");
+  assert.equal(result.removed, 2);
 });
