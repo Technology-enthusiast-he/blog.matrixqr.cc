@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - feat/automate-llms-files
     paths:
       - "posts/**/*.html"
       - "scripts/generate-llms.js"
