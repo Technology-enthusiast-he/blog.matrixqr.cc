@@ -46,18 +46,16 @@ test("keeps first-party MatrixQR links", () => {
   assert.match(output, /\[our privacy policy\]\(https:\/\/blog\.matrixqr\.cc\/posts\/privacy-policy\)/);
 });
 
-test("removes third-party link destinations but keeps their anchor text", () => {
+test("preserves third-party Markdown links during HTML-to-Markdown conversion", () => {
   const html = '<p>Read <a href="https://www.w3.org/TR/2dcontext/">W3C Recommendation</a> and <a href="https://gdpr.eu/data-minimisation/">GDPR.eu</a>.</p>';
   const output = markdown(html, URL);
-  assert.equal(output, "Read W3C Recommendation and GDPR.eu.");
-  assert.doesNotMatch(output, /https:\/\/www\.w3\.org/);
-  assert.doesNotMatch(output, /https:\/\/gdpr\.eu/);
+  assert.equal(output, "Read [W3C Recommendation](https://www.w3.org/TR/2dcontext/) and [GDPR.eu](https://gdpr.eu/data-minimisation/).");
 });
 
 test("keeps parentheses in URLs inside valid Markdown link destinations", () => {
   const html = '<p>Read <a href="https://en.wikipedia.org/wiki/Phishing#QR_code_phishing_(quishing)">quishing</a>.</p>';
   const output = markdown(html, URL);
-  assert.equal(output, "Read quishing.");
+  assert.equal(output, "Read [quishing](https://en.wikipedia.org/wiki/Phishing#QR_code_phishing_\\(quishing\\)).");
 });
 
 test("reads meta descriptions with apostrophes and either attribute order", () => {
