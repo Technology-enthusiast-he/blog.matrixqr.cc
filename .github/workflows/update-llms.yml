@@ -11,6 +11,7 @@ on:
       - "scripts/generate-llms.js"
       - "scripts/filter-llms-external-links.js"
       - "package.json"
+      - ".github/workflows/update-llms.yml"
   workflow_dispatch:
 
 permissions:
@@ -60,3 +61,5 @@ jobs:
           git add llms.txt llms-full.txt
           git commit -m "chore: update generated LLMs files"
           git push
+
+      # Workflow test: changing this workflow file must trigger the feature-branch run.
