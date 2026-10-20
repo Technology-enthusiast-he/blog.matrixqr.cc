@@ -83,6 +83,18 @@ function getVisibleText(html) {
     );
 }
 
+function getMetaContent(html, attribute, value) {
+    const tags = html.match(/<meta\\b[^>]*>/gi) || [];
+    for (const tag of tags) {
+        const attr = tag.match(new RegExp("\\\\b" + attribute + "=[\\\\"']([^\\\\"']*)[\\\\"']", "i"));
+        if (attr && attr[1] === value) {
+            const content = tag.match(/\\bcontent=["']([^"']*)["']/i);
+            return content ? content[1].trim() : "";
+        }
+    }
+    return "";
+}
+
 function main() {
     const files = walk(POSTS_DIR);
     const failures = [];
@@ -109,6 +121,21 @@ function main() {
             ? (canonicalMatch[0].match(/\bhref=["']([^"']+)["']/i) || [])[1]
             : "";
         if (!canonical) failures.push(`${relative}: missing canonical link`);
+
+        const ogImage = getMetaContent(html, "property", "og:image");
+        const twitterImage = getMetaContent(html, "name", "twitter:image");
+        const ogImageAlt = getMetaContent(html, "property", "og:image:alt");
+        const twitterImageAlt = getMetaContent(html, "name", "twitter:image:alt");
+        if (!ogImage) failures.push(`${relative}: missing og:image`);
+        if (!twitterImage) failures.push(`${relative}: missing twitter:image`);
+        if (ogImage && twitterImage && normalizeUrl(ogImage) !== normalizeUrl(twitterImage)) {
+            failures.push(`${relative}: og:image and twitter:image do not match`);
+        }
+        if (ogImage && /\\/og-cover\\.png(?:$|[?#])/i.test(ogImage)) {
+            failures.push(`${relative}: article is using the generic og-cover image instead of an article-specific preview`);
+        }
+        if (!ogImageAlt) failures.push(`${relative}: missing og:image:alt`);
+        if (!twitterImageAlt) failures.push(`${relative}: missing twitter:image:alt`);
 
         for (const faq of schemas.filter(item => item["@type"] === "FAQPage")) {
             for (const question of faq.mainEntity || []) {
