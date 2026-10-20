@@ -91,7 +91,7 @@
               "name": "What is client-side image sanitization?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Client-side image sanitization is a privacy-first web architecture pattern where image decoding, transformation, and pixel redrawing occur entirely within the user's browser Canvas without transmitting files to remote servers."
+                "text": "It is a privacy-first web architecture pattern where image decoding, transformation, and pixel redrawing occur entirely within the user's browser Canvas without transmitting files to remote servers."
               }
             },
             {
@@ -99,7 +99,7 @@
               "name": "Does drawing an image onto Canvas make it completely safe?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. Canvas rasterization is one privacy and data-handling measure, not a complete security guarantee. Applications still need safe input handling, correct origin rules, careful output handling, and normal browser security controls."
+                "text": "No. Canvas rasterization is one privacy and data-handling measure, not a complete security guarantee. Applications still need safe input handling, origin rules, and browser security controls."
               }
             },
             {
@@ -107,7 +107,7 @@
               "name": "Why does CORS matter for Canvas image processing?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "When an image from another origin is drawn without the required CORS permission, the browser marks the Canvas as tainted. Reading or exporting pixel data then fails with a SecurityError."
+                "text": "When an image from another origin is drawn without required CORS permissions, the browser marks the Canvas as tainted, blocking pixel export for safety."
               }
             },
             {
