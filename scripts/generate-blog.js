@@ -162,6 +162,11 @@ const files = findHtmlFiles(POSTS_DIR);
 
 
 const posts = [];
+const skippedPosts = [];
+const warnings = [];
+const sourceCategoryCounts = new Map();
+const outputCategoryCounts = new Map();
+const canonicalUrlFiles = new Map();
 
 for (const file of files) {
     const filePath = path.join(POSTS_DIR, file);
@@ -194,6 +199,23 @@ const rawCategory =
     jsonLd && jsonLd.articleSection
         ? jsonLd.articleSection.trim().toLowerCase()
         : "general";
+        
+    sourceCategoryCounts.set(
+        rawCategory,
+        (sourceCategoryCounts.get(rawCategory) || 0) + 1
+    );
+
+    if (!jsonLd) {
+        warnings.push(file + ": no Article/BlogPosting JSON-LD found; fallback metadata and General category may be used.");
+    }
+
+    if (!description.trim()) {
+        warnings.push(file + ": missing meta description and JSON-LD description.");
+    }
+
+    if (datePublished && Number.isNaN(Date.parse(datePublished))) {
+        warnings.push(file + ": invalid datePublished value \"" + datePublished + "\".");
+    }
 
 let category = "General";
 
@@ -242,9 +264,20 @@ if (
         `${SITE_URL}/posts/${file.replace(/\.html$/i, "")}`;
 
     if (!title || !datePublished) {
-        console.warn(`SKIPPED: ${file}`);
-        console.warn("Reason: missing title or datePublished");
+        const reason = [
+            !title ? "missing title" : "",
+            !datePublished ? "missing datePublished" : ""
+        ].filter(Boolean).join(" and ");
+        skippedPosts.push({ file, reason });
+        console.warn(`SKIPPED: ${file} — ${reason}`);
         continue;
+    }
+
+    const normalizedCanonical = canonical.trim().replace(/\/+$/, "").toLowerCase();
+    if (canonicalUrlFiles.has(normalizedCanonical)) {
+        warnings.push(`duplicate canonical URL "${canonical}" in ${canonicalUrlFiles.get(normalizedCanonical)} and ${file}.`);
+    } else {
+        canonicalUrlFiles.set(normalizedCanonical, file);
     }
 
     posts.push({
@@ -255,6 +288,11 @@ if (
         category,
         url: canonical
     });
+
+    outputCategoryCounts.set(
+        category,
+        (outputCategoryCounts.get(category) || 0) + 1
+    );
 }
 
 // --------------------------------------------------
@@ -295,8 +333,27 @@ console.log("");
 console.log(`Posts directory: ${POSTS_DIR}`);
 console.log(`Posts found:     ${files.length}`);
 console.log(`Posts indexed:   ${posts.length}`);
+console.log(`Posts skipped:   ${skippedPosts.length}`);
+console.log(`Metadata warnings: ${warnings.length}`);
 console.log(`Output:          ${OUTPUT_FILE}`);
 console.log("");
+
+console.log("Output category distribution:");
+for (const [category, count] of [...outputCategoryCounts.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    console.log(`  - ${category}: ${count}`);
+}
+
+console.log("");
+console.log("Source articleSection distribution:");
+for (const [category, count] of [...sourceCategoryCounts.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
+    console.log(`  - ${category}: ${count}`);
+}
+
+if (warnings.length) {
+    console.log("");
+    console.warn("Warnings to review:");
+    warnings.forEach((warning) => console.warn(`  - ${warning}`));
+}
 
 if (posts.length > 0) {
     console.log("Newest posts:");
