@@ -70,6 +70,7 @@ function normalizeAuthors(html) {
     const marker = '"author"';
     let searchFrom = 0;
     let replacements = 0;
+    let linkedNodes = 0;
 
     while (true) {
         const authorIndex = html.indexOf(marker, searchFrom);
@@ -112,6 +113,59 @@ function normalizeAuthors(html) {
     return { html, replacements };
 }
 
+
+const SITE_ORIGIN = "https://blog.matrixqr.cc";
+const WEBSITE_ID = SITE_ORIGIN + "/#website";
+const ORGANIZATION_ID = SITE_ORIGIN + "/#organization";
+
+function linkArticleEntities(html) {
+    let updatedNodes = 0;
+    html = html.replace(
+        /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+        (full, jsonText) => {
+            let value;
+            try {
+                value = JSON.parse(jsonText.trim());
+            } catch {
+                return full;
+            }
+
+            let changed = false;
+            const visit = node => {
+                if (!node || typeof node !== "object") return;
+                if (Array.isArray(node)) {
+                    node.forEach(visit);
+                    return;
+                }
+
+                const nodeTypes = Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]];
+                if (nodeTypes.some(type => ["Article", "BlogPosting", "NewsArticle"].includes(type))) {
+                    const desiredPartOf = { "@id": WEBSITE_ID };
+                    if (JSON.stringify(node.isPartOf) !== JSON.stringify(desiredPartOf)) {
+                        node.isPartOf = desiredPartOf;
+                        changed = true;
+                    }
+
+                    const desiredPublisher = { "@id": ORGANIZATION_ID };
+                    if (JSON.stringify(node.publisher) !== JSON.stringify(desiredPublisher)) {
+                        node.publisher = desiredPublisher;
+                        changed = true;
+                    }
+                    updatedNodes += 1;
+                }
+
+                if (Array.isArray(node["@graph"])) node["@graph"].forEach(visit);
+                if (node["@graph"] && !Array.isArray(node["@graph"])) visit(node["@graph"]);
+            };
+
+            visit(value);
+            if (!changed) return full;
+            return full.replace(jsonText, "\n" + JSON.stringify(value, null, 2) + "\n");
+        }
+    );
+    return { html, updatedNodes };
+}
+
 function main() {
     const files = walk(POSTS_DIR);
     let changedFiles = 0;
@@ -119,20 +173,22 @@ function main() {
 
     for (const file of files) {
         const original = fs.readFileSync(file, "utf8");
-        const result = normalizeAuthors(original);
+        const authorResult = normalizeAuthors(original);
+        const entityResult = linkArticleEntities(authorResult.html);
+        const result = { html: entityResult.html, replacements: authorResult.replacements, linkedNodes: entityResult.updatedNodes };
 
-        if (result.replacements === 0 || result.html === original) {
+        if (result.html === original) {
             continue;
         }
 
         fs.writeFileSync(file, result.html, "utf8");
         changedFiles += 1;
         replacements += result.replacements;
+        linkedNodes += result.linkedNodes;
     }
 
-    console.log(
-        `[seo] Normalized ${replacements} Person author schema block(s) across ${changedFiles} article file(s).`
-    );
+    console.log(`[seo] Normalized ${replacements} Person author schema block(s) across ${changedFiles} article file(s).`);
+    console.log(`[seo] Linked ${linkedNodes} Article/BlogPosting publisher and isPartOf relationships to stable site entities.`);
 }
 
 main();
