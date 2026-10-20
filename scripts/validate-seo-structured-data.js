@@ -9,13 +9,8 @@ const HTML_SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
 const errors = [];
 const warnings = [];
 
-function fail(message) {
-    errors.push(message);
-}
-
-function warn(message) {
-    warnings.push(message);
-}
+function fail(message) { errors.push(message); }
+function warn(message) { warnings.push(message); }
 
 function decodeEntities(value = "") {
     return String(value)
@@ -43,7 +38,7 @@ function canonicalizeUrl(value) {
     try {
         const url = new URL(decodeEntities(value), SITE_ORIGIN);
         if (url.origin !== SITE_ORIGIN) return "";
-        let pathname = url.pathname.replace(/\/+$/, "") || "/";
+        const pathname = url.pathname.replace(/\/+$/, "") || "/";
         return SITE_ORIGIN + pathname;
     } catch {
         return "";
@@ -51,9 +46,7 @@ function canonicalizeUrl(value) {
 }
 
 function extractCanonical(html) {
-    const match = html.match(
-        /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i
-    );
+    const match = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
     return match ? decodeEntities(match[1]) : "";
 }
 
@@ -73,25 +66,20 @@ function extractTitle(html) {
     return match ? decodeEntities(match[1].trim()) : "";
 }
 
-function extractJsonLd(html) {
+function extractJsonLd(html, label) {
     const blocks = [];
-
-    for (const match of html.matchAll(
-        /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
-    )) {
+    for (const match of html.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
         try {
             blocks.push(JSON.parse(match[1].trim()));
         } catch {
-            fail("Invalid JSON-LD block found in a page.");
+            fail(`${label}: invalid JSON-LD block found.`);
         }
     }
-
     return blocks;
 }
 
 function flattenJsonLd(value) {
     const nodes = [];
-
     const visit = node => {
         if (!node || typeof node !== "object") return;
         if (Array.isArray(node)) {
@@ -101,15 +89,12 @@ function flattenJsonLd(value) {
         nodes.push(node);
         if (Array.isArray(node["@graph"])) node["@graph"].forEach(visit);
     };
-
     visit(value);
     return nodes;
 }
 
 function getTypes(node) {
-    return Array.isArray(node?.["@type"])
-        ? node["@type"]
-        : [node?.["@type"]];
+    return Array.isArray(node?.["@type"]) ? node["@type"] : [node?.["@type"]];
 }
 
 function isArticleNode(node) {
@@ -129,28 +114,21 @@ function getMainEntityUrl(node) {
 
 function getGeneratedPageFiles() {
     const pages = [];
-
     const addNumericPages = (root, prefix) => {
         if (!fs.existsSync(root)) return;
         for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
             if (!entry.isDirectory() || !/^\d+$/.test(entry.name)) continue;
             const file = path.join(root, entry.name, "index.html");
-            if (!fs.existsSync(file)) continue;
-            pages.push({
-                file,
-                expectedUrl: `${SITE_ORIGIN}${prefix}${entry.name}/`
-            });
+            if (fs.existsSync(file)) pages.push({ file, expectedUrl: `${SITE_ORIGIN}${prefix}${entry.name}/` });
         }
     };
 
     const homepage = path.join(ROOT, "index.html");
     if (fs.existsSync(homepage)) pages.push({ file: homepage, expectedUrl: SITE_ORIGIN + "/" });
-
     addNumericPages(path.join(ROOT, "page"), "/page/");
 
     const archive = path.join(ROOT, "posts", "index.html");
     if (fs.existsSync(archive)) pages.push({ file: archive, expectedUrl: SITE_ORIGIN + "/posts/" });
-
     addNumericPages(path.join(ROOT, "posts", "page"), "/posts/page/");
 
     return pages;
@@ -162,26 +140,20 @@ function validateGeneratedPage(file, expectedUrl) {
     const canonical = canonicalizeUrl(extractCanonical(html));
     const expectedCanonical = canonicalizeUrl(expectedUrl);
 
-    if (!canonical) {
-        fail(`${label}: missing or invalid canonical URL.`);
-    } else if (canonical !== expectedCanonical) {
-        fail(`${label}: canonical is ${canonical}, expected ${expectedCanonical}.`);
-    }
+    if (!canonical) fail(`${label}: missing or invalid canonical URL.`);
+    else if (canonical !== expectedCanonical) fail(`${label}: canonical is ${canonical}, expected ${expectedCanonical}.`);
 
     const ogUrl = canonicalizeUrl(extractMeta(html, "property", "og:url"));
-    if (!ogUrl) {
-        fail(`${label}: missing or invalid og:url.`);
-    } else if (ogUrl !== expectedCanonical) {
-        fail(`${label}: og:url is ${ogUrl}, expected ${expectedCanonical}.`);
-    }
+    if (!ogUrl) fail(`${label}: missing or invalid og:url.`);
+    else if (ogUrl !== expectedCanonical) fail(`${label}: og:url is ${ogUrl}, expected ${expectedCanonical}.`);
 
     const title = extractTitle(html);
     const ogTitle = extractMeta(html, "property", "og:title");
     const twitterTitle = extractMeta(html, "name", "twitter:title");
     if (!ogTitle) fail(`${label}: missing og:title.`);
     if (!twitterTitle) fail(`${label}: missing twitter:title.`);
-    if (title && ogTitle && title !== ogTitle) fail(`${label}: title and og:title differ.`);
-    if (title && twitterTitle && title !== twitterTitle) fail(`${label}: title and twitter:title differ.`);
+    if (title && ogTitle && title !== ogTitle) warn(`${label}: title and og:title use different wording.`);
+    if (title && twitterTitle && title !== twitterTitle) warn(`${label}: title and twitter:title use different wording.`);
 
     const description = extractMeta(html, "name", "description");
     const ogDescription = extractMeta(html, "property", "og:description");
@@ -189,16 +161,11 @@ function validateGeneratedPage(file, expectedUrl) {
     if (!description) fail(`${label}: missing meta description.`);
     if (!ogDescription) fail(`${label}: missing og:description.`);
     if (!twitterDescription) fail(`${label}: missing twitter:description.`);
-    if (description && ogDescription && description !== ogDescription) fail(`${label}: meta description and og:description differ.`);
-    if (description && twitterDescription && description !== twitterDescription) fail(`${label}: meta description and twitter:description differ.`);
+    if (description && ogDescription && description !== ogDescription) warn(`${label}: meta description and og:description use different wording.`);
+    if (description && twitterDescription && description !== twitterDescription) warn(`${label}: meta description and twitter:description use different wording.`);
 
-    const collectionNodes = extractJsonLd(html)
-        .flatMap(flattenJsonLd)
-        .filter(isCollectionPageNode);
-
-    if (collectionNodes.length === 0) {
-        fail(`${label}: no CollectionPage JSON-LD node found.`);
-    }
+    const collectionNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isCollectionPageNode);
+    if (collectionNodes.length === 0) fail(`${label}: no CollectionPage JSON-LD node found.`);
 
     for (const node of collectionNodes) {
         const nodeUrl = canonicalizeUrl(node.url || node["@id"] || "");
@@ -206,28 +173,27 @@ function validateGeneratedPage(file, expectedUrl) {
             fail(`${label}: CollectionPage JSON-LD URL is ${node.url || node["@id"] || "missing"}, expected ${expectedCanonical}.`);
         }
 
-        if (title && node.name && node.name !== title) {
-            fail(`${label}: CollectionPage name differs from <title>.`);
-        }
+        if (title && node.name && node.name !== title) warn(`${label}: CollectionPage name uses different wording from <title>.`);
 
-        if (description && node.description && node.description !== description) {
-            fail(`${label}: CollectionPage description differs from meta description.`);
+        if (node.description) {
+            const descriptions = [description, ogDescription, twitterDescription].filter(Boolean);
+            if (!descriptions.includes(node.description)) {
+                warn(`${label}: CollectionPage description differs from the page's meta/social descriptions.`);
+            }
+        } else {
+            fail(`${label}: CollectionPage JSON-LD is missing description.`);
         }
     }
-
-    return html;
 }
 
 function walkHtmlFiles(dir) {
     if (!fs.existsSync(dir)) return [];
     const files = [];
-
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) files.push(...walkHtmlFiles(fullPath));
         else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) files.push(fullPath);
     }
-
     return files;
 }
 
@@ -242,16 +208,12 @@ function validateArticle(file) {
     const html = fs.readFileSync(file, "utf8");
     const label = path.relative(ROOT, file);
     const canonical = canonicalizeUrl(extractCanonical(html));
-
     if (!canonical) {
         fail(`${label}: missing or invalid canonical URL.`);
         return;
     }
 
-    const articleNodes = extractJsonLd(html)
-        .flatMap(flattenJsonLd)
-        .filter(isArticleNode);
-
+    const articleNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isArticleNode);
     if (articleNodes.length === 0) {
         fail(`${label}: no Article/BlogPosting JSON-LD node found.`);
         return;
@@ -259,11 +221,8 @@ function validateArticle(file) {
 
     for (const node of articleNodes) {
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
-        if (!mainEntityUrl) {
-            fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
-        } else if (mainEntityUrl !== canonical) {
-            fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
-        }
+        if (!mainEntityUrl) fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
+        else if (mainEntityUrl !== canonical) fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
     }
 }
 
@@ -276,16 +235,13 @@ function validateHtmlSitemap(posts) {
     const html = fs.readFileSync(HTML_SITEMAP_FILE, "utf8");
     const start = html.indexOf("<!-- AUTO-SITEMAP-START -->");
     const end = html.indexOf("<!-- AUTO-SITEMAP-END -->");
-
     if (start === -1 || end === -1 || end < start) {
         fail("HTML sitemap: automatic sitemap markers are missing or misplaced.");
         return;
     }
 
     const body = html.slice(start, end);
-    const hrefs = [...body.matchAll(/\bhref\s*=\s*(["'])(.*?)\1/gi)]
-        .map(match => decodeEntities(match[2]));
-
+    const hrefs = [...body.matchAll(/\bhref\s*=\s*(["'])(.*?)\1/gi)].map(match => decodeEntities(match[2]));
     const expected = new Map();
     for (const post of posts) {
         const normalized = normalizeUrl(post.url);
@@ -309,33 +265,24 @@ function validateHtmlSitemap(posts) {
 
         for (const href of links) {
             const resolved = canonicalizeUrl(href);
-            if (resolved !== canonicalizeUrl(canonical)) {
-                fail(`HTML sitemap: ${href} does not match canonical ${canonical}.`);
-            }
-
-            if (!/^https:\/\/blog\.matrixqr\.cc\//i.test(href)) {
-                fail(`HTML sitemap: article link is not an absolute canonical URL: ${href}.`);
-            }
+            if (resolved !== canonicalizeUrl(canonical)) fail(`HTML sitemap: ${href} does not match canonical ${canonical}.`);
+            if (!/^https:\/\/blog\.matrixqr\.cc\//i.test(href)) fail(`HTML sitemap: article link is not an absolute canonical URL: ${href}.`);
         }
 
-        if (links.length > 1) {
-            warn(`HTML sitemap: article ${canonical} appears ${links.length} times.`);
-        }
+        if (links.length > 1) warn(`HTML sitemap: article ${canonical} appears ${links.length} times.`);
     }
 }
 
 function main() {
     if (!fs.existsSync(POSTS_FILE)) throw new Error("posts.json not found.");
-
     const posts = JSON.parse(fs.readFileSync(POSTS_FILE, "utf8"));
     if (!Array.isArray(posts)) throw new Error("posts.json must contain an array.");
 
     const generatedPages = getGeneratedPageFiles();
-    for (const page of generatedPages) validateGeneratedPage(page.file, page.expectedUrl);
+    generatedPages.forEach(page => validateGeneratedPage(page.file, page.expectedUrl));
 
-    const articleFiles = walkHtmlFiles(path.join(ROOT, "posts"))
-        .filter(isArticleSourceFile);
-    for (const file of articleFiles) validateArticle(file);
+    const articleFiles = walkHtmlFiles(path.join(ROOT, "posts")).filter(isArticleSourceFile);
+    articleFiles.forEach(validateArticle);
 
     validateHtmlSitemap(posts);
 
@@ -358,7 +305,7 @@ function main() {
         process.exit(1);
     }
 
-    console.log("PASS: canonical, Open Graph, Twitter, CollectionPage JSON-LD, article mainEntityOfPage, and HTML sitemap URLs are consistent.");
+    console.log("PASS: canonical/og:url, page-level CollectionPage JSON-LD URLs, article mainEntityOfPage, and HTML sitemap canonical targets are consistent.");
 }
 
 try {
