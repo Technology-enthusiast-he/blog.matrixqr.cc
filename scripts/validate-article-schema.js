@@ -87,6 +87,7 @@ function main() {
         const canonical = canonicalMatch
             ? (canonicalMatch[0].match(/\bhref=["']([^"']+)["']/i) || [])[1]
             : "";
+        if (!canonical) failures.push(`${relative}: missing canonical link`);
 
         for (const article of articles) {
             checked += 1;
