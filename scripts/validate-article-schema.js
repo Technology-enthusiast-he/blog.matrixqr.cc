@@ -63,6 +63,26 @@ function normalizeUrl(value) {
     }
 }
 
+function normalizeText(value) {
+    return String(value || "")
+        .replace(/&amp;/gi, "&")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;/gi, "'")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/<[^>]*>/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+}
+
+function getVisibleText(html) {
+    return normalizeText(
+        html
+            .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+            .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    );
+}
+
 function main() {
     const files = walk(POSTS_DIR);
     const failures = [];
@@ -73,6 +93,7 @@ function main() {
         const html = fs.readFileSync(filePath, "utf8");
         const blocks = getJsonLdBlocks(html, relative);
         const schemas = blocks.flatMap(flattenSchema);
+        const visibleText = getVisibleText(html);
         const articles = schemas.filter(item => {
             const types = Array.isArray(item["@type"]) ? item["@type"] : [item["@type"]];
             return types.some(type => ARTICLE_TYPES.has(type));
@@ -88,6 +109,19 @@ function main() {
             ? (canonicalMatch[0].match(/\bhref=["']([^"']+)["']/i) || [])[1]
             : "";
         if (!canonical) failures.push(`${relative}: missing canonical link`);
+
+        for (const faq of schemas.filter(item => item["@type"] === "FAQPage")) {
+            for (const question of faq.mainEntity || []) {
+                const questionText = normalizeText(question.name);
+                const answerText = normalizeText(question.acceptedAnswer && question.acceptedAnswer.text);
+                if (questionText && !visibleText.includes(questionText)) {
+                    failures.push(`${relative}: FAQPage question is not visible in the article: ${question.name}`);
+                }
+                if (answerText && !visibleText.includes(answerText)) {
+                    failures.push(`${relative}: FAQPage answer is not visible in the article: ${question.name}`);
+                }
+            }
+        }
 
         for (const article of articles) {
             checked += 1;
