@@ -537,6 +537,14 @@
                     <h3 class="text-lg font-bold text-slate-100 mb-2">Why does CORS matter for Canvas image processing?</h3>
                     <p class="text-slate-300">When an image from another origin is drawn without required CORS permissions, the browser marks the Canvas as tainted, blocking pixel export for safety.</p>
                 </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Can digital menu QR images be processed without sending them to a server?</h3>
+                    <p class="text-slate-300">Yes. When the workflow is implemented entirely in the browser using client-side scripts, assets are processed locally without requiring a server-side image-processing endpoint.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-100 mb-2">Should we use toBlob() or toDataURL() for exported images?</h3>
+                    <p class="text-slate-300">For many export workflows, toBlob() is preferable because it avoids encoding the entire image as a large in-memory string. toDataURL() is useful for small images and simple data-URL workflows.</p>
+                </div>
             </div>
 
             <h2>Related Guides & Next Steps</h2>
