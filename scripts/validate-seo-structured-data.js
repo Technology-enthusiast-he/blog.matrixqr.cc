@@ -1,0 +1,369 @@
+const fs = require("fs");
+const path = require("path");
+
+const ROOT = path.join(__dirname, "..");
+const SITE_ORIGIN = "https://blog.matrixqr.cc";
+const POSTS_FILE = path.join(ROOT, "posts.json");
+const HTML_SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
+
+const errors = [];
+const warnings = [];
+
+function fail(message) {
+    errors.push(message);
+}
+
+function warn(message) {
+    warnings.push(message);
+}
+
+function decodeEntities(value = "") {
+    return String(value)
+        .replace(/&amp;/g, "&")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&apos;/g, "'")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">");
+}
+
+function normalizeUrl(value) {
+    try {
+        const url = new URL(decodeEntities(value), SITE_ORIGIN);
+        if (url.origin !== SITE_ORIGIN) return "";
+        let pathname = url.pathname;
+        try { pathname = decodeURIComponent(pathname); } catch {}
+        return pathname.replace(/\/+$/, "").toLowerCase() || "/";
+    } catch {
+        return "";
+    }
+}
+
+function canonicalizeUrl(value) {
+    try {
+        const url = new URL(decodeEntities(value), SITE_ORIGIN);
+        if (url.origin !== SITE_ORIGIN) return "";
+        let pathname = url.pathname.replace(/\/+$/, "") || "/";
+        return SITE_ORIGIN + pathname;
+    } catch {
+        return "";
+    }
+}
+
+function extractCanonical(html) {
+    const match = html.match(
+        /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i
+    );
+    return match ? decodeEntities(match[1]) : "";
+}
+
+function extractMeta(html, attribute, key) {
+    const tags = html.match(/<meta\b[^>]*>/gi) || [];
+    const tag = tags.find(item => {
+        const match = item.match(new RegExp("\\b" + attribute + "\\s*=\\s*([\"'])(.*?)\\1", "i"));
+        return match && match[2].toLowerCase() === key.toLowerCase();
+    });
+    if (!tag) return "";
+    const content = tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i);
+    return content ? decodeEntities(content[2]) : "";
+}
+
+function extractTitle(html) {
+    const match = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+    return match ? decodeEntities(match[1].trim()) : "";
+}
+
+function extractJsonLd(html) {
+    const blocks = [];
+
+    for (const match of html.matchAll(
+        /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+    )) {
+        try {
+            blocks.push(JSON.parse(match[1].trim()));
+        } catch {
+            fail("Invalid JSON-LD block found in a page.");
+        }
+    }
+
+    return blocks;
+}
+
+function flattenJsonLd(value) {
+    const nodes = [];
+
+    const visit = node => {
+        if (!node || typeof node !== "object") return;
+        if (Array.isArray(node)) {
+            node.forEach(visit);
+            return;
+        }
+        nodes.push(node);
+        if (Array.isArray(node["@graph"])) node["@graph"].forEach(visit);
+    };
+
+    visit(value);
+    return nodes;
+}
+
+function getTypes(node) {
+    return Array.isArray(node?.["@type"])
+        ? node["@type"]
+        : [node?.["@type"]];
+}
+
+function isArticleNode(node) {
+    return getTypes(node).some(type => type === "Article" || type === "BlogPosting");
+}
+
+function isCollectionPageNode(node) {
+    return getTypes(node).includes("CollectionPage");
+}
+
+function getMainEntityUrl(node) {
+    const value = node?.mainEntityOfPage;
+    if (typeof value === "string") return value;
+    if (value && typeof value === "object") return value["@id"] || value.url || "";
+    return "";
+}
+
+function getGeneratedPageFiles() {
+    const pages = [];
+
+    const addNumericPages = (root, prefix) => {
+        if (!fs.existsSync(root)) return;
+        for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
+            if (!entry.isDirectory() || !/^\d+$/.test(entry.name)) continue;
+            const file = path.join(root, entry.name, "index.html");
+            if (!fs.existsSync(file)) continue;
+            pages.push({
+                file,
+                expectedUrl: `${SITE_ORIGIN}${prefix}${entry.name}/`
+            });
+        }
+    };
+
+    const homepage = path.join(ROOT, "index.html");
+    if (fs.existsSync(homepage)) pages.push({ file: homepage, expectedUrl: SITE_ORIGIN + "/" });
+
+    addNumericPages(path.join(ROOT, "page"), "/page/");
+
+    const archive = path.join(ROOT, "posts", "index.html");
+    if (fs.existsSync(archive)) pages.push({ file: archive, expectedUrl: SITE_ORIGIN + "/posts/" });
+
+    addNumericPages(path.join(ROOT, "posts", "page"), "/posts/page/");
+
+    return pages;
+}
+
+function validateGeneratedPage(file, expectedUrl) {
+    const html = fs.readFileSync(file, "utf8");
+    const label = path.relative(ROOT, file);
+    const canonical = canonicalizeUrl(extractCanonical(html));
+    const expectedCanonical = canonicalizeUrl(expectedUrl);
+
+    if (!canonical) {
+        fail(`${label}: missing or invalid canonical URL.`);
+    } else if (canonical !== expectedCanonical) {
+        fail(`${label}: canonical is ${canonical}, expected ${expectedCanonical}.`);
+    }
+
+    const ogUrl = canonicalizeUrl(extractMeta(html, "property", "og:url"));
+    if (!ogUrl) {
+        fail(`${label}: missing or invalid og:url.`);
+    } else if (ogUrl !== expectedCanonical) {
+        fail(`${label}: og:url is ${ogUrl}, expected ${expectedCanonical}.`);
+    }
+
+    const title = extractTitle(html);
+    const ogTitle = extractMeta(html, "property", "og:title");
+    const twitterTitle = extractMeta(html, "name", "twitter:title");
+    if (!ogTitle) fail(`${label}: missing og:title.`);
+    if (!twitterTitle) fail(`${label}: missing twitter:title.`);
+    if (title && ogTitle && title !== ogTitle) fail(`${label}: title and og:title differ.`);
+    if (title && twitterTitle && title !== twitterTitle) fail(`${label}: title and twitter:title differ.`);
+
+    const description = extractMeta(html, "name", "description");
+    const ogDescription = extractMeta(html, "property", "og:description");
+    const twitterDescription = extractMeta(html, "name", "twitter:description");
+    if (!description) fail(`${label}: missing meta description.`);
+    if (!ogDescription) fail(`${label}: missing og:description.`);
+    if (!twitterDescription) fail(`${label}: missing twitter:description.`);
+    if (description && ogDescription && description !== ogDescription) fail(`${label}: meta description and og:description differ.`);
+    if (description && twitterDescription && description !== twitterDescription) fail(`${label}: meta description and twitter:description differ.`);
+
+    const collectionNodes = extractJsonLd(html)
+        .flatMap(flattenJsonLd)
+        .filter(isCollectionPageNode);
+
+    if (collectionNodes.length === 0) {
+        fail(`${label}: no CollectionPage JSON-LD node found.`);
+    }
+
+    for (const node of collectionNodes) {
+        const nodeUrl = canonicalizeUrl(node.url || node["@id"] || "");
+        if (!nodeUrl || nodeUrl !== expectedCanonical) {
+            fail(`${label}: CollectionPage JSON-LD URL is ${node.url || node["@id"] || "missing"}, expected ${expectedCanonical}.`);
+        }
+
+        if (title && node.name && node.name !== title) {
+            fail(`${label}: CollectionPage name differs from <title>.`);
+        }
+
+        if (description && node.description && node.description !== description) {
+            fail(`${label}: CollectionPage description differs from meta description.`);
+        }
+    }
+
+    return html;
+}
+
+function walkHtmlFiles(dir) {
+    if (!fs.existsSync(dir)) return [];
+    const files = [];
+
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) files.push(...walkHtmlFiles(fullPath));
+        else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) files.push(fullPath);
+    }
+
+    return files;
+}
+
+function isArticleSourceFile(file) {
+    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
+    if (relative === "index.html" || relative === "privacy-policy.html") return false;
+    if (/^page\/\d+\/index\.html$/.test(relative)) return false;
+    return true;
+}
+
+function validateArticle(file) {
+    const html = fs.readFileSync(file, "utf8");
+    const label = path.relative(ROOT, file);
+    const canonical = canonicalizeUrl(extractCanonical(html));
+
+    if (!canonical) {
+        fail(`${label}: missing or invalid canonical URL.`);
+        return;
+    }
+
+    const articleNodes = extractJsonLd(html)
+        .flatMap(flattenJsonLd)
+        .filter(isArticleNode);
+
+    if (articleNodes.length === 0) {
+        fail(`${label}: no Article/BlogPosting JSON-LD node found.`);
+        return;
+    }
+
+    for (const node of articleNodes) {
+        const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
+        if (!mainEntityUrl) {
+            fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
+        } else if (mainEntityUrl !== canonical) {
+            fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
+        }
+    }
+}
+
+function validateHtmlSitemap(posts) {
+    if (!fs.existsSync(HTML_SITEMAP_FILE)) {
+        fail("HTML sitemap file is missing: sitemap/index.html");
+        return;
+    }
+
+    const html = fs.readFileSync(HTML_SITEMAP_FILE, "utf8");
+    const start = html.indexOf("<!-- AUTO-SITEMAP-START -->");
+    const end = html.indexOf("<!-- AUTO-SITEMAP-END -->");
+
+    if (start === -1 || end === -1 || end < start) {
+        fail("HTML sitemap: automatic sitemap markers are missing or misplaced.");
+        return;
+    }
+
+    const body = html.slice(start, end);
+    const hrefs = [...body.matchAll(/\bhref\s*=\s*(["'])(.*?)\1/gi)]
+        .map(match => decodeEntities(match[2]));
+
+    const expected = new Map();
+    for (const post of posts) {
+        const normalized = normalizeUrl(post.url);
+        if (normalized) expected.set(normalized, post.url);
+    }
+
+    const actual = new Map();
+    for (const href of hrefs) {
+        const normalized = normalizeUrl(href);
+        if (!normalized || !expected.has(normalized)) continue;
+        if (!actual.has(normalized)) actual.set(normalized, []);
+        actual.get(normalized).push(href);
+    }
+
+    for (const [normalized, canonical] of expected.entries()) {
+        const links = actual.get(normalized) || [];
+        if (links.length === 0) {
+            fail(`HTML sitemap: missing article link for ${canonical}.`);
+            continue;
+        }
+
+        for (const href of links) {
+            const resolved = canonicalizeUrl(href);
+            if (resolved !== canonicalizeUrl(canonical)) {
+                fail(`HTML sitemap: ${href} does not match canonical ${canonical}.`);
+            }
+
+            if (!/^https:\/\/blog\.matrixqr\.cc\//i.test(href)) {
+                fail(`HTML sitemap: article link is not an absolute canonical URL: ${href}.`);
+            }
+        }
+
+        if (links.length > 1) {
+            warn(`HTML sitemap: article ${canonical} appears ${links.length} times.`);
+        }
+    }
+}
+
+function main() {
+    if (!fs.existsSync(POSTS_FILE)) throw new Error("posts.json not found.");
+
+    const posts = JSON.parse(fs.readFileSync(POSTS_FILE, "utf8"));
+    if (!Array.isArray(posts)) throw new Error("posts.json must contain an array.");
+
+    const generatedPages = getGeneratedPageFiles();
+    for (const page of generatedPages) validateGeneratedPage(page.file, page.expectedUrl);
+
+    const articleFiles = walkHtmlFiles(path.join(ROOT, "posts"))
+        .filter(isArticleSourceFile);
+    for (const file of articleFiles) validateArticle(file);
+
+    validateHtmlSitemap(posts);
+
+    console.log("");
+    console.log("======================================");
+    console.log(" MatrixQR SEO & Structured Data Consistency");
+    console.log("======================================");
+    console.log(`Generated archive/homepage pages checked: ${generatedPages.length}`);
+    console.log(`Article pages checked: ${articleFiles.length}`);
+    console.log(`HTML sitemap articles checked: ${posts.length}`);
+
+    if (warnings.length) {
+        console.log("\nWarnings:");
+        warnings.forEach(message => console.warn("- " + message));
+    }
+
+    if (errors.length) {
+        console.error("\nSEO consistency errors:");
+        errors.forEach(message => console.error("- " + message));
+        process.exit(1);
+    }
+
+    console.log("PASS: canonical, Open Graph, Twitter, CollectionPage JSON-LD, article mainEntityOfPage, and HTML sitemap URLs are consistent.");
+}
+
+try {
+    main();
+} catch (error) {
+    console.error("ERROR:", error.message);
+    process.exit(1);
+}
