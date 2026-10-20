@@ -29,6 +29,8 @@ jobs:
           node --check scripts/validate-article-schema.js
           node --check scripts/validate-content-consistency.js
           node --check scripts/validate-pagination-seo.js
+          node --check scripts/sync-generated-page-schema.js
+          node --check scripts/validate-seo-structured-data.js
 
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
@@ -66,7 +68,7 @@ jobs:
           console.log('PASS: source HTML table is represented as a Markdown table.');
           console.log('PASS: third-party Markdown links are removed from LLMs output.');
           "
-      
+
       - name: Check sitemap URL coverage
         run: |
           node -e "
