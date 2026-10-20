@@ -173,39 +173,76 @@ function replacePagination(html, pageNumber, totalPages) {
     );
 }
 
-function setPageMeta(html, pageNumber) {
-    const pageUrl =
-        pageNumber === 1
-            ? `${SITE_ORIGIN}/`
-            : `${SITE_ORIGIN}/page/${pageNumber}/`;
+function getMetaContent(html, attribute, key) {
+    const tags = html.match(/<meta\b[^>]*>/gi) || [];
+    const tag = tags.find(item => {
+        const attr = item.match(new RegExp("\\b" + attribute + "\\s*=\\s*([\"'])(.*?)\\1", "i"));
+        return attr && attr[2].toLowerCase() === key.toLowerCase();
+    });
+    if (!tag) return "";
+    const content = tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i);
+    return content ? content[2] : "";
+}
 
-    html = html.replace(
-        /<link rel="canonical" href="[^"]*"\s*\/?>/i,
-        `<link rel="canonical" href="${pageUrl}">`
-    );
+function upsertMeta(html, attribute, key, content) {
+    const tags = html.match(/<meta\b[^>]*>/gi) || [];
+    const existing = tags.find(item => {
+        const attr = item.match(new RegExp("\\b" + attribute + "\\s*=\\s*([\"'])(.*?)\\1", "i"));
+        return attr && attr[2].toLowerCase() === key.toLowerCase();
+    });
+    const replacement = '<meta ' + attribute + '="' + key + '" content="' + escapeHtml(content) + '" />';
+    if (existing) return html.replace(existing, replacement);
+    return html.replace(/<\/head>/i, "    " + replacement + "\n</head>");
+}
 
-    html = html.replace(
-        /<meta property="og:url" content="[^"]*"\s*\/?>/i,
-        `<meta property="og:url" content="${pageUrl}" />`
-    );
+function setPageMeta(html, pageNumber, totalPages) {
+    const pageUrl = pageNumber === 1
+        ? SITE_ORIGIN + "/"
+        : SITE_ORIGIN + "/page/" + pageNumber + "/";
+    const titleMatch = html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i);
+    const title = pageNumber === 1
+        ? ((titleMatch || [])[1] || "MatrixQR Blog")
+        : "Latest QR Code Articles - Page " + pageNumber + " | MatrixQR Blog";
+    const plainTitle = title.replace(/<[^>]*>/g, "").trim();
+    const baseDescription = getMetaContent(html, "name", "description");
+    const description = pageNumber === 1
+        ? baseDescription
+        : "Browse page " + pageNumber + " of MatrixQR Blog's latest QR code security, privacy, digital menu, and contact QR guides.";
+
+    const canonicalPattern = /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/i;
+    if (canonicalPattern.test(html)) {
+        html = html.replace(canonicalPattern, '<link rel="canonical" href="' + pageUrl + '">');
+    } else {
+        html = html.replace(/<\/head>/i, '    <link rel="canonical" href="' + pageUrl + '">\n</head>');
+    }
+
+    html = upsertMeta(html, "property", "og:url", pageUrl);
+    html = upsertMeta(html, "property", "og:title", plainTitle);
+    html = upsertMeta(html, "property", "og:description", description);
+    html = upsertMeta(html, "name", "twitter:title", plainTitle);
+    html = upsertMeta(html, "name", "twitter:description", description);
+    if (description) html = upsertMeta(html, "name", "description", description);
 
     if (pageNumber > 1) {
-        html = html.replace(
-            /<title>[\s\S]*?<\/title>/i,
-            `<title>Latest QR Code Articles - Page ${pageNumber} | MatrixQR Blog</title>`
-        );
-
+        html = html.replace(/<title\b[^>]*>[\s\S]*?<\/title>/i, "<title>" + escapeHtml(plainTitle) + "</title>");
         if (!html.includes(GENERATED_MARKER)) {
-            html = html.replace(
-                /<\/head>/i,
-                `${GENERATED_MARKER}\n</head>`
-            );
+            html = html.replace(/<\/head>/i, GENERATED_MARKER + "\n</head>");
         }
     }
 
+    html = html.replace(/\s*<link\b(?=[^>]*\brel=["'](?:prev|next)["'])[^>]*>/gi, "");
+    let paginationLinks = "";
+    if (pageNumber > 1) {
+        const previous = pageNumber === 2 ? "/" : "/page/" + (pageNumber - 1) + "/";
+        paginationLinks += '<link rel="prev" href="' + SITE_ORIGIN + previous + '">\n';
+    }
+    if (pageNumber < totalPages) {
+        paginationLinks += '<link rel="next" href="' + SITE_ORIGIN + "/page/" + (pageNumber + 1) + '/">\n';
+    }
+    if (paginationLinks) html = html.replace(/<\/head>/i, "    " + paginationLinks + "</head>");
+
     return html;
 }
-
 function sortNewestFirst(a, b) {
     const dateA = new Date(a.datePublished || 0).getTime();
     const dateB = new Date(b.datePublished || 0).getTime();
@@ -310,6 +347,7 @@ for (const post of posts) {
         totalPages
     );
 
+    updatedHomepage = setPageMeta(updatedHomepage, 1, totalPages);
     fs.writeFileSync(INDEX_FILE, updatedHomepage, "utf8");
 
     // Every pagination page uses the full homepage template.
@@ -320,7 +358,7 @@ for (const post of posts) {
 
         let pageHtml = replaceLatestArticles(homepage, pagePosts);
 
-        pageHtml = setPageMeta(pageHtml, pageNumber);
+        pageHtml = setPageMeta(pageHtml, pageNumber, totalPages);
 
         pageHtml = replacePagination(
             pageHtml,
