@@ -57,12 +57,22 @@ function updateCollectionPageNode(value, pageUrl, title, description) {
             changed = true;
         }
 
-        if (typeof node["@id"] === "string" && node["@id"].includes("#webpage")) {
-            const expectedId = pageUrl + "#webpage";
-            if (node["@id"] !== expectedId) {
-                node["@id"] = expectedId;
-                changed = true;
-            }
+        const expectedId = pageUrl + "#webpage";
+        if (node["@id"] !== expectedId) {
+            node["@id"] = expectedId;
+            changed = true;
+        }
+
+        const desiredPartOf = { "@id": SITE_ORIGIN + "/#website" };
+        if (JSON.stringify(node.isPartOf) !== JSON.stringify(desiredPartOf)) {
+            node.isPartOf = desiredPartOf;
+            changed = true;
+        }
+
+        const desiredPublisher = { "@id": SITE_ORIGIN + "/#organization" };
+        if (JSON.stringify(node.publisher) !== JSON.stringify(desiredPublisher)) {
+            node.publisher = desiredPublisher;
+            changed = true;
         }
 
         if (title && node.name !== title) {
