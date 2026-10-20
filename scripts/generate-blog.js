@@ -199,6 +199,23 @@ const rawCategory =
     jsonLd && jsonLd.articleSection
         ? jsonLd.articleSection.trim().toLowerCase()
         : "general";
+        
+    sourceCategoryCounts.set(
+        rawCategory,
+        (sourceCategoryCounts.get(rawCategory) || 0) + 1
+    );
+
+    if (!jsonLd) {
+        warnings.push(\`${file}: no Article/BlogPosting JSON-LD found; fallback metadata and General category may be used.\`);
+    }
+
+    if (!description.trim()) {
+        warnings.push(\`${file}: missing meta description and JSON-LD description.\`);
+    }
+
+    if (datePublished && Number.isNaN(Date.parse(datePublished))) {
+        warnings.push(\`${file}: invalid datePublished value "\${datePublished}".\`);
+    }
 
 let category = "General";
 
