@@ -84,14 +84,14 @@ function getVisibleText(html) {
 }
 
 function getMetaContent(html, attribute, value) {
-    const tags = html.match(/<meta\\b[^>]*>/gi) || [];
+    const tags = html.match(/<meta[^>]*>/gi) || [];
     const attrPattern = attribute === "property"
-        ? /\\bproperty=["']([^"']*)["']/i
-        : /\\bname=["']([^"']*)["']/i;
+        ? /property=["']([^"']*)["']/i
+        : /name=["']([^"']*)["']/i;
     for (const tag of tags) {
         const attr = tag.match(attrPattern);
         if (attr && attr[1] === value) {
-            const content = tag.match(/\\bcontent=["']([^"']*)["']/i);
+            const content = tag.match(/content=["']([^"']*)["']/i);
             return content ? content[1].trim() : "";
         }
     }
