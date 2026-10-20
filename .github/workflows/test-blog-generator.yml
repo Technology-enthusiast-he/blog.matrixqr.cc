@@ -31,6 +31,7 @@ jobs:
           node --check scripts/validate-pagination-seo.js
           node --check scripts/sync-generated-page-schema.js
           node --check scripts/validate-seo-structured-data.js
+          node --check scripts/audit-site-architecture.js
 
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
