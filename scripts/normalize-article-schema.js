@@ -170,6 +170,7 @@ function main() {
     const files = walk(POSTS_DIR);
     let changedFiles = 0;
     let replacements = 0;
+    let linkedNodes = 0;
 
     for (const file of files) {
         const original = fs.readFileSync(file, "utf8");
