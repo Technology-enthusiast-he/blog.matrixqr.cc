@@ -24,9 +24,13 @@ jobs:
         run: |
           node --check scripts/generate-llms.js
           node --check scripts/filter-llms-external-links.js
+          node --check scripts/inject-topic-cluster-links.js
 
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
+
+      - name: Test topic-cluster internal links
+        run: npm run test:topic-links
 
       - name: Install build dependencies
         run: npm install --no-package-lock
