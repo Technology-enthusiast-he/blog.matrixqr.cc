@@ -20,7 +20,9 @@ function fail(message) {
 function normalizeUrl(value) {
   if (!value) return "";
   try {
-    const parsed = new URL(String(value).replace(/&amp;/g, "&"), SITE_ORIGIN);
+    const raw = String(value).replace(/&amp;/g, "&").trim();
+    const parsed = new URL(raw, SITE_ORIGIN);
+    if (parsed.origin !== SITE_ORIGIN) return "";
     let pathname = parsed.pathname;
     try {
       pathname = decodeURIComponent(pathname);
