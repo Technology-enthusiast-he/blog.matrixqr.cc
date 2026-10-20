@@ -108,7 +108,7 @@
               "name": "Will adding a logo make my QR code hard to scan?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. By utilizing high Error Correction Levels (ECC Level H or Q), up to 30% of the QR code data can be obscured by a central logo without affecting smartphone camera scan readability."
+                "text": "No, provided correct Error Correction Levels are configured. MatrixQR automatically applies Level H Error Correction when a central logo is attached, enabling up to 30% of damaged or covered code matrix data to be accurately recovered by cameras."
               }
             },
             {
@@ -116,15 +116,15 @@
               "name": "Can I track how many people scan my QR code?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. Selecting a Dynamic QR Code on MatrixQR allows tracking scan analytics including total scan counts, device operating systems, and geographic regions."
+                "text": "Yes. By choosing a Dynamic QR Code on MatrixQR, you gain access to privacy-compliant scan metrics including scan counts, device operating systems, and basic referral regions."
               }
             },
             {
               "@type": "Question",
-              "name": "Are my uploaded logo and data safe on MatrixQR?",
+              "name": "Are my logo and target links safe from server data leaks?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. MatrixQR operates on a privacy-first, client-side browser architecture. Your uploaded image logos and target links are processed directly within your browser DOM without being uploaded to remote servers."
+                "text": "Yes. MatrixQR utilizes client-side Web Content API architecture. Static QR code rendering occurs directly inside your local browser instance without uploading confidential media files to third-party databases."
               }
             }
           ]

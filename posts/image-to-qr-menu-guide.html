@@ -102,15 +102,15 @@
             "name": "Do image QR codes generated via MatrixQR ever expire?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. MatrixQR generates standard static QR codes locally in your browser. Because they link directly to your image URL without passing through an intermediate redirect server, they remain valid indefinitely."
+              "text": "No. MatrixQR generates pure static QR codes locally inside your browser. Because the encoded payload points directly to your destination image URL without passing through redirection servers, the QR code remains valid permanently."
             }
           },
           {
             "@type": "Question",
-            "name": "How do I update my menu image without changing the printed QR code?",
+            "name": "How do I update my menu picture without re-printing table stickers?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Host your menu image on a consistent URL on your website or cloud storage. When updating your menu items or prices, simply replace the file on your server while keeping the same file URL. The existing printed QR codes will automatically display your new menu image."
+              "text": "Keep your menu image URL constant on your web host or storage. Whenever menu items change, re-upload the new picture using the exact same file name and path. Scans will instantly render the updated image."
             }
           }
         ]

@@ -92,23 +92,23 @@
             "name": "Do static QR codes ever expire?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No, static QR codes never expire. The payload data is hardcoded into the QR code matrix itself, so it works permanently without relying on external server redirection."
+              "text": "No, static QR codes do not expire. Because the data payload is hardcoded into the matrix pattern itself, the code remains functional indefinitely."
             }
           },
           {
             "@type": "Question",
-            "name": "Are static QR codes safer for user privacy?",
+            "name": "Are static QR codes safer for privacy?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Static QR codes do not pass through intermediate tracking servers or analytics redirectors. When generated via client-side tools like MatrixQR, no user data or IP addresses are logged."
+              "text": "Yes. Static QR codes do not route scans through intermediate tracking servers or analytics services, ensuring user scans remain private."
             }
           },
           {
             "@type": "Question",
-            "name": "Can you track scans on a static QR code?",
+            "name": "Can I track scans on a static QR code?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. Because static QR codes directly open the embedded target URL or text without an intermediate routing server, they offer no built-in scan tracking or analytics."
+              "text": "No, static QR codes cannot natively track scans without redirecting through a tracking server (which would turn it into a dynamic QR code)."
             }
           }
         ]
