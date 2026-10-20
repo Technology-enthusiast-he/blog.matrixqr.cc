@@ -53,11 +53,16 @@ function markerRange(html, start, end) {
 
 function extractArticleUrls(html, knownUrls) {
   const found = new Set();
-  const hrefPattern = /\bhref\s*=\s*["']([^"']+)["']/gi;
-  let match;
-  while ((match = hrefPattern.exec(html)) !== null) {
-    const url = normalizeUrl(match[1]);
-    if (knownUrls.has(url)) found.add(url);
+  const articlePattern = /<article\\b[^>]*>[\\s\\S]*?<\\/article>/gi;
+  const hrefPattern = /\\bhref\\s*=\\s*["']([^"']+)["']/gi;
+  let articleMatch;
+  while ((articleMatch = articlePattern.exec(html)) !== null) {
+    let linkMatch;
+    hrefPattern.lastIndex = 0;
+    while ((linkMatch = hrefPattern.exec(articleMatch[0])) !== null) {
+      const url = normalizeUrl(linkMatch[1]);
+      if (knownUrls.has(url)) found.add(url);
+    }
   }
   return found;
 }
