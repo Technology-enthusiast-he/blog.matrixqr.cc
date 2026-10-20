@@ -53,8 +53,8 @@ function markerRange(html, start, end) {
 
 function extractArticleUrls(html, knownUrls) {
   const found = new Set();
-  const articlePattern = /<article\\b[^>]*>[\\s\\S]*?<\\/article>/gi;
-  const hrefPattern = /\\bhref\\s*=\\s*["']([^"']+)["']/gi;
+  const articlePattern = /<article\b[^>]*>[\s\S]*?<\/article>/gi;
+  const hrefPattern = /\bhref\s*=\s*["']([^"']+)["']/gi;
   let articleMatch;
   while ((articleMatch = articlePattern.exec(html)) !== null) {
     let linkMatch;
