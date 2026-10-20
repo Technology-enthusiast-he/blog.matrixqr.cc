@@ -206,15 +206,15 @@ const rawCategory =
     );
 
     if (!jsonLd) {
-        warnings.push(\`${file}: no Article/BlogPosting JSON-LD found; fallback metadata and General category may be used.\`);
+        warnings.push(file + ": no Article/BlogPosting JSON-LD found; fallback metadata and General category may be used.");
     }
 
     if (!description.trim()) {
-        warnings.push(\`${file}: missing meta description and JSON-LD description.\`);
+        warnings.push(file + ": missing meta description and JSON-LD description.");
     }
 
     if (datePublished && Number.isNaN(Date.parse(datePublished))) {
-        warnings.push(\`${file}: invalid datePublished value "\${datePublished}".\`);
+        warnings.push(file + ": invalid datePublished value \"" + datePublished + "\".");
     }
 
 let category = "General";
@@ -273,7 +273,7 @@ if (
         continue;
     }
 
-    const normalizedCanonical = canonical.trim().replace(/\\/+$/, "").toLowerCase();
+    const normalizedCanonical = canonical.trim().replace(/\/+$/, "").toLowerCase();
     if (canonicalUrlFiles.has(normalizedCanonical)) {
         warnings.push(`duplicate canonical URL "${canonical}" in ${canonicalUrlFiles.get(normalizedCanonical)} and ${file}.`);
     } else {
