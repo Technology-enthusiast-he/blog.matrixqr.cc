@@ -235,6 +235,17 @@ function replaceBetween(html, startMarker, endMarker, content) {
     );
 }
 
+function upsertMetaTag(html, attribute, key, value) {
+    const tags = html.match(/<meta\b[^>]*>/gi) || [];
+    const existing = tags.find(tag => {
+        const match = tag.match(new RegExp("\\b" + attribute + "\\s*=\\s*([\"'])(.*?)\\1", "i"));
+        return match && match[2].toLowerCase() === key.toLowerCase();
+    });
+    const replacement = '<meta ' + attribute + '="' + key + '" content="' + escapeHtml(value) + '">';
+    if (existing) return html.replace(existing, replacement);
+    return html.replace(/<\/head>/i, "    " + replacement + "\n</head>");
+}
+
 function updateSeo(html, page, totalPages) {
     const canonicalPath = page === 1
         ? "/posts/"
@@ -303,6 +314,12 @@ function updateSeo(html, page, totalPages) {
     if (extraLinks) {
         html = html.replace(/<\/head>/i, `    ${extraLinks}</head>`);
     }
+
+    html = upsertMetaTag(html, "property", "og:url", SITE_URL + canonicalPath);
+    html = upsertMetaTag(html, "property", "og:title", title);
+    html = upsertMetaTag(html, "property", "og:description", description);
+    html = upsertMetaTag(html, "name", "twitter:title", title);
+    html = upsertMetaTag(html, "name", "twitter:description", description);
 
     return html;
 }

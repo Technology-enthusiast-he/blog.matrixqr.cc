@@ -28,6 +28,7 @@ jobs:
           node --check scripts/normalize-article-schema.js
           node --check scripts/validate-article-schema.js
           node --check scripts/validate-content-consistency.js
+          node --check scripts/validate-pagination-seo.js
 
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
