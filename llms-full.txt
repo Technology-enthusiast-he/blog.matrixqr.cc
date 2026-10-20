@@ -286,7 +286,7 @@ Ready to create your private link barcode? Launch [MatrixQR](https://www.matrixq
 
 - URL: https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization
 - Published: 2026-09-30T08:00:00+00:00
-- Updated: 2026-10-07T08:00:00+00:00
+- Updated: 2026-10-20T00:00:00+00:00
 - Category: QR Code Security & Privacy
 - Description: Secure digital menu QR codes using client-side Canvas image sanitization. Keep image processing in the browser to ensure zero data upload and full privacy.
 
@@ -845,7 +845,7 @@ Ready to create secure, branded QR codes? Launch [MatrixQR Studio](https://www.m
 
 - URL: https://blog.matrixqr.cc/posts/image-to-qr-menu-guide
 - Published: 2026-09-07T08:00:00+00:00
-- Updated: 2026-10-07T10:00:00+00:00
+- Updated: 2026-10-20T00:00:00+00:00
 - Category: General
 - Description: Convert menu images into scannable QR codes for free. 100% privacy-first, client-side browser generator with zero subscriptions. Perfect for restaurants.
 
@@ -930,7 +930,7 @@ Providing a seamless digital dining experience does not require expensive softwa
 
 - URL: https://blog.matrixqr.cc/posts/static-vs-dynamic-qr
 - Published: 2026-08-21T08:00:00+00:00
-- Updated: 2026-10-07T08:00:00+00:00
+- Updated: 2026-10-20T00:00:00+00:00
 - Category: General
 - Description: Compare static vs dynamic QR codes. Discover key differences in privacy, pricing, and security to choose the best QR architecture for your business.
 
@@ -1130,7 +1130,7 @@ Creating an **international vCard QR Code for Apple Wallet** bridges the gap bet
 
 - URL: https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes
 - Published: 2026-08-12T08:00:00+00:00
-- Updated: 2026-10-07T08:00:00+00:00
+- Updated: 2026-10-20T00:00:00+00:00
 - Category: General
 - Description: Explore the key pros and cons of static QR codes. Learn how static vs dynamic QR codes compare in privacy, lifetime, security, and cost for your business.
 
