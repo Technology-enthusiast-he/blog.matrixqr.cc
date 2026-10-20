@@ -134,7 +134,7 @@ function main() {
         if (ogImage && twitterImage && normalizeUrl(ogImage) !== normalizeUrl(twitterImage)) {
             failures.push(`${relative}: og:image and twitter:image do not match`);
         }
-        if (ogImage && /\\/og-cover\\.png(?:$|[?#])/i.test(ogImage)) {
+        if (ogImage && ogImage.toLowerCase().includes("/og-cover.png")) {
             failures.push(`${relative}: article is using the generic og-cover image instead of an article-specific preview`);
         }
         if (!ogImageAlt) failures.push(`${relative}: missing og:image:alt`);
