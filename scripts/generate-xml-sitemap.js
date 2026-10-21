@@ -53,7 +53,8 @@ function main() {
     }
 
     // Homepage and article URLs.
-    addUrl(SITE_URL + "/", new Date().toISOString());
+    // Do not use the build time as homepage lastmod; builds can run without homepage content changing.
+    addUrl(SITE_URL + "/");
 
     for (const post of posts) {
         // The privacy policy is intentionally excluded from the XML sitemap.
