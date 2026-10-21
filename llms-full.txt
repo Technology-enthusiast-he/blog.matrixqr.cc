@@ -515,7 +515,7 @@ When users encounter an unbranded QR code in public, they may be cautious about 
 
 - **Browser-Side Logo Processing:** When logo composition runs locally in HTML5 Canvas, the image used for that step can stay in the browser instead of being uploaded to a QR-generation server. This does not by itself describe hosting logs, analytics, or the destination website's data practices.
 
-- **Brand Recognition:** A familiar logo can support brand recognition, but it does not authenticate the QR destination or prove that the linked website is safe.
+- **Clear Trust Boundaries:** A familiar logo can support recognition, but it does not authenticate the QR destination or prove that the linked website is safe.
 
 ## Static vs. Dynamic QR Codes: Which Should You Choose?
 
@@ -535,7 +535,7 @@ Dynamic QR codes may suit campaigns that need destination editing or provider an
 
 ## Key Best Practices for Designing Scannable QR Codes
 
-While customizing your QR code with logos and colors is effective, maintaining scannability is paramount according to ISO/IEC 18004 QR Code standards. Follow these practical design guidelines:
+While customizing your QR code with logos and colors is effective, maintaining scannability is essential. Follow these practical design guidelines:
 
 ### 1. Maintain High Color Contrast
 
