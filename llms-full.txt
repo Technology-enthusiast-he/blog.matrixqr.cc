@@ -188,7 +188,7 @@ A QR code generator's data practices depend on how it handles the entered URL an
 
 💡 Explore Other Client-Side Generators
 
-Need more than web address barcodes? Check out our guides on creating [privacy-first customizable QR codes](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization), or generate [WiFi credentials & vCard digital business cards](https://www.matrixqr.cc/) with QR payload processing in the browser; hosting and analytics are separate from the encoding step.
+Need more than web address barcodes? Check out our guides on creating [customizable QR codes](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization), or generate [WiFi credentials & vCard digital business cards](https://www.matrixqr.cc/) with QR payload processing in the browser; hosting and analytics are separate from the encoding step.
 
 ## The Hidden Risk of Traditional Online Link Generators
 
@@ -484,7 +484,7 @@ Explore more technical guides from our privacy-first QR engineering team:
 - Category: Digital Menu & Branding
 - Description: Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
 
-Guides & Privacy-First Branding
+Guides & QR Code Branding
 
 🔥 Hot
 
