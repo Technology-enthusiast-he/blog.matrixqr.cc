@@ -140,13 +140,27 @@ function linkArticleEntities(html) {
 
                 const nodeTypes = Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]];
                 if (nodeTypes.some(type => ["Article", "BlogPosting", "NewsArticle"].includes(type))) {
-                    const desiredPartOf = { "@id": WEBSITE_ID };
+                    const desiredPartOf = {
+                        "@type": "WebSite",
+                        "@id": WEBSITE_ID,
+                        "url": SITE_ORIGIN + "/",
+                        "name": "MatrixQR Blog"
+                    };
                     if (JSON.stringify(node.isPartOf) !== JSON.stringify(desiredPartOf)) {
                         node.isPartOf = desiredPartOf;
                         changed = true;
                     }
 
-                    const desiredPublisher = { "@id": ORGANIZATION_ID };
+                    const desiredPublisher = {
+                        "@type": "Organization",
+                        "@id": ORGANIZATION_ID,
+                        "name": "MatrixQR Studio",
+                        "url": "https://www.matrixqr.cc/",
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": SITE_ORIGIN + "/favicon-64x64.png"
+                        }
+                    };
                     if (JSON.stringify(node.publisher) !== JSON.stringify(desiredPublisher)) {
                         node.publisher = desiredPublisher;
                         changed = true;
