@@ -688,9 +688,9 @@ Under the customization panel, upload your restaurant logo (PNG, JPG, or SVG).
 Inspect the real-time canvas preview as the central logo auto-aligns with optimal padding.
 
 -
-**Export Print-Ready Vector SVG or PNG:**
+**Export the available file format:**
 
-Click **Download QR Code** to export high-resolution assets for physical tabletop signage.
+Use the available download option, then inspect the exported file and test it at the intended print size before producing tabletop signage.
 
 📌 Technical Verification & First-Hand Testing
 
@@ -701,9 +701,9 @@ Before printing at scale, test the exported QR code with common iOS and Android 
 | Platform | Logo Upload Privacy | Pricing Model | Vector SVG Export | Ideal For |
 | --- | --- | --- | --- | --- |
 | MatrixQR Menu | Browser-side QR and logo rendering; page-level requests may be processed separately | Free QR generation (current offering) | Included free | Restaurants and cafes seeking browser-side rendering |
-| QR Code Monkey | ⚠️ Stored on Remote Server | Freemium Tier | ✅ Included | Marketing agencies |
-| Beaconstac | ⚠️ Stored in Cloud Database | Paid SaaS ($15+/mo) | ⚠️ Paid Plans Only | Enterprise restaurant chains |
-| Unitag | ⚠️ Stored on Remote Server | Freemium Tier | ⚠️ Paid Plans Only | General marketing campaigns |
+| QR Code Monkey | Verify current upload and processing behavior in the provider's documentation or by inspecting network activity | Check current pricing and plan limits directly | Verify current export options | Marketing agencies |
+| Beaconstac | Review current privacy documentation and data-processing terms | Check current pricing and plan limits directly | Verify current export options | Enterprise restaurant chains |
+| Unitag | Verify current upload and processing behavior in the provider's documentation or by inspecting network activity | Check current pricing and plan limits directly | Verify current export options | General marketing campaigns |
 
 ## Related Digital Menu Resources
 
