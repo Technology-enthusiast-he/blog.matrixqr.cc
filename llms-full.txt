@@ -104,6 +104,8 @@ Security is an important consideration whenever a business moves information fro
 
 A customer-facing menu is normally meant to be public, while administrative controls should remain restricted to authorized users. Restaurant owners should confirm where menu files are hosted, who can manage them, which files are publicly accessible, and whether the QR code opens the intended destination. These details depend on the hosting platform and how the menu is published.
 
+The privacy of a digital menu also depends on how its QR code and image assets are created. Read our guide to [browser-side Canvas image sanitization](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization), and compare [static vs. dynamic QR codes](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr) before choosing a setup for your restaurant.
+
 🔐 A Simple Security Checklist
 
 - Use a trusted HTTPS destination for the digital menu.
@@ -323,6 +325,8 @@ If a browser uploads an image to a remote processor, the source file necessarily
 ### Privacy starts with data minimization
 
 The goal is to minimize unnecessary data movement. Local image transformation can reduce exposure to a processing service, but the overall privacy and security posture also depends on page networking, dependencies, validation, and deployment configuration.
+
+These implementation choices matter in practical restaurant workflows, not just in code samples. See [why restaurants may offer QR menus alongside paper menus](https://blog.matrixqr.cc/posts/2026-10/traditional-menus-digital-menu-qr-code), and review [the trade-offs between static and dynamic QR codes](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr) when deciding how a menu destination should work.
 
 ## How Client-Side Canvas Sanitization Works
 
@@ -863,6 +867,8 @@ Offline use depends on whether the required app files and dependencies are avail
 
 Choosing a customizable QR code generator means balancing design options, export quality, pricing, and data handling. MatrixQR’s browser-side generation can reduce the need to send payloads to a generation server, but the reviewed page loads analytics and its SVG export should be inspected before describing the output as true vector artwork. Do not treat client-side processing or an open-source license as proof of complete privacy or legal compliance.
 
+To understand the broader trade-offs, read our comparison of [static vs. dynamic QR codes](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr). If your use case includes a menu image or custom logo, see the technical guide to [client-side Canvas image sanitization](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization).
+
 Ready to create a branded QR code? Launch [MatrixQR Studio](https://www.matrixqr.cc/), review the available export formats, and test the resulting code at its intended size and destination.
 
 ---
@@ -1040,6 +1046,8 @@ A static QR code has no built-in expiry mechanism, but it works only while the c
 Q: Which QR code option is better for privacy compliance (GDPR/CCPA)?
 
 A static URL QR code can reduce data sent to a QR provider because it does not need that provider's redirect endpoint. This does not guarantee legal compliance: the generator, destination website, analytics, and overall data practices still matter.
+
+If visual branding is important, continue with our [guide to privacy-conscious customizable QR generators](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization). For restaurant menus that include logos or images, our technical walkthrough explains [how browser-side Canvas processing can reduce unnecessary image uploads](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization).
 
 ## 7. Related Resources & Guides
 
