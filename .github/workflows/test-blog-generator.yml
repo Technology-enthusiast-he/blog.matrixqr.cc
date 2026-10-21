@@ -32,6 +32,7 @@ jobs:
           node --check scripts/sync-generated-page-schema.js
           node --check scripts/validate-seo-structured-data.js
           node --check scripts/audit-site-architecture.js
+          node --check scripts/validate-sitemap-lastmod.js
 
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
@@ -85,6 +86,9 @@ jobs:
           }
           console.log('PASS: committed sitemap covers all ' + new Set(expectedArticleUrls).size + ' indexed article URLs.');
           NODE
+
+      - name: Validate committed sitemap lastmod dates
+        run: node scripts/validate-sitemap-lastmod.js /tmp/sitemap-before-build.xml
 
       - name: Validate article structured data
         run: npm run test:article-schema
