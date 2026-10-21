@@ -248,7 +248,7 @@ function upsertMetaTag(html, attribute, key, value) {
 
 function syncCollectionPageDescription(html, description) {
     return html.replace(
-        /<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi,
+        /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
         (full, jsonText) => {
             let value;
             try {
@@ -276,7 +276,7 @@ function syncCollectionPageDescription(html, description) {
 
             visit(value);
             return changed
-                ? full.replace(jsonText, "\\n" + JSON.stringify(value, null, 2) + "\\n")
+                ? full.replace(jsonText, "\n" + JSON.stringify(value, null, 2) + "\n")
                 : full;
         }
     );
