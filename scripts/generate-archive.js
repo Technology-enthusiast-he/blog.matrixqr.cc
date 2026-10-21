@@ -246,6 +246,42 @@ function upsertMetaTag(html, attribute, key, value) {
     return html.replace(/<\/head>/i, "    " + replacement + "\n</head>");
 }
 
+function syncCollectionPageDescription(html, description) {
+    return html.replace(
+        /<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>([\\s\\S]*?)<\\/script>/gi,
+        (full, jsonText) => {
+            let value;
+            try {
+                value = JSON.parse(jsonText.trim());
+            } catch {
+                return full;
+            }
+
+            let changed = false;
+            const visit = node => {
+                if (!node || typeof node !== "object") return;
+                if (Array.isArray(node)) {
+                    node.forEach(visit);
+                    return;
+                }
+
+                const types = Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]];
+                if (types.includes("CollectionPage") && node.description !== description) {
+                    node.description = description;
+                    changed = true;
+                }
+
+                if (Array.isArray(node["@graph"])) node["@graph"].forEach(visit);
+            };
+
+            visit(value);
+            return changed
+                ? full.replace(jsonText, "\\n" + JSON.stringify(value, null, 2) + "\\n")
+                : full;
+        }
+    );
+}
+
 function updateSeo(html, page, totalPages) {
     const canonicalPath = page === 1
         ? "/posts/"
@@ -320,6 +356,8 @@ function updateSeo(html, page, totalPages) {
     html = upsertMetaTag(html, "property", "og:description", description);
     html = upsertMetaTag(html, "name", "twitter:title", title);
     html = upsertMetaTag(html, "name", "twitter:description", description);
+    // Keep CollectionPage structured data aligned with the same generated archive description.
+    html = syncCollectionPageDescription(html, description);
 
     return html;
 }
