@@ -825,7 +825,7 @@ Choose your target format (URL, encrypted WiFi credentials, vCard v3.0 contact d
 Adjust foreground/background hex colors, upload a custom brand logo image, and set module dot patterns.
 
 -
-**Verify First-Hand Network Sandbox (EEAT Test):**
+**Verify Network Activity:**
 
 Open your browser DevTools Network tab (`F12`). Inspect all request types during typing, image selection, generation, and export. The absence of `XHR`/`fetch` requests alone does not rule out requests made through scripts, images, beacons, or other browser APIs.
 
