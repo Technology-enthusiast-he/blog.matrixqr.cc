@@ -93,7 +93,7 @@ jobs:
           if (full.includes('Zero Tracker Guarantee')) throw new Error('Outdated absolute privacy claim remains');
           if (!urls.length) throw new Error('No article URLs were generated');
           if (new Set(urls).size !== urls.length) throw new Error('Duplicate article URLs were generated');
-          if (/\\]\\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) throw new Error('Third-party Markdown link remains in llms-full.txt');
+          if (/\\]\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) throw new Error('Third-party Markdown link remains in llms-full.txt');
           const articleHtml = fs.readFileSync('posts/2026-10/traditional-menus-digital-menu-qr-code.html', 'utf8');
           if (!/<table\\b/i.test(articleHtml)) throw new Error('Table regression fixture has no source HTML table');
           if (!full.includes('| Consideration | Traditional Paper Menu | Digital Menu QR Code |')) throw new Error('HTML table was not converted to a Markdown table');
