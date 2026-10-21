@@ -42,8 +42,49 @@ jobs:
       - name: Install build dependencies
         run: npm install --no-package-lock
 
+      - name: Snapshot committed XML sitemap
+        run: cp sitemap.xml /tmp/sitemap-before-build.xml
+
       - name: Run full site build
         run: npm run build
+
+      - name: Check committed XML sitemap covers every indexed article
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const normalize = (value) => {
+            try {
+              const url = new URL(value.replace(/&amp;/g, '&').trim());
+              const pathname = url.pathname.replace(/\/+$/, '') || '/';
+              return url.origin + pathname;
+            } catch {
+              return value.trim();
+            }
+          };
+          const committedXml = fs.readFileSync('/tmp/sitemap-before-build.xml', 'utf8');
+          const committedUrls = new Set(
+            [...committedXml.matchAll(/<loc>([\s\S]*?)<\/loc>/g)]
+              .map(match => normalize(match[1]))
+          );
+          const posts = JSON.parse(fs.readFileSync('posts.json', 'utf8'));
+          const expectedArticleUrls = posts
+            .filter(post => {
+              try {
+                return new URL(post.url).pathname.replace(/\/+$/, '') !== '/posts/privacy-policy';
+              } catch {
+                return false;
+              }
+            })
+            .map(post => normalize(post.url));
+          const missing = [...new Set(expectedArticleUrls)].filter(url => !committedUrls.has(url));
+          if (missing.length) {
+            throw new Error('Committed sitemap.xml is missing indexed article URL(s): ' + missing.join(', '));
+          }
+          if (!committedUrls.has('https://blog.matrixqr.cc/')) {
+            throw new Error('Committed sitemap.xml is missing the homepage URL.');
+          }
+          console.log('PASS: committed sitemap covers all ' + new Set(expectedArticleUrls).size + ' indexed article URLs.');
+          NODE
 
       - name: Validate article structured data
         run: npm run test:article-schema
