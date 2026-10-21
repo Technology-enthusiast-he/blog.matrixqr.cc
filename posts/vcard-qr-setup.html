@@ -56,7 +56,7 @@
           }
         },
         "datePublished": "2026-08-13T08:00:00+00:00",
-        "dateModified": "2026-10-07T08:00:00+00:00",
+        "dateModified": "2026-10-21T08:00:00+00:00",
         "mainEntityOfPage": {
           "@type": "WebPage",
           "@id": "https://blog.matrixqr.cc/posts/vcard-qr-setup"
@@ -340,7 +340,7 @@
                 <div class="blog-category">vCard & Contact Management</div>
                 <h1>vCard QR Codes and Apple Wallet Passes: Compatibility Guide</h1>
                 <div class="meta-info">
-                    By <strong>MatrixQR Studio</strong> • Published Aug 13, 2026 • Updated Oct 7, 2026 • 7 min read
+                    By <strong>MatrixQR Studio</strong> • Published Aug 13, 2026 • Updated Oct 21, 2026 • 7 min read
                 </div>
             </header>
 
@@ -370,12 +370,12 @@
             </p>
             <ul>
                 <li><strong>Always prefix dialing codes with E.164 formatting:</strong> Structure numbers starting with a plus sign (<code>+</code>) followed by country code, area code, and subscriber number (e.g., <code>+1-415-555-0199</code> for the US or <code>+44-20-7123-4567</code> for the UK).</li>
-                <li><strong>Strip localized trunk prefixes:</strong> Omit local leading zeros inside regional numbers to ensure direct international dialing and WhatsApp messaging compatibility.</li>
+                <li><strong>Strip localized trunk prefixes:</strong> Use the destination country's numbering plan to format the complete international number. Do not remove a leading zero by rule alone; trunk-prefix handling varies by country.</li>
             </ul>
 
             <h2>2. Use vCard 3.0 or 4.0 Formats for Apple iOS Integration</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
-                Apple Wallet and iOS Contacts rely on strict key-value tags defined in <a href="https://datatracker.ietf.org/doc/html/rfc6350" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">IETF RFC 6350 (vCard 4.0 specification)</a>. Older vCard 2.1 formats do not support modern fields like profile pictures, job titles, or social media handles.
+                For contact cards, <a href="https://datatracker.ietf.org/doc/html/rfc6350" target="_blank" rel="noopener noreferrer" class="text-sky-400 underline">IETF RFC 6350</a> specifies vCard 4.0. iOS Contacts can import supported vCard data, but field handling varies by OS version and app. Apple Wallet passes use a separate signed <code>.pkpass</code> format; a vCard payload alone is not a Wallet pass. Check the target platform's current requirements and test the fields you plan to share.
             </p>
             <p class="text-slate-300 leading-relaxed mb-4">Ensure your payload incorporates essential standardized keys:</p>
             <ul>
@@ -416,8 +416,8 @@
                         </tr>
                         <tr>
                             <td><strong>Cross-Platform Compatibility</strong></td>
-                            <td>Universal (iOS, Android, Windows)</td>
-                            <td>Optimized for iOS (Passbook architecture)</td>
+                            <td>Widely supported, but import behavior varies by device and contact app</td>
+                            <td>Apple Wallet only; pass creation, signing, and distribution requirements apply</td>
                         </tr>
                     </tbody>
                 </table>
@@ -465,7 +465,7 @@
 
             <h2>Conclusion</h2>
             <p class="text-slate-300 leading-relaxed">
-                Creating an <strong>international vCard QR Code for Apple Wallet</strong> bridges the gap between physical networking and contactless storage. By leveraging E.164 dialing codes, vCard 3.0/4.0 tags, and dynamic pass structures, you ensure your business contacts are professional, globally compatible, and instantly accessible.
+                Creating an <strong>international vCard QR Code for Apple Wallet</strong> bridges the gap between physical networking and contactless storage. Using internationally formatted phone numbers and standard vCard fields can improve consistency, but compatibility depends on the receiving app and device. Treat a vCard QR code and a signed Apple Wallet pass as separate formats, and test both on your target devices.
             </p>
         </article>
     </main>
