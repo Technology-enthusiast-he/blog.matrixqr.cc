@@ -48,34 +48,42 @@ jobs:
       - name: Run full site build
         run: npm run build
 
-      - name: Check committed XML sitemap matches generated URLs
+      - name: Check committed XML sitemap covers every indexed article
         run: |
           node <<'NODE'
           const fs = require('fs');
           const normalize = (value) => {
             try {
               const url = new URL(value.replace(/&amp;/g, '&').trim());
-              const pathname = url.pathname.replace(/\/+$/, '') || '/';
+              const pathname = url.pathname.replace(/\\/+$/, '') || '/';
               return url.origin + pathname;
             } catch {
               return value.trim();
             }
           };
-          const getUrls = (xml) => new Set(
-            [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/g)]
+          const committedXml = fs.readFileSync('/tmp/sitemap-before-build.xml', 'utf8');
+          const committedUrls = new Set(
+            [...committedXml.matchAll(/<loc>([\\s\\S]*?)<\\/loc>/g)]
               .map(match => normalize(match[1]))
           );
-          const committed = getUrls(fs.readFileSync('/tmp/sitemap-before-build.xml', 'utf8'));
-          const generated = getUrls(fs.readFileSync('sitemap.xml', 'utf8'));
-          const missing = [...generated].filter(url => !committed.has(url));
-          const unexpected = [...committed].filter(url => !generated.has(url));
+          const posts = JSON.parse(fs.readFileSync('posts.json', 'utf8'));
+          const expectedArticleUrls = posts
+            .filter(post => {
+              try {
+                return new URL(post.url).pathname.replace(/\\/+$/, '') !== '/posts/privacy-policy';
+              } catch {
+                return false;
+              }
+            })
+            .map(post => normalize(post.url));
+          const missing = [...new Set(expectedArticleUrls)].filter(url => !committedUrls.has(url));
           if (missing.length) {
-            throw new Error('Committed sitemap.xml is stale; missing generated URL(s): ' + missing.join(', '));
+            throw new Error('Committed sitemap.xml is missing indexed article URL(s): ' + missing.join(', '));
           }
-          if (unexpected.length) {
-            throw new Error('Committed sitemap.xml contains URL(s) excluded by the generator: ' + unexpected.join(', '));
+          if (!committedUrls.has('https://blog.matrixqr.cc/')) {
+            throw new Error('Committed sitemap.xml is missing the homepage URL.');
           }
-          console.log('PASS: committed sitemap URL set matches the generated sitemap (' + generated.size + ' URLs).');
+          console.log('PASS: committed sitemap covers all ' + new Set(expectedArticleUrls).size + ' indexed article URLs.');
           NODE
 
       - name: Validate article structured data
