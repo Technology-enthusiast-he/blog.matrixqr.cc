@@ -112,7 +112,7 @@
             "name": "Is my website address sent to any external server during generation?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. All URL string processing, matrix layout calculation, and image rendering happen entirely within your browser local memory using HTML5 Canvas."
+              "text": "The URL-to-QR encoding step runs in the browser and does not require sending the entered URL to a QR-generation API. The page may still request external assets or analytics, and hosting providers may log page visits."
             }
           },
           {
@@ -366,13 +366,13 @@
             <div class="callout-box">
                 <div class="callout-title">💡 Explore Other Client-Side Generators</div>
                 <p class="text-slate-300 leading-relaxed">
-                    Need more than web address barcodes? Check out our guides on creating <a href="/posts/can-you-recommend-a-qr-code-generator-that-allows-customization">privacy-first customizable QR codes</a>, or generate offline <a href="https://www.matrixqr.cc/">WiFi credentials & vCard digital business cards</a> with zero server logging.
+                    Need more than web address barcodes? Check out our guides on creating <a href="/posts/can-you-recommend-a-qr-code-generator-that-allows-customization">privacy-first customizable QR codes</a>, or generate <a href="https://www.matrixqr.cc/">WiFi credentials & vCard digital business cards</a> with QR payload processing in the browser; hosting and analytics are separate from the encoding step.
                 </p>
             </div>
 
             <h2>The Hidden Risk of Traditional Online Link Generators</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
-                Most cloud-based <strong>free link QR generators</strong> operate on a server-centric architecture. When you enter an address like <code>https://yourdomain.com</code> into a typical SaaS tool, two significant privacy and stability issues arise:
+                Some cloud-based <strong>free link QR generators</strong> process entered URLs on their servers. Before using one, check whether the QR payload is uploaded, whether the code uses an intermediate redirect, and what data the provider logs:
             </p>
             <ul>
                 <li><strong>URL Interception & Analytics Logging:</strong> Remote servers log your destination address, IP timestamp, and campaign intent into external tracking databases.</li>
@@ -474,7 +474,7 @@
                 </div>
                 <div>
                     <h3>Is my website address sent to any external server during generation?</h3>
-                    <p class="text-slate-300 leading-relaxed">No. All URL string processing, matrix layout calculation, and image rendering happen entirely within your browser local memory using HTML5 Canvas.</p>
+                    <p class="text-slate-300 leading-relaxed">The URL-to-QR encoding step runs in the browser and does not require sending the entered URL to a QR-generation API. The page may still request external assets or analytics, and hosting providers may log page visits.</p>
                 </div>
                 <div>
                     <h3>Can I add my company logo to the website link QR code for free?</h3>
