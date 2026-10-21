@@ -535,7 +535,7 @@ Dynamic QR codes may suit campaigns that need destination editing or provider an
 
 ## Key Best Practices for Designing High-Converting QR Codes
 
-While customizing your QR code with logos and colors is effective, maintaining scannability is paramount according to ISO/IEC 18004 QR Code standards. Follow these battle-tested design rules:
+While customizing your QR code with logos and colors is effective, maintaining scannability is paramount according to ISO/IEC 18004 QR Code standards. Follow these practical design guidelines:
 
 ### 1. Maintain High Color Contrast
 
