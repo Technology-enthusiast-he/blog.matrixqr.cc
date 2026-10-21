@@ -55,7 +55,7 @@ jobs:
           const normalize = (value) => {
             try {
               const url = new URL(value.replace(/&amp;/g, '&').trim());
-              const pathname = url.pathname.replace(/\\/+$/, '') || '/';
+              const pathname = url.pathname.replace(/\/+$/, '') || '/';
               return url.origin + pathname;
             } catch {
               return value.trim();
@@ -63,14 +63,14 @@ jobs:
           };
           const committedXml = fs.readFileSync('/tmp/sitemap-before-build.xml', 'utf8');
           const committedUrls = new Set(
-            [...committedXml.matchAll(/<loc>([\\s\\S]*?)<\\/loc>/g)]
+            [...committedXml.matchAll(/<loc>([\s\S]*?)<\/loc>/g)]
               .map(match => normalize(match[1]))
           );
           const posts = JSON.parse(fs.readFileSync('posts.json', 'utf8'));
           const expectedArticleUrls = posts
             .filter(post => {
               try {
-                return new URL(post.url).pathname.replace(/\\/+$/, '') !== '/posts/privacy-policy';
+                return new URL(post.url).pathname.replace(/\/+$/, '') !== '/posts/privacy-policy';
               } catch {
                 return false;
               }
