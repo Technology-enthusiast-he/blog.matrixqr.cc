@@ -42,8 +42,41 @@ jobs:
       - name: Install build dependencies
         run: npm install --no-package-lock
 
+      - name: Snapshot committed XML sitemap
+        run: cp sitemap.xml /tmp/sitemap-before-build.xml
+
       - name: Run full site build
         run: npm run build
+
+      - name: Check committed XML sitemap matches generated URLs
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const normalize = (value) => {
+            try {
+              const url = new URL(value.replace(/&amp;/g, '&').trim());
+              const pathname = url.pathname.replace(/\/+$/, '') || '/';
+              return url.origin + pathname;
+            } catch {
+              return value.trim();
+            }
+          };
+          const getUrls = (xml) => new Set(
+            [...xml.matchAll(/<loc>([\s\S]*?)<\/loc>/g)]
+              .map(match => normalize(match[1]))
+          );
+          const committed = getUrls(fs.readFileSync('/tmp/sitemap-before-build.xml', 'utf8'));
+          const generated = getUrls(fs.readFileSync('sitemap.xml', 'utf8'));
+          const missing = [...generated].filter(url => !committed.has(url));
+          const unexpected = [...committed].filter(url => !generated.has(url));
+          if (missing.length) {
+            throw new Error('Committed sitemap.xml is stale; missing generated URL(s): ' + missing.join(', '));
+          }
+          if (unexpected.length) {
+            throw new Error('Committed sitemap.xml contains URL(s) excluded by the generator: ' + unexpected.join(', '));
+          }
+          console.log('PASS: committed sitemap URL set matches the generated sitemap (' + generated.size + ' URLs).');
+          NODE
 
       - name: Validate article structured data
         run: npm run test:article-schema
@@ -60,7 +93,7 @@ jobs:
           if (full.includes('Zero Tracker Guarantee')) throw new Error('Outdated absolute privacy claim remains');
           if (!urls.length) throw new Error('No article URLs were generated');
           if (new Set(urls).size !== urls.length) throw new Error('Duplicate article URLs were generated');
-          if (/\\]\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) throw new Error('Third-party Markdown link remains in llms-full.txt');
+          if (/\\]\\(https?:\\/\\/(?!blog\\.matrixqr\\.cc|www\\.matrixqr\\.cc|matrixqr\\.cc|menu\\.matrixqr\\.cc)/i.test(full)) throw new Error('Third-party Markdown link remains in llms-full.txt');
           const articleHtml = fs.readFileSync('posts/2026-10/traditional-menus-digital-menu-qr-code.html', 'utf8');
           if (!/<table\\b/i.test(articleHtml)) throw new Error('Table regression fixture has no source HTML table');
           if (!full.includes('| Consideration | Traditional Paper Menu | Digital Menu QR Code |')) throw new Error('HTML table was not converted to a Markdown table');
