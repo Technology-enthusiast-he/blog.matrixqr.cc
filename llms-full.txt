@@ -1083,7 +1083,7 @@ Exchanging contact details during international trade shows, cross-border corpor
 
 ## 1. Standardize Country Codes for Global Compatibility
 
-When sharing contact details across international borders, localized phone numbers (such as `010-1234-5678` or `(02) 8765-4321`) fail when saved by foreign attendees. According to the ITU-T E.164 International Telecommunication standard, phone numbers must follow strict global formatting:
+When sharing contact details across international borders, localized phone numbers (such as `010-1234-5678` or `(02) 8765-4321`) can be ambiguous for people in other regions and may not dial as intended without the correct country code and numbering-plan rules. According to the ITU-T E.164 International Telecommunication standard, phone numbers must follow strict global formatting:
 
 - **Always prefix dialing codes with E.164 formatting:** Structure numbers starting with a plus sign (`+`) followed by country code, area code, and subscriber number (e.g., `+1-415-555-0199` for the US or `+44-20-7123-4567` for the UK).
 
@@ -1109,14 +1109,14 @@ A vCard QR code and an Apple Wallet pass serve different purposes, so they shoul
 
 | Feature | Standard Static vCard QR | Apple Wallet Pass (.pkpass) |
 | --- | --- | --- |
-| Offline Accessibility | After scanning, compatible devices may offer to save the contact; behavior varies by app | Can be added to Wallet if it is a valid, compatible pass |
+| How It Is Used | A compatible scanner or contact app may offer to import the contact; behavior varies by app | A valid, compatible pass must be added to Wallet |
 | Updating Contact Info | Updates depend on the pass provider's supported update mechanism and configuration | May support updates when configured by the pass issuer; not automatic for every pass |
 | Geofenced Lock Screen | Not supported | Location-based suggestions depend on pass configuration, device settings, and platform behavior |
 | Cross-Platform Compatibility | Widely supported, but import behavior varies by device and contact app | Apple Wallet only; pass creation, signing, and distribution requirements apply |
 
 ## 4. Step-by-Step: Sharing vCard Details and Adding a Separate Wallet Pass
 
-Follow these four technical steps to build your international contact QR code:
+If you need both formats, use these steps to prepare contact sharing and a separate Wallet pass:
 
 - **Create the Wallet pass separately:** If you need an Apple Wallet pass, follow Apple's current pass format, signing, and distribution requirements. A vCard QR payload alone is not a signed `.pkpass` package.
 
