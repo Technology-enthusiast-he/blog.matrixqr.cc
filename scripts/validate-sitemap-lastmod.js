@@ -11,7 +11,7 @@ const posts = JSON.parse(fs.readFileSync("posts.json", "utf8"));
 function normalizeUrl(value) {
     try {
         const url = new URL(value.replace(/&amp;/g, "&").trim());
-        url.pathname = url.pathname.replace(/\\/+$/, "") || "/";
+        url.pathname = url.pathname.replace(/\/+$/, "") || "/";
         return url.origin + url.pathname;
     } catch {
         return value.trim();
@@ -19,11 +19,11 @@ function normalizeUrl(value) {
 }
 
 const sitemapEntries = new Map();
-for (const match of sitemapXml.matchAll(/<url>\\s*([\\s\\S]*?)\\s*<\\/url>/g)) {
+for (const match of sitemapXml.matchAll(/<url>\s*([\s\S]*?)\s*<\/url>/g)) {
     const block = match[1];
-    const loc = (block.match(/<loc>([\\s\\S]*?)<\\/loc>/) || [])[1];
+    const loc = (block.match(/<loc>([\s\S]*?)<\/loc>/) || [])[1];
     if (!loc) continue;
-    const lastmod = (block.match(/<lastmod>([\\s\\S]*?)<\\/lastmod>/) || [])[1];
+    const lastmod = (block.match(/<lastmod>([\s\S]*?)<\/lastmod>/) || [])[1];
     sitemapEntries.set(normalizeUrl(loc), lastmod ? lastmod.trim().slice(0, 10) : "");
 }
 
@@ -33,7 +33,7 @@ let checked = 0;
 for (const post of posts) {
     let pathname;
     try {
-        pathname = new URL(post.url).pathname.replace(/\\/+$/, "") || "/";
+        pathname = new URL(post.url).pathname.replace(/\/+$/, "") || "/";
     } catch {
         errors.push("Invalid indexed article URL: " + post.url);
         continue;
