@@ -395,7 +395,7 @@ throw new TypeError("Expected a File or Blob.");
 if (
 !Number.isSafeInteger(width) ||
 !Number.isSafeInteger(height) ||
-width MAX_DIMENSION ||
+width < 1 || height < 1 || width > MAX_DIMENSION ||
 height > MAX_DIMENSION ||
 width * height > MAX_PIXELS
 ) {
@@ -1077,7 +1077,7 @@ A **vCard QR code** stores contact information in a QR code so a compatible phon
 
 Exchanging contact details at events can be easier with a standard vCard QR code, while an Apple Wallet pass follows a different technical workflow. This guide explains phone-number formatting, common vCard fields, and compatibility considerations.
 
-![Step-by-step UI for creating a vCard QR code for contact details](https://blog.matrixqr.cc/posts/images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp)
+![Step-by-step interface for creating a vCard QR code with contact details](https://blog.matrixqr.cc/posts/images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp)
 
 ## 1. Standardize Country Codes for Global Compatibility
 
