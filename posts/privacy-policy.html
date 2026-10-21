@@ -139,7 +139,7 @@
             <header class="header-banner">
                 <div class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2">Legal Information</div>
                 <h1>Privacy Policy</h1>
-                <div class="text-xs text-slate-400">Last updated: August 15, 2026</div>
+                <div class="text-xs text-slate-400">Last updated: October 21, 2026</div>
             </header>
 
             <p class="text-base text-slate-300 mb-4 leading-relaxed">
@@ -149,18 +149,18 @@
             <div class="callout-box">
                 <div class="font-bold text-cyan-400 mb-1">🔒 Client-Side Processing & Secure Media Hosting</div>
                 <p class="text-sm text-slate-300 leading-relaxed">
-                    Standard QR utilities (such as Wi-Fi, vCard, and text generators) operate with <strong>100% client-side processing</strong> in your browser—no data is sent to remote servers. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), user-uploaded menu images or PDFs are stored securely on distributed cloud storage solely to generate scannable access links.
+                    For supported QR-generation workflows, the QR payload can be encoded in your browser without sending the entered content to a dedicated QR-generation endpoint. This describes the payload-encoding step only: the page may still load analytics, scripts, fonts, or other remote assets, and hosting or CDN providers may process ordinary visit requests. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), uploaded menu images or PDFs are stored in cloud object storage so they can be served through public URLs encoded in QR codes.
                 </p>
             </div>
 
             <h2>1. Log Files & Analytics</h2>
             <p class="text-slate-300 leading-relaxed">
-                MatrixQR follows standard procedures of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+                The websites may produce ordinary server, hosting, CDN, or security logs. Depending on the provider and configuration, these records can include IP addresses, browser or user-agent details, request timestamps, requested URLs, referrers, and related technical information. Do not assume these records are anonymous merely because QR payload generation runs in the browser; handling and retention depend on the relevant provider and configuration.
             </p>
 
             <h2>2. Cookies and Web Beacons</h2>
             <p class="text-slate-300 leading-relaxed">
-                Like any other website, MatrixQR uses basic local storage or session storage solely to preserve user interface preferences (such as selected language or dark mode state). We do not use persistent tracking cookies for cross-site behavioral profiling.
+                Some interface preferences may be stored in browser local or session storage. In addition, the current page code includes a Google Analytics tag that is loaded after a user interaction or after a short delay. The implementation visible in this page does not gate that load on a consent choice. Google Analytics may process page-visit information and may use cookies or similar technologies depending on configuration and browser behavior. Therefore, this page should not be described as having no analytics or no tracking technologies. Review the analytics configuration and applicable consent requirements before relying on this policy.
             </p>
 
             <h2>3. Digital Menu Image Hosting & Cloud Storage</h2>
@@ -170,7 +170,7 @@
             <ul class="list-disc list-inside text-slate-300 leading-relaxed space-y-2 mt-2">
                 <li><strong>Storage Provider:</strong> Uploaded menu files are hosted on encrypted, high-availability cloud object storage (Cloudflare R2 Infrastructure).</li>
                 <li><strong>Purpose:</strong> These files are stored solely to provide a public URL accessible via customer QR code scans.</li>
-                <li><strong>Data Minimization:</strong> We do not scan, extract, sell, or analyze menu content, text, or prices. Logo overlays and styling adjustments are rendered entirely inside your local browser Canvas.</li>
+                <li><strong>Processing scope:</strong> In the described workflow, logo overlays and styling adjustments can be rendered in the browser Canvas. This does not mean the uploaded source file remains local: the menu file itself is uploaded for hosting. The statements here describe the intended use of the file and should be kept aligned with actual service operations and provider retention settings.</li>
             </ul>
 
             <h2>4. Third-Party Links & Hosting</h2>
@@ -180,7 +180,7 @@
 
             <h2>5. Consent</h2>
             <p class="text-slate-300 leading-relaxed">
-                By using our website and tools, you hereby consent to our Privacy Policy and agree to its terms.
+                This policy describes the site's stated practices; it does not replace any consent or notice that may be required for analytics or other processing in a user's jurisdiction. Where consent is required, the implementation should obtain it before loading the relevant technology.
             </p>
         </article>
     </main>
