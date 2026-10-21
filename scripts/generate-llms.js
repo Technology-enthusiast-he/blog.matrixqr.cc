@@ -92,7 +92,7 @@ function markdown(source,url) {
   });
   h=h.replace(/<pre\b[^>]*>([\s\S]*?)<\/pre\s*>/gi,(_,code)=>{
     const lm=code.match(/<code\b[^>]*class=["'][^"']*language-([a-z0-9_+-]+)[^"']*["']/i);
-    const body=decode(code.replace(/<\/?code\b[^>]*>/gi,"").replace(/<[^>]+>/g,""));
+    const body=decode(code.replace(/<\/?code\b[^>]*>/gi,""));
     return "\n\n"+tick.repeat(3)+(lm?lm[1]:"")+"\n"+body.trim()+"\n"+tick.repeat(3)+"\n\n";
   });
   h=h.replace(/<h1\b[^>]*>/gi,"\n\n# ").replace(/<\/h1\s*>/gi,"\n\n")
