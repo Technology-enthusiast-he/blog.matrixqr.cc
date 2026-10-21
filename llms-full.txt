@@ -308,7 +308,7 @@ By MatrixQR Studio • Updated October 21, 2026 • 9 min read
 
 A digital menu QR code looks simple: scan a printed square and open a menu. Behind that experience, however, there may be logos, menu images, promotional graphics, uploaded assets, and dynamically generated QR images. The more image data a workflow handles, the more important it becomes to decide *where* that processing happens and *which systems* can see the original files.
 
-![Infographic showing client-side canvas image sanitization workflow for securing digital menu QR codes, from problem identification to canvas redrawing and safe re-encoding.](https://blog.matrixqr.cc/posts/images/how-we-secured-digital-menu-qr-codes-canvas-sanitization.webp)
+![Infographic showing a client-side Canvas image-processing workflow for digital menu QR codes, from problem identification to canvas redrawing and re-encoding.](https://blog.matrixqr.cc/posts/images/how-we-secured-digital-menu-qr-codes-canvas-sanitization.webp)
 
 A useful design principle is to avoid uploading an image solely to transform it when the browser can perform the task locally. The Canvas API supports browser-native image resizing, compositing, and pixel export. This removes the need for a dedicated image-processing upload in that workflow, but other page resources and third-party scripts may still make network requests.
 
@@ -320,7 +320,7 @@ A restaurant QR workflow may combine a destination URL with a branded menu card,
 
 ### Server-side image processing expands the data path
 
-If a browser uploads an image to a remote processor, the source file necessarily crosses the network and enters another execution environment. That introduces additional questions about retention, access, logs, third-party processors, and breach exposure. Zero-server image processing removes that upload step entirely.
+If a browser uploads an image to a remote processor, the source file necessarily crosses the network and enters another execution environment. That introduces additional questions about retention, access, logs, third-party processors, and breach exposure. Local image processing removes the need for that dedicated upload step in this workflow; it does not imply that the entire page has no network activity.
 
 ### Privacy starts with data minimization
 
