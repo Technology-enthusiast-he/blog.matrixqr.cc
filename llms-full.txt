@@ -1110,7 +1110,7 @@ A vCard QR code and an Apple Wallet pass serve different purposes, so they shoul
 | Feature | Standard Static vCard QR | Apple Wallet Pass (.pkpass) |
 | --- | --- | --- |
 | How It Is Used | A compatible scanner or contact app may offer to import the contact; behavior varies by app | A valid, compatible pass must be added to Wallet |
-| Updating Contact Info | Updates depend on the pass provider's supported update mechanism and configuration | May support updates when configured by the pass issuer; not automatic for every pass |
+| Updating Contact Info | The encoded contact details are fixed; changes require generating a new QR code and replacing printed copies | May support updates when configured by the pass issuer; not automatic for every pass |
 | Geofenced Lock Screen | Not supported | Location-based suggestions depend on pass configuration, device settings, and platform behavior |
 | Cross-Platform Compatibility | Widely supported, but import behavior varies by device and contact app | Apple Wallet only; pass creation, signing, and distribution requirements apply |
 
@@ -1200,7 +1200,7 @@ A **static QR code** stores its payload directly in the QR matrix rather than re
 
 - **3. Matrix Density Issues:** Encoding large amounts of data (such as long URLs or detailed contact cards) increases matrix pixel density, which can reduce scannability from long distances or on low-end cameras.
 
-💡 Developer's Note on First-Hand Testing
+💡 Practical Note on QR Code Scannability
 
 Longer payloads generally produce denser QR patterns at the same error-correction level, which can make codes harder to scan when printed small or captured under poor conditions. Test the final printed size, contrast, and scanning distance with several phones before mass printing; exact results depend on the QR version, error-correction level, print quality, and camera.
 
