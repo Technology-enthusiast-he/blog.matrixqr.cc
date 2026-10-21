@@ -416,7 +416,7 @@
                 <li><strong>Enhanced Brand Recognition:</strong> Incorporating your official logo, brand colors, and iconography ensures that your offline marketing materials (brochures, packaging, banners) remain cohesive with your online brand identity.</li>
                 <li><strong>Clearer Calls to Action:</strong> Frames such as "Scan to View Menu" can explain what a QR code is for; their effect on engagement should be measured in the intended setting.</li>
                 <li><strong>Browser-Side Logo Processing:</strong> When logo composition runs locally in HTML5 Canvas, the image used for that step can stay in the browser instead of being uploaded to a QR-generation server. This does not by itself describe hosting logs, analytics, or the destination website's data practices.</li>
-                <li><strong>Improved Trust & Security:</strong> A recognizable logo inside the QR code reassures consumers that scanning the code will direct them to an authentic, secure destination.</li>
+                <li><strong>Brand Recognition:</strong> A familiar logo can support brand recognition, but it does not authenticate the QR destination or prove that the linked website is safe.</li>
             </ol>
 
             <h2>Static vs. Dynamic QR Codes: Which Should You Choose?</h2>
@@ -441,8 +441,8 @@
                         </tr>
                         <tr>
                             <td><strong>Scan Analytics</strong></td>
-                            <td>No tracking (Zero server data logging)</td>
-                            <td>Trackable (Total scans, location, device, time)</td>
+                            <td>No built-in QR-platform analytics; destination may log visits</td>
+                            <td>Metrics vary by provider and configuration</td>
                         </tr>
                         <tr>
                             <td><strong>Data Density & Size</strong></td>
@@ -528,7 +528,7 @@
                 </li>
                 <li>
                     <strong>Upload Your Brand Icon:</strong><br>
-                    Click the Logo Upload tab to load your transparent PNG or vector SVG logo. MatrixQR automatically sets Level H Error Correction and renders the image via client-side HTML5 Canvas.
+                    Load your transparent PNG or vector SVG logo, confirm the error-correction setting available in the generator, and test the resulting code. Logo composition is described as browser-side Canvas rendering; scan reliability still depends on the final design and output.
                 </li>
                 <li>
                     <strong>Incorporate Scenario-Specific Features:</strong><br>
