@@ -52,7 +52,7 @@
             }
           },
           "datePublished": "2026-09-18T08:00:00+00:00",
-          "dateModified": "2026-09-18T08:00:00+00:00",
+          "dateModified": "2026-10-21T08:00:00+00:00",
           "publisher": {
             "@type": "Organization",
             "name": "MatrixQR Studio",
@@ -369,11 +369,11 @@
 
             <h2>Why Branding Your Digital Menu QR Code Matters</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
-                In modern hospitality, every physical touchpoint reflects your restaurant brand identity. According to UX benchmarks, incorporating visual branding into contactless ordering solutions yields distinct practical advantages:
+                In modern hospitality, every physical touchpoint reflects your restaurant brand identity. Adding visual branding may help customers recognize a restaurant display, but benefits depend on context and should not be presented as a measured UX outcome without supporting evidence:
             </p>
             <ul>
                 <li><strong>Brand recognition:</strong> A logo can help customers recognize the business associated with a display, but scan-rate effects vary and should be measured rather than assumed.</li>
-                <li><strong>Prevent QR Code Phishing (Quishing):</strong> Visual branding helps patrons verify that the tabletop display belongs to your establishment before scanning.</li>
+                <li><strong>Context, not authentication:</strong> A familiar logo may help customers recognize a display, but it cannot verify the QR destination or rule out a replaced or tampered-with code.</li>
                 <li><strong>Cohesive Aesthetic:</strong> Seamlessly aligns with table talkers, menu cards, acrylic stands, and print materials.</li>
             </ul>
 
@@ -384,7 +384,7 @@
             <ul>
                 <li><strong>Browser-side image rendering:</strong> Logo overlay and image centering take place in the browser via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API" target="_blank" rel="noopener">HTML5 Canvas Web API</a>. This describes the QR-generation workflow, not every request made by the website or the destination.</li>
                 <li><strong>Error correction and testing:</strong> QR error correction can help recover data when parts of a code are obscured, but it does not guarantee that every logo design will scan. Keep logos modest in size, preserve contrast and quiet zones, and test the exported file on multiple devices.</li>
-                <li><strong>Print-Ready Vector SVG Output:</strong> Export high-definition raster PNGs or crisp vector SVG files ready for commercial high-DPI printing without a paid subscription.</li>
+                <li><strong>Export format:</strong> Check the current tool and inspect the downloaded file before assuming an SVG contains vector QR artwork or meets a particular print-resolution requirement.</li>
             </ul>
 
             <h2>Step-by-Step Guide: Creating a Menu QR Code with a Logo</h2>
@@ -407,8 +407,8 @@
                     Inspect the real-time canvas preview as the central logo auto-aligns with optimal padding.
                 </li>
                 <li>
-                    <strong>Export Print-Ready Vector SVG or PNG:</strong><br>
-                    Click <strong>Download QR Code</strong> to export high-resolution assets for physical tabletop signage.
+                    <strong>Export the available file format:</strong><br>
+                    Use the available download option, then inspect the exported file and test it at the intended print size before producing tabletop signage.
                 </li>
             </ol>
 
@@ -441,16 +441,16 @@
                         </tr>
                         <tr>
                             <td>QR Code Monkey</td>
-                            <td>⚠️ Stored on Remote Server</td>
-                            <td>Freemium Tier</td>
-                            <td>✅ Included</td>
+                            <td>Verify current upload and processing behavior in the provider's documentation or by inspecting network activity</td>
+                            <td>Check current pricing and plan limits directly</td>
+                            <td>Verify current export options</td>
                             <td>Marketing agencies</td>
                         </tr>
                         <tr>
                             <td>Beaconstac</td>
-                            <td>⚠️ Stored in Cloud Database</td>
-                            <td>Paid SaaS ($15+/mo)</td>
-                            <td>⚠️ Paid Plans Only</td>
+                            <td>Review current privacy documentation and data-processing terms</td>
+                            <td>Check current pricing and plan limits directly</td>
+                            <td>Verify current export options</td>
                             <td>Enterprise restaurant chains</td>
                         </tr>
                         <tr>
