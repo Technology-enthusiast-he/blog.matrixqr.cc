@@ -692,7 +692,7 @@ Inspect the real-time canvas preview as the central logo auto-aligns with optima
 
 Use the available download option, then inspect the exported file and test it at the intended print size before producing tabletop signage.
 
-📌 Technical Verification & First-Hand Testing
+📌 Practical Scannability Checks
 
 Before printing at scale, test the exported QR code with common iOS and Android camera apps under realistic lighting and at the intended print size. Do not treat successful tests on a limited set of devices as a guarantee of universal decoding.
 
