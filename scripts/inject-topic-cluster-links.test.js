@@ -108,17 +108,17 @@ test("generated article HTML contains every configured topic link and reciprocal
     assert.notEqual(sectionEnd, -1, `Unclosed generated topic section in ${source}`);
     const section = output.slice(sectionStart, sectionEnd);
     const hrefs = new Set(
-      [...section.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)].map(match => match[1])
+      [...section.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)].map(match => match[1])
     );
     for (const [, targetUrl] of links) {
       assert.ok(hrefs.has(targetUrl), `${source} output is missing configured link to ${targetUrl}`);
     }
-    const sourceUrl = "/" + source.replace(/\\.html$/, "");
+    const sourceUrl = "/" + source.replace(/\.html$/, "");
     rendered.set(sourceUrl, hrefs);
   }
 
   for (const [source, links] of Object.entries(TOPIC_LINKS)) {
-    const sourceUrl = "/" + source.replace(/\\.html$/, "");
+    const sourceUrl = "/" + source.replace(/\.html$/, "");
     for (const [, targetUrl] of links) {
       if (rendered.has(targetUrl)) {
         assert.ok(
