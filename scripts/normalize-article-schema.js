@@ -139,6 +139,26 @@ function linkArticleEntities(html) {
                 }
 
                 const nodeTypes = Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]];
+                if (nodeTypes.includes("BreadcrumbList") && Array.isArray(node.itemListElement)) {
+                    for (const item of node.itemListElement) {
+                        const itemUrl = typeof item.item === "string"
+                            ? item.item
+                            : item.item && (item.item["@id"] || item.item.url);
+                        if (!itemUrl) continue;
+
+                        try {
+                            const parsed = new URL(itemUrl, SITE_ORIGIN);
+                            const pathname = parsed.pathname.replace(/\\/+$/, "") || "/";
+                            if (parsed.origin === SITE_ORIGIN && pathname === "/posts" && item.name !== "Posts") {
+                                item.name = "Posts";
+                                changed = true;
+                            }
+                        } catch {
+                            // Leave malformed breadcrumb URLs for the validators to report.
+                        }
+                    }
+                }
+
                 if (nodeTypes.some(type => ["Article", "BlogPosting", "NewsArticle"].includes(type))) {
                     const desiredPartOf = {
                         "@type": "WebSite",
