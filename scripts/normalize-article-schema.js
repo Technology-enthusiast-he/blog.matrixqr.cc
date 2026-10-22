@@ -180,6 +180,98 @@ function linkArticleEntities(html) {
     return { html, updatedNodes };
 }
 
+
+function normalizeBreadcrumbs(html) {
+    let changed = false;
+    const labelsByUrl = new Map();
+    const origin = SITE_ORIGIN;
+
+    function normalizeBreadcrumbUrl(value) {
+        if (typeof value !== "string") return "";
+        try {
+            const url = new URL(value, origin);
+            if (url.origin !== origin) return "";
+            return url.origin + (url.pathname.replace(/\/+$/, "") || "/");
+        } catch {
+            return "";
+        }
+    }
+
+    html = html.replace(
+        /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+        (full, jsonText) => {
+            let value;
+            try {
+                value = JSON.parse(jsonText.trim());
+            } catch {
+                return full;
+            }
+
+            let schemaChanged = false;
+            const visit = node => {
+                if (!node || typeof node !== "object") return;
+                if (Array.isArray(node)) {
+                    node.forEach(visit);
+                    return;
+                }
+                const nodeTypes = Array.isArray(node["@type"]) ? node["@type"] : [node["@type"]];
+                if (nodeTypes.includes("BreadcrumbList") && Array.isArray(node.itemListElement)) {
+                    for (const item of node.itemListElement) {
+                        const itemUrl = typeof item.item === "string"
+                            ? item.item
+                            : item.item && (item.item["@id"] || item.item.url);
+                        const normalizedUrl = normalizeBreadcrumbUrl(itemUrl);
+                        if (!normalizedUrl) continue;
+                        if (normalizedUrl === origin + "/posts" && item.name !== "Posts") {
+                            item.name = "Posts";
+                            schemaChanged = true;
+                        }
+                        if (item.name) labelsByUrl.set(normalizedUrl, item.name);
+                    }
+                }
+                if (Array.isArray(node["@graph"])) node["@graph"].forEach(visit);
+            };
+            visit(value);
+            if (!schemaChanged) return full;
+            changed = true;
+            return full.replace(jsonText, "\n" + JSON.stringify(value, null, 2) + "\n");
+        }
+    );
+
+    const navPattern = /<nav\b(?=[^>]*\baria-label=["']Breadcrumb["'])[^>]*>[\s\S]*?<\/nav>/i;
+    const navMatch = html.match(navPattern);
+    if (!navMatch || labelsByUrl.size === 0) return { html, changed };
+
+    const updatedNav = navMatch[0].replace(/<li\b[^>]*>[\s\S]*?<\/li>/gi, li => {
+        const linkMatch = li.match(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i);
+        if (linkMatch) {
+            const key = normalizeBreadcrumbUrl(linkMatch[1]);
+            const desired = labelsByUrl.get(key);
+            if (!desired) return li;
+            const escaped = desired.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const updated = li.replace(linkMatch[0], linkMatch[0].replace(linkMatch[2], escaped));
+            if (updated !== li) changed = true;
+            return updated;
+        }
+
+        if (/\baria-current=["']page["']/i.test(li)) {
+            const lastLabel = [...labelsByUrl.entries()].find(([url]) => url !== origin + "/" && url !== origin + "/posts");
+            if (!lastLabel) return li;
+            const escaped = lastLabel[1].replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const updated = li.replace(/(<li\b[^>]*\baria-current=["']page["'][^>]*>)[\s\S]*?(<\/li>)/i, (match, start, end) => start + escaped + end);
+            if (updated !== li) changed = true;
+            return updated;
+        }
+        return li;
+    });
+
+    if (updatedNav !== navMatch[0]) {
+        html = html.replace(navMatch[0], updatedNav);
+        changed = true;
+    }
+    return { html, changed };
+}
+
 function main() {
     const files = walk(POSTS_DIR);
     let changedFiles = 0;
@@ -190,7 +282,8 @@ function main() {
         const original = fs.readFileSync(file, "utf8");
         const authorResult = normalizeAuthors(original);
         const entityResult = linkArticleEntities(authorResult.html);
-        const result = { html: entityResult.html, replacements: authorResult.replacements, linkedNodes: entityResult.updatedNodes };
+        const breadcrumbResult = normalizeBreadcrumbs(entityResult.html);
+        const result = { html: breadcrumbResult.html, replacements: authorResult.replacements, linkedNodes: entityResult.updatedNodes };
 
         if (result.html === original) {
             continue;
