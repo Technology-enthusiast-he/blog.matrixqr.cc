@@ -30,6 +30,21 @@ for (const match of sitemapXml.matchAll(/<url>\s*([\s\S]*?)\s*<\/url>/g)) {
 const errors = [];
 let checked = 0;
 
+// Listing pages do not have a maintained content-modified date in the generator.
+// Do not publish stale article dates as lastmod for the homepage, archive, or pagination.
+for (const [url, lastmod] of sitemapEntries) {
+    let pathname = "";
+    try { pathname = new URL(url).pathname.replace(/\\/+$/, "") || "/"; } catch {}
+    const isListingPage =
+        pathname === "/" ||
+        pathname === "/posts" ||
+        /^\\/page\\/\\d+$/.test(pathname) ||
+        /^\\/posts\\/page\\/\\d+$/.test(pathname);
+    if (isListingPage && lastmod) {
+        errors.push(url + " is a listing page and should not have <lastmod> unless its own modification date is maintained.");
+    }
+}
+
 for (const post of posts) {
     let pathname;
     try {
