@@ -133,18 +133,18 @@ function validateSchemas() {
                     const item = typeof last.item === "string" ? last.item : last.item && (last.item["@id"] || last.item.url);
                     if (canon && normalizeUrl(item) !== canon) warn(label + ": final BreadcrumbList item does not match canonical.");
 
-                    const navMatch = html.match(/<nav\\b(?=[^>]*\\baria-label=["']Breadcrumb["'])[^>]*>[\\s\\S]*?<\\/nav>/i);
+                    const navMatch = html.match(/<nav\b(?=[^>]*\baria-label=["']Breadcrumb["'])[^>]*>[\s\S]*?<\/nav>/i);
                     if (navMatch) {
                         const visibleItems = [];
-                        for (const liMatch of navMatch[0].matchAll(/<li\\b[^>]*>[\\s\\S]*?<\\/li>/gi)) {
+                        for (const liMatch of navMatch[0].matchAll(/<li\b[^>]*>[\s\S]*?<\/li>/gi)) {
                             const li = liMatch[0];
-                            const link = li.match(/<a\\b[^>]*\\bhref=["']([^"']+)["'][^>]*>([\\s\\S]*?)<\\/a>/i);
+                            const link = li.match(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i);
                             if (link) {
                                 const href = normalizeUrl(link[1]);
-                                const name = decode(link[2].replace(/<[^>]*>/g, " ")).replace(/\\s+/g, " ").trim();
+                                const name = decode(link[2].replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim();
                                 if (href && name) visibleItems.push({ url: href, name });
-                            } else if (/\\baria-current=["']page["']/i.test(li)) {
-                                const name = decode(li.replace(/<[^>]*>/g, " ")).replace(/\\s+/g, " ").trim();
+                            } else if (/\baria-current=["']page["']/i.test(li)) {
+                                const name = decode(li.replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim();
                                 if (canon && name) visibleItems.push({ url: canon, name });
                             }
                         }
