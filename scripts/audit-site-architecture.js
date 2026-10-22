@@ -132,6 +132,43 @@ function validateSchemas() {
                     const last = items[items.length - 1];
                     const item = typeof last.item === "string" ? last.item : last.item && (last.item["@id"] || last.item.url);
                     if (canon && normalizeUrl(item) !== canon) warn(label + ": final BreadcrumbList item does not match canonical.");
+
+                    const navMatch = html.match(/<nav\\b(?=[^>]*\\baria-label=["']Breadcrumb["'])[^>]*>[\\s\\S]*?<\\/nav>/i);
+                    if (navMatch) {
+                        const visibleItems = [];
+                        for (const liMatch of navMatch[0].matchAll(/<li\\b[^>]*>[\\s\\S]*?<\\/li>/gi)) {
+                            const li = liMatch[0];
+                            const link = li.match(/<a\\b[^>]*\\bhref=["']([^"']+)["'][^>]*>([\\s\\S]*?)<\\/a>/i);
+                            if (link) {
+                                const href = normalizeUrl(link[1]);
+                                const name = decode(link[2].replace(/<[^>]*>/g, " ")).replace(/\\s+/g, " ").trim();
+                                if (href && name) visibleItems.push({ url: href, name });
+                            } else if (/\\baria-current=["']page["']/i.test(li)) {
+                                const name = decode(li.replace(/<[^>]*>/g, " ")).replace(/\\s+/g, " ").trim();
+                                if (canon && name) visibleItems.push({ url: canon, name });
+                            }
+                        }
+                        const schemaItems = items.map(entry => {
+                            const target = typeof entry.item === "string"
+                                ? entry.item
+                                : entry.item && (entry.item["@id"] || entry.item.url);
+                            return { url: normalizeUrl(target), name: decode(entry.name || (entry.item && entry.item.name) || "").trim() };
+                        });
+                        if (visibleItems.length !== schemaItems.length) {
+                            fail(label + ": visible breadcrumb item count does not match BreadcrumbList.");
+                        } else {
+                            for (let index = 0; index < schemaItems.length; index += 1) {
+                                if (visibleItems[index].url !== schemaItems[index].url) {
+                                    fail(label + ": visible breadcrumb URL/order does not match BreadcrumbList at item " + (index + 1) + ".");
+                                }
+                                if (visibleItems[index].name.toLowerCase() !== schemaItems[index].name.toLowerCase()) {
+                                    fail(label + ': visible breadcrumb label "' + visibleItems[index].name + '" does not match BreadcrumbList name "' + schemaItems[index].name + '".');
+                                }
+                            }
+                        }
+                    } else {
+                        fail(label + ": missing visible Breadcrumb navigation while BreadcrumbList schema exists.");
+                    }
                 }
             }
         }
