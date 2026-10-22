@@ -42,7 +42,9 @@ function attributes(tag) {
 function resolveLocalImage(src, htmlFile) {
     let pathname;
     try {
-        const url = new URL(src, "https://blog.matrixqr.cc/");
+        const relativeHtmlPath = path.relative(ROOT, htmlFile).replace(/\\\\/g, "/");
+        const baseUrl = "https://blog.matrixqr.cc/" + relativeHtmlPath;
+        const url = new URL(src, baseUrl);
         if (url.origin !== "https://blog.matrixqr.cc") return null;
         pathname = decodeURIComponent(url.pathname);
     } catch {
