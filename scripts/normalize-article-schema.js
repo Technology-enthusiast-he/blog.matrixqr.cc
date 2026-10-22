@@ -148,7 +148,7 @@ function linkArticleEntities(html) {
 
                         try {
                             const parsed = new URL(itemUrl, SITE_ORIGIN);
-                            const pathname = parsed.pathname.replace(/\\/+$/, "") || "/";
+                            const pathname = parsed.pathname.replace(/\/+$/, "") || "/";
                             if (parsed.origin === SITE_ORIGIN && pathname === "/posts" && item.name !== "Posts") {
                                 item.name = "Posts";
                                 changed = true;
