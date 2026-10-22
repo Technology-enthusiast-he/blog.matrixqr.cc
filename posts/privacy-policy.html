@@ -149,13 +149,13 @@
             <div class="callout-box">
                 <div class="font-bold text-cyan-400 mb-1">🔒 Client-Side Processing & Secure Media Hosting</div>
                 <p class="text-sm text-slate-300 leading-relaxed">
-                    Standard QR utilities (such as Wi-Fi, vCard, and text generators) operate with <strong>100% client-side processing</strong> in your browser—no data is sent to remote servers. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), user-uploaded menu images or PDFs are stored securely on distributed cloud storage solely to generate scannable access links.
+                    Standard QR utilities (such as Wi-Fi, vCard, and text generators) process the QR payload in your browser; the payload is not sent to MatrixQR's server for QR generation. This does not mean that no network requests occur: the page may load analytics or third-party assets, and hosting providers may process technical request data as described below. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), user-uploaded menu images or PDFs are stored on cloud storage to provide scannable access links.
                 </p>
             </div>
 
             <h2>1. Log Files & Analytics</h2>
             <p class="text-slate-300 leading-relaxed">
-                MatrixQR follows standard procedures of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+                Our hosting and infrastructure providers may process technical request logs when visitors access our websites. Depending on the provider and configuration, these logs may include IP addresses, browser or device information, timestamps, referring URLs, and requested resources. The QR payload entered into a client-side generator is separate from this website-level request metadata.
             </p>
 
             <h2>2. Cookies and Web Beacons</h2>
@@ -175,7 +175,7 @@
 
             <h2>4. Third-Party Links & Hosting</h2>
             <p class="text-slate-300 leading-relaxed">
-                Our websites are hosted on Vercel, Cloudflare, and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) may gather technical headers necessary to deliver static assets efficiently. Please consult the respective Privacy Policies of these infrastructure providers for more detailed information.
+                Our websites are hosted on Vercel, Cloudflare, and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) and analytics services may receive requests when their scripts or assets are loaded. Those services may process technical request data under their own policies. Client-side QR payload processing should not be interpreted as a promise that the website makes no third-party requests.
             </p>
 
             <h2>5. Consent</h2>

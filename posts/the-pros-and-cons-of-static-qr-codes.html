@@ -93,7 +93,7 @@
             "name": "Do static QR codes ever expire?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No, static QR codes do not expire. Because the data payload is hardcoded into the matrix pattern itself, the code remains functional indefinitely."
+              "text": "A static QR code has no built-in expiry date in its encoded pattern. It can continue to be scanned as long as the code remains readable and the encoded destination or service is still available."
             }
           },
           {
@@ -101,7 +101,7 @@
             "name": "Are static QR codes safer for privacy?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Static QR codes do not route scans through intermediate tracking servers or analytics services, ensuring user scans remain private."
+              "text": "A static QR code usually stores its payload directly rather than routing scans through a QR provider's redirect server. This can avoid that intermediary's scan analytics, but it does not make a scan anonymous: the destination website and other services involved may still process request data."
             }
           },
           {
@@ -334,10 +334,10 @@
 
             <h2>The Advantages (Pros) of Static QR Codes</h2>
             <ul>
-                <li><strong>1. Complete Privacy and Zero Third-Party Tracking:</strong> Scanners decode the payload locally on the client's device. When generated with client-side tools, no intermediate server logs the user's IP address, location, or device headers.</li>
-                <li><strong>2. Permanent Validity with Zero Expiration Risk:</strong> Because the data is embedded directly into the matrix, static QR codes never expire as long as the destination target remains online.</li>
+                <li><strong>1. Avoiding a QR Redirect Provider:</strong> A static code can send a scanner directly to the encoded destination without a QR provider's redirect layer. This may reduce one source of scan tracking, but the destination website and network services may still process technical data such as IP addresses or request timestamps.</li>
+                <li><strong>2. No Built-in Expiry Date:</strong> Because the data is embedded directly into the matrix, the QR pattern itself has no expiry date. It remains useful only while the code is readable and the encoded destination or service is available.</li>
                 <li><strong>3. Free and Serverless Overhead:</strong> Static QR codes require no subscription fees or maintenance costs, making them cost-effective for permanent print items.</li>
-                <li><strong>4. Resistance to Server Downtime:</strong> Even if a QR generator's website goes offline, your generated static QR code continues to function flawlessly because it operates independently of third-party redirect services.</li>
+                <li><strong>4. Independence from the Generator:</strong> After it has been created, a static QR code generally does not need the generator's website to remain online. It will still work only if the printed code is readable and the encoded destination or service remains available.</li>
             </ul>
 
             <h2>The Disadvantages (Cons) of Static QR Codes</h2>
@@ -349,7 +349,7 @@
 
             <div class="callout-box">
                 <div class="callout-title">💡 Developer's Note on First-Hand Testing</div>
-                <p class="text-slate-300 text-sm">In our internal benchmark tests across 50+ camera devices, URLs exceeding 120 characters in static QR codes required up to 40% higher print resolution to achieve reliable instantaneous scanning compared to short dynamic links. Keep payload text concise when generating static codes.</p>
+                <p class="text-slate-300 text-sm">Longer payloads generally produce denser QR patterns at the same error-correction level, which can make codes harder to scan when printed small or captured under poor conditions. Test the final printed size, contrast, and scanning distance with several phones before mass printing; exact results depend on the QR version, error-correction level, print quality, and camera.</p>
             </div>
 
             <h2>Static vs. Dynamic QR Codes Comparison</h2>
@@ -369,22 +369,22 @@
                     </tr>
                     <tr>
                         <td><strong>Editable Content</strong></td>
-                        <td>No (Fixed forever)</td>
+                        <td>No (fixed after creation)</td>
                         <td>Yes (Editable anytime)</td>
                     </tr>
                     <tr>
                         <td><strong>Privacy Protection</strong></td>
-                        <td>High (No tracking intermediary)</td>
-                        <td>Low (Passes through redirect server)</td>
+                        <td>Can avoid a QR-provider redirect; destination may still log visits</td>
+                        <td>May involve provider redirects and analytics; implementation varies</td>
                     </tr>
                     <tr>
                         <td><strong>Scan Analytics</strong></td>
                         <td>None</td>
-                        <td>Detailed (Location, device, time)</td>
+                        <td>Depends on provider and analytics configuration</td>
                     </tr>
                     <tr>
                         <td><strong>Lifespan</strong></td>
-                        <td>Permanent (No expiry)</td>
+                        <td>No built-in expiry; destination availability still matters</td>
                         <td>Dependent on account subscription</td>
                     </tr>
                 </tbody>
@@ -406,11 +406,11 @@
             <h2>Frequently Asked Questions (FAQ)</h2>
             <div class="faq-item">
                 <h3 class="text-cyan-400 font-bold">Do static QR codes ever expire?</h3>
-                <p class="text-slate-300 text-sm">No, static QR codes do not expire. Because the data payload is hardcoded into the matrix pattern itself, the code remains functional indefinitely.</p>
+                <p class="text-slate-300 text-sm">A static QR code has no built-in expiry date in its encoded pattern. It can continue to be scanned as long as the code remains readable and the encoded destination or service is still available.</p>
             </div>
             <div class="faq-item">
                 <h3 class="text-cyan-400 font-bold">Are static QR codes safer for privacy?</h3>
-                <p class="text-slate-300 text-sm">Yes. Static QR codes do not route scans through intermediate tracking servers or analytics services, ensuring user scans remain private.</p>
+                <p class="text-slate-300 text-sm">A static QR code usually stores its payload directly rather than routing scans through a QR provider's redirect server. This can avoid that intermediary's scan analytics, but it does not make a scan anonymous: the destination website and other services involved may still process request data.</p>
             </div>
             <div class="faq-item">
                 <h3 class="text-cyan-400 font-bold">Can I track scans on a static QR code?</h3>
