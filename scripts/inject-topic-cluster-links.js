@@ -23,6 +23,7 @@ const TOPIC_LINKS = {
     ["Create a restaurant QR menu with a custom logo", "/posts/custom-logo-qr-code-menu-guide"],
     ["Why digital menus are useful alongside traditional menus", "/posts/2026-10/traditional-menus-digital-menu-qr-code"],
     ["Compare static and dynamic QR codes", "/posts/static-vs-dynamic-qr"],
+    ["Review the pros and cons of static QR codes", "/posts/the-pros-and-cons-of-static-qr-codes"],
   ],
   "posts/static-vs-dynamic-qr.html": [
     ["Understand the pros and cons of static QR codes", "/posts/the-pros-and-cons-of-static-qr-codes"],

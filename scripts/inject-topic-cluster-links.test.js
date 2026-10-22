@@ -50,3 +50,83 @@ test("defines both directions for the two primary P1 clusters", () => {
   assert.ok(urls.has("/posts/2026-10/introducing-matrixqr-url-generator"));
   assert.ok(urls.has("/posts/vcard-qr-setup"));
 });
+
+
+test("every configured source and target resolves to an existing article file", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const root = path.resolve(__dirname, "..");
+
+  function articlePath(url) {
+    assert.match(url, /^\/posts\//, `Expected a local article URL: ${url}`);
+    const relative = url.replace(/^\/posts\//, "");
+    return path.join(root, "posts", relative + ".html");
+  }
+
+  for (const [source, links] of Object.entries(TOPIC_LINKS)) {
+    assert.ok(fs.existsSync(path.join(root, source)), `Missing source article: ${source}`);
+    for (const [, url] of links) {
+      const target = articlePath(url);
+      assert.ok(fs.existsSync(target), `${source} links to missing article: ${url}`);
+    }
+  }
+});
+
+test("links between configured cluster pages are reciprocal", () => {
+  const outgoing = new Map(
+    Object.entries(TOPIC_LINKS).map(([source, links]) => [
+      "/" + source.replace(/\.html$/, "").replace(/^posts\//, "posts/"),
+      new Set(links.map(([, url]) => url)),
+    ])
+  );
+
+  for (const [source, links] of Object.entries(TOPIC_LINKS)) {
+    const sourceUrl = "/" + source.replace(/\.html$/, "").replace(/^posts\//, "posts/");
+    for (const [, targetUrl] of links) {
+      const reverseLinks = outgoing.get(targetUrl);
+      if (!reverseLinks) continue;
+      assert.ok(
+        reverseLinks.has(sourceUrl),
+        `Expected reciprocal topic link: ${targetUrl} -> ${sourceUrl}`
+      );
+    }
+  }
+});
+
+test("generated article HTML contains every configured topic link and reciprocal links", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const root = path.resolve(__dirname, "..");
+
+  const rendered = new Map();
+  for (const [source, links] of Object.entries(TOPIC_LINKS)) {
+    const sourceHtml = fs.readFileSync(path.join(root, source), "utf8");
+    const output = injectTopicClusterLinks(sourceHtml, links);
+    const sectionStart = output.indexOf(MARKER);
+    assert.notEqual(sectionStart, -1, `Missing generated topic section in ${source}`);
+    const sectionEnd = output.indexOf("</section>", sectionStart);
+    assert.notEqual(sectionEnd, -1, `Unclosed generated topic section in ${source}`);
+    const section = output.slice(sectionStart, sectionEnd);
+    const hrefs = new Set(
+      [...section.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)].map(match => match[1])
+    );
+    for (const [, targetUrl] of links) {
+      assert.ok(hrefs.has(targetUrl), `${source} output is missing configured link to ${targetUrl}`);
+    }
+    const sourceUrl = "/" + source.replace(/\.html$/, "");
+    rendered.set(sourceUrl, hrefs);
+  }
+
+  for (const [source, links] of Object.entries(TOPIC_LINKS)) {
+    const sourceUrl = "/" + source.replace(/\.html$/, "");
+    for (const [, targetUrl] of links) {
+      if (rendered.has(targetUrl)) {
+        assert.ok(
+          rendered.get(targetUrl).has(sourceUrl),
+          `Rendered reciprocal link missing: ${targetUrl} -> ${sourceUrl}`
+        );
+      }
+    }
+  }
+});
+
