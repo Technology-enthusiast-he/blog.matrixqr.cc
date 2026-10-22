@@ -58,8 +58,8 @@ test("every configured source and target resolves to an existing article file", 
   const root = path.resolve(__dirname, "..");
 
   function articlePath(url) {
-    assert.match(url, /^\\/posts\\//, `Expected a local article URL: ${url}`);
-    const relative = url.replace(/^\\/posts\\//, "");
+    assert.match(url, /^\/posts\//, `Expected a local article URL: ${url}`);
+    const relative = url.replace(/^\/posts\//, "");
     return path.join(root, "posts", relative + ".html");
   }
 
@@ -75,13 +75,13 @@ test("every configured source and target resolves to an existing article file", 
 test("every configured topic-cluster link has a reciprocal link", () => {
   const outgoing = new Map(
     Object.entries(TOPIC_LINKS).map(([source, links]) => [
-      "/" + source.replace(/\\.html$/, "").replace(/^posts\\//, "posts/"),
+      "/" + source.replace(/\.html$/, "").replace(/^posts\//, "posts/"),
       new Set(links.map(([, url]) => url)),
     ])
   );
 
   for (const [source, links] of Object.entries(TOPIC_LINKS)) {
-    const sourceUrl = "/" + source.replace(/\\.html$/, "").replace(/^posts\\//, "posts/");
+    const sourceUrl = "/" + source.replace(/\.html$/, "").replace(/^posts\//, "posts/");
     for (const [, targetUrl] of links) {
       const reverseLinks = outgoing.get(targetUrl);
       assert.ok(
