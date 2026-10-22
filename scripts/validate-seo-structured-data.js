@@ -178,7 +178,7 @@ function validateGeneratedPage(file, expectedUrl) {
         if (node.description) {
             const descriptions = [description, ogDescription, twitterDescription].filter(Boolean);
             if (!descriptions.includes(node.description)) {
-                warn(`${label}: CollectionPage description differs from the page's meta/social descriptions.`);
+                fail(`${label}: CollectionPage description differs from the page's meta/social descriptions.`);
             }
         } else {
             fail(`${label}: CollectionPage JSON-LD is missing description.`);

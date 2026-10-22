@@ -13,6 +13,15 @@ function escapeHtml(value = "") {
         .replace(/'/g, "&#39;");
 }
 
+function decodeHtmlEntities(value = "") {
+    return String(value)
+        .replace(/&amp;/g, "&")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;|&apos;/g, "'")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">");
+}
+
 function getMetaContent(html, attribute, key) {
     const tags = html.match(/<meta\b[^>]*>/gi) || [];
     const tag = tags.find(item => {
@@ -23,7 +32,7 @@ function getMetaContent(html, attribute, key) {
     if (!tag) return "";
 
     const content = tag.match(/\bcontent\s*=\s*([\"'])([\s\S]*?)\1/i);
-    return content ? content[2] : "";
+    return content ? decodeHtmlEntities(content[2]) : "";
 }
 
 function getPageTitle(html) {
