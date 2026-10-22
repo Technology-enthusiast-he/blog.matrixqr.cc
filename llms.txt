@@ -14,7 +14,7 @@ MatrixQR publishes implementation guides and product updates. Privacy and data-h
 - [Introducing MatrixQR URL Generator: Free Client-Side Link QR Codes](https://blog.matrixqr.cc/posts/2026-10/introducing-matrixqr-url-generator): Create static website-link QR codes in your browser with custom colors and logo options. MatrixQR processes the QR payload client-side; hosting and analytics may separately process page visits.
 - [How Client-Side Canvas Processing Helps Protect Digital Menu QR Workflows](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization): Learn how client-side Canvas processing can resize, composite, and export images for digital menu QR codes without requiring server-side image processing. Explore CORS limitations and practical security considerations.
 - [Create Custom QR Codes with Logo: Design & Scannability Guide](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo): Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
-- [How to Add a Custom Logo to Your QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide): Learn how to add custom logos to restaurant QR code menus for free. Step-by-step privacy-first guide with client-side canvas generation & no data tracking.
+- [How to Add a Custom Logo to Your QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide): Learn how to add a logo to a restaurant QR code menu, understand browser-side rendering, and test scan reliability. Includes practical branding and privacy considerations.
 
 ## QR Code Security & Privacy
 - [How Client-Side Canvas Processing Helps Protect Digital Menu QR Workflows](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization): Learn how client-side Canvas processing can resize, composite, and export images for digital menu QR codes without requiring server-side image processing. Explore CORS limitations and practical security considerations.
@@ -22,17 +22,17 @@ MatrixQR publishes implementation guides and product updates. Privacy and data-h
 ## Digital Menu & Branding
 - [Why Restaurants Should Offer Both Paper and QR Code Menus](https://blog.matrixqr.cc/posts/2026-10/traditional-menus-digital-menu-qr-code): Discover how restaurant QR code menus can complement paper menus, improve access during busy service, and give diners more choice without forcing a fully digital experience.
 - [Create Custom QR Codes with Logo: Design & Scannability Guide](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo): Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
-- [How to Add a Custom Logo to Your QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide): Learn how to add custom logos to restaurant QR code menus for free. Step-by-step privacy-first guide with client-side canvas generation & no data tracking.
+- [How to Add a Custom Logo to Your QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide): Learn how to add a logo to a restaurant QR code menu, understand browser-side rendering, and test scan reliability. Includes practical branding and privacy considerations.
 
 ## vCard & Contact Management
-- [International vCard QR Code for Apple Wallet: Complete Setup & Formatting Guide](https://blog.matrixqr.cc/posts/vcard-qr-setup): Create an international vCard QR code for Apple Wallet. Learn E.164 phone formatting, vCard 3.0/4.0 tags, and dynamic pass integration for global contacts.
+- [vCard QR Codes and Apple Wallet Passes: Compatibility Guide](https://blog.matrixqr.cc/posts/vcard-qr-setup): Learn how vCard QR codes share contact details, how to format international phone numbers, and how Apple Wallet passes differ from standard contact QR codes.
 
 ## Product Updates
 - [Introducing MatrixQR URL Generator: Free Client-Side Link QR Codes](https://blog.matrixqr.cc/posts/2026-10/introducing-matrixqr-url-generator): Create static website-link QR codes in your browser with custom colors and logo options. MatrixQR processes the QR payload client-side; hosting and analytics may separately process page visits.
 
 ## General
 - [5 Customizable QR Code Generators: Privacy, Features & Pricing (2026)](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization): Compare five customizable QR code generators by design options, pricing, and data-handling approach. Learn how to evaluate client-side processing, analytics, and QR code export formats.
-- [Convert Menu Image to QR Code Free: A Simple Privacy-First Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide): Convert menu images into scannable QR codes for free with MatrixQR’s privacy-focused, client-side generator. No account or QR-generation subscription is required.
+- [Convert Menu Image to QR Code: A Practical Privacy Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide): Convert menu image URLs into static QR codes with MatrixQR. Learn how browser-side generation works, what it means for privacy, and why destination availability still matters.
 - [Static vs Dynamic QR Codes: Which Is Best for Your Business?](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr): Compare static vs. dynamic QR codes by editability, analytics, privacy, cost, and service dependency. Learn which type best fits your business needs.
 - [The Pros and Cons of Static QR Codes: A Complete Technical & Privacy Guide](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes): Explore the key pros and cons of static QR codes. Learn how static vs dynamic QR codes compare in privacy, lifetime, security, and cost for your business.
 
