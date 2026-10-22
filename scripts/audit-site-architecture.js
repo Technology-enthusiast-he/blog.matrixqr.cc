@@ -128,6 +128,14 @@ function validateSchemas() {
             }
             for (const crumb of nodes.filter(n => types(n).includes("BreadcrumbList"))) {
                 const items = crumb.itemListElement || [];
+                for (const breadcrumbItem of items) {
+                    const breadcrumbUrl = typeof breadcrumbItem.item === "string"
+                        ? breadcrumbItem.item
+                        : breadcrumbItem.item && (breadcrumbItem.item["@id"] || breadcrumbItem.item.url);
+                    if (normalizeUrl(breadcrumbUrl) === ORIGIN + "/posts" && breadcrumbItem.name !== "Posts") {
+                        fail(label + ': BreadcrumbList item pointing to /posts/ must be named "Posts".');
+                    }
+                }
                 if (items.length) {
                     const last = items[items.length - 1];
                     const item = typeof last.item === "string" ? last.item : last.item && (last.item["@id"] || last.item.url);
