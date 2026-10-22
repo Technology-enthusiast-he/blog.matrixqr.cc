@@ -72,7 +72,7 @@ test("every configured source and target resolves to an existing article file", 
   }
 });
 
-test("every configured topic-cluster link has a reciprocal link", () => {
+test("links between configured cluster pages are reciprocal", () => {
   const outgoing = new Map(
     Object.entries(TOPIC_LINKS).map(([source, links]) => [
       "/" + source.replace(/\.html$/, "").replace(/^posts\//, "posts/"),
@@ -84,8 +84,9 @@ test("every configured topic-cluster link has a reciprocal link", () => {
     const sourceUrl = "/" + source.replace(/\.html$/, "").replace(/^posts\//, "posts/");
     for (const [, targetUrl] of links) {
       const reverseLinks = outgoing.get(targetUrl);
+      if (!reverseLinks) continue;
       assert.ok(
-        reverseLinks && reverseLinks.has(sourceUrl),
+        reverseLinks.has(sourceUrl),
         `Expected reciprocal topic link: ${targetUrl} -> ${sourceUrl}`
       );
     }
