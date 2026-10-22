@@ -49,6 +49,67 @@ jobs:
       - name: Run full site build
         run: npm run build
 
+      - name: Check committed sitemap pagination matches generated pages
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const SITE_ORIGIN = 'https://blog.matrixqr.cc';
+
+          function normalizeUrl(value) {
+            try {
+              const url = new URL(value.replace(/&amp;/g, '&').trim());
+              const pathname = url.pathname.replace(/\\/+$/, '') || '/';
+              return url.origin + pathname;
+            } catch {
+              return value.trim();
+            }
+          }
+
+          const committedXml = fs.readFileSync('/tmp/sitemap-before-build.xml', 'utf8');
+          const committedUrls = new Set(
+            [...committedXml.matchAll(/<loc>([\\s\\S]*?)<\\/loc>/g)]
+              .map(match => normalizeUrl(match[1]))
+          );
+
+          const expectedPaginationUrls = new Set();
+          function addGeneratedPages(directory, prefix) {
+            if (!fs.existsSync(directory)) return;
+            for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+              if (!entry.isDirectory() || !/^\\d+$/.test(entry.name)) continue;
+              const pageNumber = Number(entry.name);
+              if (pageNumber < 2) continue;
+              if (!fs.existsSync(path.join(directory, entry.name, 'index.html'))) continue;
+              expectedPaginationUrls.add(normalizeUrl(SITE_ORIGIN + prefix + pageNumber + '/'));
+            }
+          }
+
+          addGeneratedPages('page', '/page/');
+          addGeneratedPages(path.join('posts', 'page'), '/posts/page/');
+
+          const committedPaginationUrls = [...committedUrls].filter(url => {
+            try {
+              const pathname = new URL(url).pathname.replace(/\\/+$/, '');
+              return /^\\/page\\/\\d+$/.test(pathname) || /^\\/posts\\/page\\/\\d+$/.test(pathname);
+            } catch {
+              return false;
+            }
+          });
+
+          const stale = committedPaginationUrls.filter(url => !expectedPaginationUrls.has(url));
+          const missing = [...expectedPaginationUrls].filter(url => !committedUrls.has(url));
+
+          if (stale.length || missing.length) {
+            const details = [];
+            if (stale.length) details.push('stale pagination URL(s): ' + stale.join(', '));
+            if (missing.length) details.push('generated pagination URL(s) missing from committed sitemap: ' + missing.join(', '));
+            throw new Error(details.join('\\n') + '. Update sitemap.xml from the generated output before merging.');
+          }
+
+          console.log('PASS: committed sitemap pagination matches generated pagination pages.');
+          NODE
+
+
       - name: Check committed XML sitemap covers every indexed article
         run: |
           node <<'NODE'
