@@ -50,3 +50,44 @@ test("defines both directions for the two primary P1 clusters", () => {
   assert.ok(urls.has("/posts/2026-10/introducing-matrixqr-url-generator"));
   assert.ok(urls.has("/posts/vcard-qr-setup"));
 });
+
+
+test("every configured source and target resolves to an existing article file", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const root = path.resolve(__dirname, "..");
+
+  function articlePath(url) {
+    assert.match(url, /^\\/posts\\//, `Expected a local article URL: ${url}`);
+    const relative = url.replace(/^\\/posts\\//, "");
+    return path.join(root, "posts", relative + ".html");
+  }
+
+  for (const [source, links] of Object.entries(TOPIC_LINKS)) {
+    assert.ok(fs.existsSync(path.join(root, source)), `Missing source article: ${source}`);
+    for (const [, url] of links) {
+      const target = articlePath(url);
+      assert.ok(fs.existsSync(target), `${source} links to missing article: ${url}`);
+    }
+  }
+});
+
+test("every configured topic-cluster link has a reciprocal link", () => {
+  const outgoing = new Map(
+    Object.entries(TOPIC_LINKS).map(([source, links]) => [
+      "/" + source.replace(/\\.html$/, "").replace(/^posts\\//, "posts/"),
+      new Set(links.map(([, url]) => url)),
+    ])
+  );
+
+  for (const [source, links] of Object.entries(TOPIC_LINKS)) {
+    const sourceUrl = "/" + source.replace(/\\.html$/, "").replace(/^posts\\//, "posts/");
+    for (const [, targetUrl] of links) {
+      const reverseLinks = outgoing.get(targetUrl);
+      assert.ok(
+        reverseLinks && reverseLinks.has(sourceUrl),
+        `Expected reciprocal topic link: ${targetUrl} -> ${sourceUrl}`
+      );
+    }
+  }
+});
