@@ -370,7 +370,7 @@
                 The core difference is whether the QR code encodes its destination or content directly, or instead encodes a provider-managed URL that can redirect to a destination. This is distinct from the method used to generate the QR image: either type can be created by different software tools.
             </p>
             <ul>
-                <li><strong>Static QR Codes:</strong> Encodes target data (e.g., Wi-Fi credentials, plain text, or <a href="https://blog.matrixqr.cc/posts/vcard-qr-setup" class="text-cyan-400 hover:underline">vCard contact structures</a>) directly into the matrix payload. Scanners parse this raw data directly on the client side without communicating with an intermediate routing server.</li>
+                <li><strong>Static QR Codes:</strong> Encodes target data (e.g., Wi-Fi credentials, plain text, or <a href="https://blog.matrixqr.cc/posts/vcard-qr-setup" class="text-cyan-400 hover:underline">vCard contact structures</a>) directly into the matrix payload. The QR payload contains the destination or content directly, so it does not require a QR-provider redirect to reveal it; opening an encoded URL still contacts the destination website.</li>
                 <li><strong>Dynamic QR Codes:</strong> Embeds a shortened proxy URL that redirects the client to the ultimate destination via a central server. This enables post-print URL modifications and telemetry logging.</li>
             </ul>
 
