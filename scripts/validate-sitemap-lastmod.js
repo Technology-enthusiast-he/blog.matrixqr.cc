@@ -34,12 +34,12 @@ let checked = 0;
 // Do not publish stale article dates as lastmod for the homepage, archive, or pagination.
 for (const [url, lastmod] of sitemapEntries) {
     let pathname = "";
-    try { pathname = new URL(url).pathname.replace(/\\/+$/, "") || "/"; } catch {}
+    try { pathname = new URL(url).pathname.replace(/\/+$/, "") || "/"; } catch {}
     const isListingPage =
         pathname === "/" ||
         pathname === "/posts" ||
-        /^\\/page\\/\\d+$/.test(pathname) ||
-        /^\\/posts\\/page\\/\\d+$/.test(pathname);
+        /^\/page\/\d+$/.test(pathname) ||
+        /^\/posts\/page\/\d+$/.test(pathname);
     if (isListingPage && lastmod) {
         errors.push(url + " is a listing page and should not have <lastmod> unless its own modification date is maintained.");
     }
