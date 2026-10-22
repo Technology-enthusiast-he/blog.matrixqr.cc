@@ -167,6 +167,40 @@ function main() {
             if (!article.author || article.author["@type"] !== "Organization" || !article.author.name) {
                 failures.push(`${relative}: author must be a named Organization (run schema normalization before validation)`);
             }
+
+            const publisher = article.publisher;
+            if (!publisher || typeof publisher !== "object") {
+                failures.push(`${relative}: publisher must be a descriptive Organization entity`);
+            } else {
+                if (publisher["@type"] !== "Organization") {
+                    failures.push(`${relative}: publisher @type must be Organization`);
+                }
+                if (publisher["@id"] !== "https://blog.matrixqr.cc/#organization") {
+                    failures.push(`${relative}: publisher @id must reference the site's stable Organization entity`);
+                }
+                if (!publisher.name || !publisher.url) {
+                    failures.push(`${relative}: publisher must include name and url`);
+                }
+                if (!publisher.logo || typeof publisher.logo !== "object" || publisher.logo["@type"] !== "ImageObject" || !publisher.logo.url) {
+                    failures.push(`${relative}: publisher must include a valid ImageObject logo URL`);
+                }
+            }
+
+            const website = article.isPartOf;
+            if (!website || typeof website !== "object") {
+                failures.push(`${relative}: isPartOf must describe the parent WebSite entity`);
+            } else {
+                if (website["@type"] !== "WebSite") {
+                    failures.push(`${relative}: isPartOf @type must be WebSite`);
+                }
+                if (website["@id"] !== "https://blog.matrixqr.cc/#website") {
+                    failures.push(`${relative}: isPartOf @id must reference the site's stable WebSite entity`);
+                }
+                if (!website.name || !website.url) {
+                    failures.push(`${relative}: isPartOf must include website name and url`);
+                }
+            }
+
             const pageId = typeof article.mainEntityOfPage === "string"
                 ? article.mainEntityOfPage
                 : article.mainEntityOfPage && article.mainEntityOfPage["@id"];
