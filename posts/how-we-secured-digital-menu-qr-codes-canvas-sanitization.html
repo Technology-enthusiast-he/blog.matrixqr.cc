@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client-Side Canvas Image Processing for Digital Menu QR Codes | MatrixQR</title>
     <meta name="description" content="Learn how client-side Canvas processing can resize, composite, and export images for digital menu QR codes without requiring server-side image processing. Explore CORS limitations and practical security considerations.">
-    <meta name="keywords" content="digital menu QR codes, QR code security, client-side image sanitization, Canvas API, image privacy, privacy-first QR code generator, zero-server QR code">
+    <meta name="keywords" content="digital menu QR codes, QR code security, client-side image sanitization, Canvas API, image privacy, browser-based QR code generator, local image processing">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2026-09-30T08:00:00+00:00" />
+    <meta property="article:modified_time" content="2026-10-21T00:00:00+00:00" />
     <meta property="og:url" content="https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization" />
     <meta property="og:site_name" content="MatrixQR Blog" />
     <meta property="og:title" content="Client-Side Canvas Image Processing for Digital Menu QR Codes | MatrixQR" />
@@ -37,7 +39,7 @@
           "description": "Learn how client-side Canvas processing can resize, composite, and export images for digital menu QR codes without requiring server-side image processing. Explore CORS limitations and practical security considerations.",
           "author": {
             "@type": "Organization",
-            "name": "MatrixQR Security Team",
+            "name": "MatrixQR Studio",
             "url": "https://www.matrixqr.cc/"
           },
           "datePublished": "2026-09-30T08:00:00+00:00",
@@ -56,7 +58,7 @@
             "@id": "https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization"
           },
           "articleSection": "Security",
-          "keywords": ["digital menu QR codes", "QR code security", "client-side image sanitization", "Canvas API", "privacy-first QR code generator"],
+          "keywords": ["digital menu QR codes", "QR code security", "client-side image sanitization", "Canvas API", "browser-based QR code generator"],
           "image": "https://blog.matrixqr.cc/posts/images/how-we-secured-digital-menu-qr-codes-canvas-sanitization.webp"
         },
         {
@@ -374,8 +376,8 @@
 
             <div class="my-8 rounded-lg overflow-hidden border border-slate-800 bg-slate-900">
                 <img src="/posts/images/how-we-secured-digital-menu-qr-codes-canvas-sanitization.webp"
-                     alt="Infographic showing client-side canvas image sanitization workflow for securing digital menu QR codes, from problem identification to canvas redrawing and safe re-encoding."
-                     class="w-full h-auto object-cover block">
+                     alt="Infographic showing a client-side Canvas image-processing workflow for digital menu QR codes, from problem identification to canvas redrawing and re-encoding."
+                     class="w-full h-auto object-cover block" width="7430" height="10753" loading="eager" decoding="async">
             </div>
 
             <p class="text-slate-300 leading-relaxed mb-4">
@@ -391,7 +393,7 @@
 
             <h3>Server-side image processing expands the data path</h3>
             <p class="text-slate-300 leading-relaxed mb-4">
-                If a browser uploads an image to a remote processor, the source file necessarily crosses the network and enters another execution environment. That introduces additional questions about retention, access, logs, third-party processors, and breach exposure. Zero-server image processing removes that upload step entirely.
+                If a browser uploads an image to a remote processor, the source file necessarily crosses the network and enters another execution environment. That introduces additional questions about retention, access, logs, third-party processors, and breach exposure. Local image processing removes the need for that dedicated upload step in this workflow; it does not imply that the entire page has no network activity.
             </p>
 
             <h3>Privacy starts with data minimization</h3>

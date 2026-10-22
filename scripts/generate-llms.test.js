@@ -58,6 +58,12 @@ test("keeps parentheses in URLs inside valid Markdown link destinations", () => 
   assert.equal(output, "Read [quishing](https://en.wikipedia.org/wiki/Phishing#QR_code_phishing_\\(quishing\\)).");
 });
 
+test("preserves comparison operators inside code blocks", () => {
+  const html = '<pre><code class="language-js">if (width < 1 || width > MAX_DIMENSION) { return false; }</code></pre>';
+  const output = markdown(html, URL);
+  assert.match(output, /width < 1 \|\| width > MAX_DIMENSION/);
+});
+
 test("reads meta descriptions with apostrophes and either attribute order", () => {
   assert.equal(meta(`<meta name="description" content="Here wasn't a QR code.">`, "description"), "Here wasn't a QR code.");
   assert.equal(meta('<meta content="A second description" name="description">', "description"), "A second description");

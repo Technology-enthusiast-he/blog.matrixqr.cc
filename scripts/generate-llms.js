@@ -90,10 +90,13 @@ function markdown(source,url) {
     });
     return "\n\n"+lines.join("\n")+"\n\n";
   });
+  const codeBlocks = [];
   h=h.replace(/<pre\b[^>]*>([\s\S]*?)<\/pre\s*>/gi,(_,code)=>{
     const lm=code.match(/<code\b[^>]*class=["'][^"']*language-([a-z0-9_+-]+)[^"']*["']/i);
-    const body=decode(code.replace(/<\/?code\b[^>]*>/gi,"").replace(/<[^>]+>/g,""));
-    return "\n\n"+tick.repeat(3)+(lm?lm[1]:"")+"\n"+body.trim()+"\n"+tick.repeat(3)+"\n\n";
+    const body=decode(code.replace(/<\/?code\b[^>]*>/gi,""));
+    const block="\n\n"+tick.repeat(3)+(lm?lm[1]:"")+"\n"+body.trim()+"\n"+tick.repeat(3)+"\n\n";
+    codeBlocks.push(block);
+    return "\n\n@@LLMS_CODE_BLOCK_"+(codeBlocks.length-1)+"@@\n\n";
   });
   h=h.replace(/<h1\b[^>]*>/gi,"\n\n# ").replace(/<\/h1\s*>/gi,"\n\n")
     .replace(/<h2\b[^>]*>/gi,"\n\n## ").replace(/<\/h2\s*>/gi,"\n\n")
@@ -107,8 +110,9 @@ function markdown(source,url) {
     .replace(/<(p|div|section|header|article|aside|figure|figcaption|blockquote|ul|ol|table|thead|tbody|tr)\b[^>]*>/gi,"\n")
     .replace(/<li\b[^>]*>/gi,"\n- ").replace(/<th\b[^>]*>/gi," | ").replace(/<td\b[^>]*>/gi," | ")
     .replace(/<[^>]+>/g," ");
-  return decode(h).replace(/\r/g,"").replace(/[ \t]+\n/g,"\n").replace(/\n[ \t]+/g,"\n")
+  let out = decode(h).replace(/\r/g,"").replace(/[ \t]+\n/g,"\n").replace(/\n[ \t]+/g,"\n")
     .replace(/[ \t]{2,}/g," ").replace(/\n{3,}/g,"\n\n").replace(/^[ \t]+|[ \t]+$/gm,"").trim();
+  return out.replace(/@@LLMS_CODE_BLOCK_(\d+)@@/g,(_,index)=>codeBlocks[Number(index)]);
 }
 function collect() {
   if(!fs.existsSync(POSTS))throw new Error("Posts directory not found: "+POSTS);
