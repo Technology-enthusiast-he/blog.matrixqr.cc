@@ -151,6 +151,12 @@ test("shrinking the article set removes obsolete generated pagination and sitema
 
   assert.ok(fs.existsSync(path.join(root, "page", "2", "index.html")), "fixture should generate homepage page 2");
   assert.ok(fs.existsSync(path.join(root, "posts", "page", "2", "index.html")), "fixture should generate archive page 2");
+
+  const generatedHomepage = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  assert.match(generatedHomepage, /href=["\']\/page\/2\//i, "homepage pagination must link to /page/2/");
+
+  const generatedArchive = fs.readFileSync(path.join(root, "posts", "index.html"), "utf8");
+  assert.match(generatedArchive, /href=["\']\/posts\/page\/2\//i, "article archive pagination must link to /posts/page/2/");
   assert.ok(fs.existsSync(path.join(root, "posts", "page", "3", "index.html")), "fixture should generate archive page 3");
 
   const reducedPosts = posts.filter((post) =>
