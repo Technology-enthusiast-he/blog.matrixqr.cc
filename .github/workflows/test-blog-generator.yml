@@ -33,6 +33,7 @@ jobs:
           node --check scripts/validate-seo-structured-data.js
           node --check scripts/audit-site-architecture.js
           node --check scripts/validate-sitemap-lastmod.js
+          node --check scripts/validate-sitemap-pagination.js
 
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
@@ -48,6 +49,9 @@ jobs:
 
       - name: Run full site build
         run: npm run build
+
+      - name: Check committed sitemap pagination matches generated pages
+        run: node scripts/validate-sitemap-pagination.js /tmp/sitemap-before-build.xml
 
       - name: Check committed XML sitemap covers every indexed article
         run: |
