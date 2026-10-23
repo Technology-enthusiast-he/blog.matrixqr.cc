@@ -81,7 +81,7 @@ function createFixture() {
   const posts = [
     article("security-a", "QR Code Security & Privacy", 1),
     article("general-12", "General", 2),
-    ...Array.from({ length: 10 }, (_, index) =>
+    ...Array.from({ length: 11 }, (_, index) =>
       article(`general-${index + 1}`, "General", index + 3)
     ),
   ];
