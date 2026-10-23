@@ -42,7 +42,7 @@ const ALIASES = {
 };
 
 function normalizeCategory(value = "") {
-  return String(value).trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\\s+/g, " ");
+  return String(value).trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
 }
 
 module.exports = { CATEGORY_NAMES, CATEGORIES: ALIASES, normalizeCategory };
