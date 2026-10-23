@@ -14,9 +14,6 @@ const MENU_END = "<!-- AUTO-MENU-END -->";
 const LATEST_START = "<!-- AUTO-POSTS-START -->";
 const LATEST_END = "<!-- AUTO-POSTS-END -->";
 
-const SECTION_1 = "<!-- Section 1: Featured & Recommendation -->";
-const SECTION_4 = "<!-- Section 4: Latest Articles -->";
-
 const MAX_POSTS_PER_SECTION = 6;
 const SITE_ORIGIN = "https://blog.matrixqr.cc";
 
@@ -28,10 +25,16 @@ function normalizeUrl(value) {
     if (!value) return "";
 
     try {
-        const parsed = new URL(
+    const parsed = new URL(
             String(value).replace(/&amp;/g, "&"),
             SITE_ORIGIN
         );
+
+        // Only URLs belonging to this blog can represent a manually listed
+        // blog article. An external site may use the same pathname by chance.
+        if (parsed.hostname.toLowerCase() !== new URL(SITE_ORIGIN).hostname.toLowerCase()) {
+            return "";
+        }
 
         let pathname = parsed.pathname;
 
@@ -294,23 +297,6 @@ for (const [startMarker, endMarker] of [
     manualHomepageHtml =
         before + after;
 }
-
-// Only inspect the homepage's featured and category sections.
-// Sidebar, footer, navigation, and other incidental article links must not
-// suppress an article from the automatic homepage sections.
-const featuredStart = manualHomepageHtml.indexOf(SECTION_1);
-const featuredEnd = manualHomepageHtml.indexOf(SECTION_4);
-
-if (
-    featuredStart === -1 ||
-    featuredEnd === -1 ||
-    featuredEnd < featuredStart
-) {
-    console.error("ERROR: Could not find the homepage featured/category sections.");
-    process.exit(1);
-}
-
-manualHomepageHtml = manualHomepageHtml.slice(featuredStart, featuredEnd);
 
 // Collect manually existing homepage URLs.
 const existingUrls = new Set();
