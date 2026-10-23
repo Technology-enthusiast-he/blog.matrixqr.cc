@@ -107,7 +107,7 @@ test("manual featured swap returns the removed article to automation and is idem
     firstRun.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0],
     firstRun.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0],
   ].join("");
-  assert.doesNotMatch(initialAutomatic, /href=["']\\/posts\\/general-11["']/i, "the initially featured article should be excluded from automatic cards");
+  assert.doesNotMatch(initialAutomatic, /href=["']\/posts\/general-11["']/i, "the initially featured article should be excluded from automatic cards");
 
   const swappedHomepage = firstRun.replace(
     'href="/posts/general-11">Article general-11',
@@ -121,16 +121,16 @@ test("manual featured swap returns the removed article to automation and is idem
   const thirdRun = fs.readFileSync(path.join(root, "index.html"), "utf8");
 
   assert.equal(thirdRun, secondRun, "running the homepage generator twice after the swap should produce identical HTML");
-  assert.match(secondRun, /href=["']\\/posts\\/general-12["']/i, "new manually featured article should remain");
-  assert.match(secondRun, /href=["']\\/posts\\/general-11["']/i, "removed featured article should return to automatic articles");
-  assert.match(secondRun, /href=["']\\/posts\\/security-a["']/i, "external URL with the same pathname must not suppress the automatic security article");
+  assert.match(secondRun, /href=["']\/posts\/general-12["']/i, "new manually featured article should remain");
+  assert.match(secondRun, /href=["']\/posts\/general-11["']/i, "removed featured article should return to automatic articles");
+  assert.match(secondRun, /href=["']\/posts\/security-a["']/i, "external URL with the same pathname must not suppress the automatic security article");
 
   const securitySection = secondRun.split("<!-- AUTO-SECURITY-START -->")[1].split("<!-- AUTO-SECURITY-END -->")[0];
   const menuSection = secondRun.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0];
   const latestSection = secondRun.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0];
   const automaticHrefs = [securitySection, menuSection, latestSection].join("");
-  assert.doesNotMatch(automaticHrefs, /href=["']\\/posts\\/general-12["']/i, "new manual article must not be duplicated in automatic cards");
-  assert.match(automaticHrefs, /href=["']\\/posts\\/general-11["']/i, "removed featured article must appear in automatic cards");
+  assert.doesNotMatch(automaticHrefs, /href=["']\/posts\/general-12["']/i, "new manual article must not be duplicated in automatic cards");
+  assert.match(automaticHrefs, /href=["']\/posts\/general-11["']/i, "removed featured article must appear in automatic cards");
 
   const allManualAndAutomatic = generatedArticleHrefs(secondRun);
   assert.ok(allManualAndAutomatic.includes("/posts/general-12"));
