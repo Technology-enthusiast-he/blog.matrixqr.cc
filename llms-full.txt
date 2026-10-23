@@ -210,6 +210,8 @@ MatrixQR uses local JavaScript execution for the URL-to-QR encoding step. This m
 
 - **Browser-side payload processing:** URL encoding and QR rendering take place in the browser rather than through a QR-generation API. The page may still load external assets or analytics, and hosting providers may log page requests.
 
+Because this workflow creates a direct static URL QR code, the destination cannot be changed through the QR code itself. For help choosing the right format, read our guide to [static vs. dynamic QR codes](https://blog.matrixqr.cc/posts/static-vs-dynamic-qr).
+
 ## Architectural Breakdown: MatrixQR vs. Cloud Barcode Generators
 
 | Feature Metric | MatrixQR URL Mode | Standard SaaS Barcode Tools |
