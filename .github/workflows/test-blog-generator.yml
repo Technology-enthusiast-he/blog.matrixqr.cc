@@ -39,6 +39,9 @@ jobs:
           node --check scripts/validate-sitemap-lastmod.js
           node --check scripts/validate-sitemap-pagination.js
 
+      - name: Test shared article category mapping
+        run: npm run test:categories
+
       - name: Test HTML-to-Markdown conversion and LLM link filtering
         run: npm run test:llms
 
