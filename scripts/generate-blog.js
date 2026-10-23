@@ -6,6 +6,7 @@ const POSTS_DIR = path.join(ROOT, "posts");
 const OUTPUT_FILE = path.join(ROOT, "posts.json");
 
 const SITE_URL = "https://blog.matrixqr.cc";
+const { normalizeCategory, CATEGORIES } = require("./article-categories");
 
 // --------------------------------------------------
 // Helpers
@@ -195,9 +196,7 @@ for (const file of files) {
             : datePublished;
 
     
-const { normalizeCategory, CATEGORIES } = require("./article-categories");
-
-    const rawArticleSection = jsonLd && jsonLd.articleSection
+const rawArticleSection = jsonLd && jsonLd.articleSection
         ? String(jsonLd.articleSection).trim()
         : "";
     const rawCategory = normalizeCategory(rawArticleSection);
