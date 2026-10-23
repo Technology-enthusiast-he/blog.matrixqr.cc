@@ -6,6 +6,7 @@ const POSTS_DIR = path.join(ROOT, "posts");
 const OUTPUT_FILE = path.join(ROOT, "posts.json");
 
 const SITE_URL = "https://blog.matrixqr.cc";
+const { normalizeCategory, CATEGORIES } = require("./article-categories");
 
 // --------------------------------------------------
 // Helpers
@@ -195,15 +196,20 @@ for (const file of files) {
             : datePublished;
 
     
-const rawCategory =
-    jsonLd && jsonLd.articleSection
-        ? jsonLd.articleSection.trim().toLowerCase()
-        : "general";
-        
+const rawArticleSection = jsonLd && jsonLd.articleSection
+        ? String(jsonLd.articleSection).trim()
+        : "";
+    const rawCategory = normalizeCategory(rawArticleSection);
+    const category = CATEGORIES[rawCategory] || "General";
+
     sourceCategoryCounts.set(
-        rawCategory,
-        (sourceCategoryCounts.get(rawCategory) || 0) + 1
+        rawCategory || "(missing)",
+        (sourceCategoryCounts.get(rawCategory || "(missing)") || 0) + 1
     );
+
+    if (!rawCategory || !Object.prototype.hasOwnProperty.call(CATEGORIES, rawCategory)) {
+        warnings.push(file + ": " + (!rawCategory ? "missing articleSection" : "unmapped articleSection \"" + rawArticleSection + "\"") + "; assigned to General.");
+    }
 
     if (!jsonLd) {
         warnings.push(file + ": no Article/BlogPosting JSON-LD found; fallback metadata and General category may be used.");
@@ -216,47 +222,6 @@ const rawCategory =
     if (datePublished && Number.isNaN(Date.parse(datePublished))) {
         warnings.push(file + ": invalid datePublished value \"" + datePublished + "\".");
     }
-
-let category = "General";
-
-if (
-    [
-        "security",
-        "security tech",
-        "privacy",
-        "privacy tech",
-        "client side",
-        "client side privacy",
-        "security & privacy",
-        "qr code security & privacy"
-    ].includes(rawCategory)
-) {
-    category = "QR Code Security & Privacy";
-} else if (
-    [
-        "restaurant",
-        "digital menu",
-        "digital menus",
-        "digital menu & restaurant technology",
-        "branding",
-        "branding guide",
-        "custom logo",
-        "custom qr",
-        "menu",
-        "digital menu & branding"
-    ].includes(rawCategory)
-) {
-    category = "Digital Menu & Branding";
-} else if (
-    [
-        "vcard",
-        "vcard & contact management",
-        "contact",
-        "contact management"
-    ].includes(rawCategory)
-) {
-    category = "vCard & Contact Management";
-}
 
 
     const canonical =

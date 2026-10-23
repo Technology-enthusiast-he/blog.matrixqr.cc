@@ -6,7 +6,8 @@ const SITE = "https://blog.matrixqr.cc";
 const OUT = path.join(ROOT, "llms.txt");
 const FULL = path.join(ROOT, "llms-full.txt");
 const EXCLUDED = new Set(["index.html", "privacy-policy.html"]);
-const CATEGORIES = ["QR Code Security & Privacy", "Digital Menu & Branding", "vCard & Contact Management", "Product Updates", "General"];
+const { normalizeCategory, CATEGORIES: CATEGORY_MAP, CATEGORY_NAMES } = require("./article-categories");
+const CATEGORIES = CATEGORY_NAMES;
 
 function decode(s = "") {
   const entities = {amp:"&",quot:'"',apos:"'",lt:"<",gt:">",nbsp:" ",ndash:"–",mdash:"—",rsquo:"’",lsquo:"‘",rdquo:"”",ldquo:"“",bull:"•",copy:"©",reg:"®"};
@@ -41,12 +42,11 @@ function meta(html,key) {
   return "";
 }
 function category(s="") {
-  s=String(s).toLowerCase();
-  if(/security|privacy|client.side/.test(s))return CATEGORIES[0];
-  if(/vcard|contact/.test(s))return CATEGORIES[2];
-  if(/product update|release|url generator/.test(s))return CATEGORIES[3];
-  if(/restaurant|digital menu|branding|custom logo|custom qr|menu/.test(s))return CATEGORIES[1];
-  return CATEGORIES[4];
+  const raw = normalizeCategory(s);
+  if (!raw || !Object.prototype.hasOwnProperty.call(CATEGORY_MAP, raw)) {
+    console.warn("[llms] Unmapped or missing articleSection " + JSON.stringify(s) + "; assigned to General.");
+  }
+  return CATEGORY_MAP[raw] || "General";
 }
 function scan(dir,rel="") {
   let out=[];
