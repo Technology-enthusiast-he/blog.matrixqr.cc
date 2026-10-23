@@ -27,6 +27,12 @@ function normalizeUrl(value) {
             SITE_ORIGIN
         );
 
+        // Only same-site URLs can suppress an indexed article from homepage pagination.
+        // External links may coincidentally use the same pathname.
+        if (url.hostname.toLowerCase() !== new URL(SITE_ORIGIN).hostname.toLowerCase()) {
+            return "";
+        }
+
         let pathname = url.pathname;
 
         try {
