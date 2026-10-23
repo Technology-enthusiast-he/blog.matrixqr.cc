@@ -64,6 +64,7 @@ function createFixture() {
 <!-- AUTO-POSTS-END -->
 </section>
 <div class="flex justify-center mt-12 mb-10 gap-3 flex-wrap"></div>
+<aside id="sidebar"><a href="/posts/security-a">Incidental sidebar article link</a></aside>
 </body></html>`;
 
   fs.writeFileSync(path.join(root, "index.html"), homepage);
