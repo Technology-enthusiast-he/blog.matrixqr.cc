@@ -4,6 +4,7 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const POSTS_FILE = path.join(ROOT, "posts.json");
 const INDEX_FILE = path.join(ROOT, "index.html");
+const { normalizeCategory } = require("./article-categories");
 
 const SECURITY_START = "<!-- AUTO-SECURITY-START -->";
 const SECURITY_END = "<!-- AUTO-SECURITY-END -->";
@@ -74,15 +75,6 @@ function formatDate(dateString) {
         day: "numeric",
         timeZone: "UTC"
     }).format(date);
-}
-
-// Normalize category names for matching.
-function normalizeCategory(value) {
-    return String(value || "")
-        .trim()
-        .toLowerCase()
-        .replace(/[_-]+/g, " ")
-        .replace(/\s+/g, " ");
 }
 
 // Category rules.
