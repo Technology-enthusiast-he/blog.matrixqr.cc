@@ -41,6 +41,9 @@ jobs:
       - name: Test topic-cluster internal links
         run: npm run test:topic-links
 
+      - name: Test homepage swap, pagination cleanup, and sitemap regressions
+        run: node --test scripts/homepage-pagination-regression.test.js
+
       - name: Install build dependencies
         run: npm install --no-package-lock
 
