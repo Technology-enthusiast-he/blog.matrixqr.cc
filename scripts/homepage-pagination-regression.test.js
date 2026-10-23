@@ -7,6 +7,7 @@ const test = require("node:test");
 
 const REPO_ROOT = path.join(__dirname, "..");
 const SCRIPT_NAMES = [
+  "article-categories.js",
   "update-homepage.js",
   "generate-pagination.js",
   "generate-archive.js",
