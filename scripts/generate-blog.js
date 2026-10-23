@@ -311,6 +311,18 @@ posts.sort(
 
 
 
+// Fail the build if any source HTML article was silently omitted from posts.json.
+// A skipped article would otherwise disappear from generated archives, pagination,
+// internal indexes, and the XML sitemap without failing the deployment.
+if (skippedPosts.length > 0) {
+    console.error("ERROR: One or more HTML files under posts/ could not be indexed:");
+    for (const post of skippedPosts) {
+        console.error(`  - ${post.file}: ${post.reason}`);
+    }
+    console.error("Fix the missing title/datePublished metadata or explicitly exclude non-article HTML files in findHtmlFiles().");
+    process.exit(1);
+}
+
 // --------------------------------------------------
 // Write posts.json
 // --------------------------------------------------
