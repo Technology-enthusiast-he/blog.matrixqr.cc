@@ -64,7 +64,7 @@ function createFixture() {
 <!-- AUTO-POSTS-END -->
 </section>
 <div class="flex justify-center mt-12 mb-10 gap-3 flex-wrap"></div>
-<aside id="sidebar"><a href="/posts/security-a">Incidental sidebar article link</a></aside>
+<div id="external-links"><a href="https://partner.example/posts/security-a">External link with a colliding pathname</a></div>
 </body></html>`;
 
   fs.writeFileSync(path.join(root, "index.html"), homepage);
@@ -107,7 +107,7 @@ test("manual featured swap returns the removed article to automation and is idem
 
   assert.equal(secondRun, firstRun, "running the homepage generator twice should produce identical HTML");
   assert.match(secondRun, /href=["']\/posts\/general-12["']/i, "manually featured article should remain");
-  assert.match(secondRun, /href=["']\/posts\/security-a["']/i, "removed featured article should return to the automatic security section");
+  assert.match(secondRun, /href=["']\/posts\/security-a["']/i, "external URL with the same pathname must not suppress the automatic security article");
 
   const securitySection = secondRun.split("<!-- AUTO-SECURITY-START -->")[1].split("<!-- AUTO-SECURITY-END -->")[0];
   const menuSection = secondRun.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0];
