@@ -390,6 +390,10 @@
                 <li><strong>Browser-side payload processing:</strong> URL encoding and QR rendering take place in the browser rather than through a QR-generation API. The page may still load external assets or analytics, and hosting providers may log page requests.</li>
             </ol>
 
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Because this workflow creates a direct static URL QR code, the destination cannot be changed through the QR code itself. For help choosing the right format, read our guide to <a href="/posts/static-vs-dynamic-qr" class="text-cyan-400 hover:underline">static vs. dynamic QR codes</a>.
+            </p>
+
             <h2>Architectural Breakdown: MatrixQR vs. Cloud Barcode Generators</h2>
             <div class="overflow-x-auto">
                 <table class="table-custom">
