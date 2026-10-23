@@ -13,7 +13,7 @@ MatrixQR publishes implementation guides and product updates. Privacy and data-h
 - [Why Restaurants Should Offer Both Paper and QR Code Menus](https://blog.matrixqr.cc/posts/2026-10/traditional-menus-digital-menu-qr-code): Discover how restaurant QR code menus can complement paper menus, improve access during busy service, and give diners more choice without forcing a fully digital experience.
 - [Introducing MatrixQR URL Generator: Free Client-Side Link QR Codes](https://blog.matrixqr.cc/posts/2026-10/introducing-matrixqr-url-generator): Create static website-link QR codes in your browser with custom colors and logo options. MatrixQR processes the QR payload client-side; hosting and analytics may separately process page visits.
 - [How Client-Side Canvas Processing Helps Protect Digital Menu QR Workflows](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization): Learn how client-side Canvas processing can resize, composite, and export images for digital menu QR codes without requiring server-side image processing. Explore CORS limitations and practical security considerations.
-- [Create Custom QR Codes with Logo: Design & Scannability Guide](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo): Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
+- [Free Custom QR Code Generator with Logo](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo): Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
 - [How to Add a Custom Logo to Your QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide): Learn how to add a logo to a restaurant QR code menu, understand browser-side rendering, and test scan reliability. Includes practical branding and privacy considerations.
 
 ## QR Code Security & Privacy
@@ -21,7 +21,7 @@ MatrixQR publishes implementation guides and product updates. Privacy and data-h
 
 ## Digital Menu & Branding
 - [Why Restaurants Should Offer Both Paper and QR Code Menus](https://blog.matrixqr.cc/posts/2026-10/traditional-menus-digital-menu-qr-code): Discover how restaurant QR code menus can complement paper menus, improve access during busy service, and give diners more choice without forcing a fully digital experience.
-- [Create Custom QR Codes with Logo: Design & Scannability Guide](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo): Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
+- [Free Custom QR Code Generator with Logo](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo): Learn how to add a logo to a QR code, choose error correction, and test scan reliability. Includes browser-side rendering considerations and practical design guidance.
 - [How to Add a Custom Logo to Your QR Code Menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide): Learn how to add a logo to a restaurant QR code menu, understand browser-side rendering, and test scan reliability. Includes practical branding and privacy considerations.
 
 ## vCard & Contact Management
