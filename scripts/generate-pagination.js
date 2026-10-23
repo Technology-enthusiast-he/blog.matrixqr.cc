@@ -302,7 +302,7 @@ const excludedUrls = new Set();
 // paths. A regex against raw href text would also match third-party URLs that
 // happen to contain a local article pathname.
 const featuredArticleUrls = new Set(
-    [...featuredAndCategories.matchAll(/\\bhref\\s*=\\s*(["'])(.*?)\\1/gi)]
+    [...featuredAndCategories.matchAll(/\bhref\s*=\s*(["'])(.*?)\1/gi)]
         .map((match) => normalizeUrl(match[2]))
         .filter(Boolean)
 );
