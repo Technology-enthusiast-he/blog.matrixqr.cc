@@ -173,3 +173,35 @@ test("shrinking the article set removes obsolete generated pagination and sitema
     assert.ok(sitemap.includes(post.url), `XML sitemap should retain article URL ${post.url}`);
   }
 });
+
+
+test("external featured link with a matching article path does not suppress pagination article", (t) => {
+  const { root } = createFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+
+  const homepagePath = path.join(root, "index.html");
+  let homepage = fs.readFileSync(homepagePath, "utf8");
+  homepage = homepage.replace(
+    '<div id="external-links"><a href="https://partner.example/posts/security-a">External link with a colliding pathname</a></div>',
+    ""
+  );
+  homepage = homepage.replace(
+    '<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article></section>',
+    '<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article><a href="https://partner.example/posts/general-10">External featured link with a matching pathname</a></section>'
+  );
+  fs.writeFileSync(homepagePath, homepage);
+
+  runNode("update-homepage.js", root);
+  runNode("generate-pagination.js", root);
+
+  const generatedHomepage = fs.readFileSync(homepagePath, "utf8");
+  const latestSection = generatedHomepage
+    .split("<!-- AUTO-POSTS-START -->")[1]
+    .split("<!-- AUTO-POSTS-END -->")[0];
+
+  assert.match(
+    latestSection,
+    /href=["']\/posts\/general-10["']/i,
+    "the same-path external featured link must not exclude the local article from pagination"
+  );
+});

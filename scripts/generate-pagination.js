@@ -27,6 +27,12 @@ function normalizeUrl(value) {
             SITE_ORIGIN
         );
 
+        // Only same-site URLs can suppress an indexed article from homepage pagination.
+        // External links may coincidentally use the same pathname.
+        if (url.hostname.toLowerCase() !== new URL(SITE_ORIGIN).hostname.toLowerCase()) {
+            return "";
+        }
+
         let pathname = url.pathname;
 
         try {
@@ -292,23 +298,20 @@ const featuredAndCategories = homepage.slice(
 
 const excludedUrls = new Set();
 
-// 只排除 posts.json 中真实存在的文章链接。
-// 不会把分类链接、导航链接等非文章链接当作文章。
+// Normalize every link in the featured/category area and keep only same-site
+// paths. A regex against raw href text would also match third-party URLs that
+// happen to contain a local article pathname.
+const featuredArticleUrls = new Set(
+    [...featuredAndCategories.matchAll(/\bhref\s*=\s*(["'])(.*?)\1/gi)]
+        .map((match) => normalizeUrl(match[2]))
+        .filter(Boolean)
+);
+
 for (const post of posts) {
     if (!post.url) continue;
 
     const postUrl = normalizeUrl(post.url);
-    if (!postUrl) continue;
-
-    const postPath = getPostUrl(post);
-    const escapedPath = postPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-    const articleLinkPattern = new RegExp(
-        `href\\s*=\\s*["'](?:https?:\\/\\/[^"']+)?${escapedPath}\\/?(?:[?#][^"']*)?["']`,
-        "i"
-    );
-
-    if (articleLinkPattern.test(featuredAndCategories)) {
+    if (postUrl && featuredArticleUrls.has(postUrl)) {
         excludedUrls.add(postUrl);
     }
 }
