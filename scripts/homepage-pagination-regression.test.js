@@ -53,7 +53,7 @@ function createFixture() {
 <html><head><title>Fixture</title><meta name="description" content="Fixture description"><link rel="canonical" href="https://blog.matrixqr.cc/"></head>
 <body>
 <!-- Section 1: Featured & Recommendation -->
-<section id="manual-featured"><article><a href="/posts/general-12">Article general-12</a></article></section>
+<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article></section>
 <!-- AUTO-SECURITY-START -->
 <!-- AUTO-SECURITY-END -->
 <!-- AUTO-MENU-START -->
@@ -102,21 +102,39 @@ test("manual featured swap returns the removed article to automation and is idem
 
   runNode("update-homepage.js", root);
   const firstRun = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  const initialAutomatic = [
+    firstRun.split("<!-- AUTO-SECURITY-START -->")[1].split("<!-- AUTO-SECURITY-END -->")[0],
+    firstRun.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0],
+    firstRun.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0],
+  ].join("");
+  assert.doesNotMatch(initialAutomatic, /href=["']\\/posts\\/general-11["']/i, "the initially featured article should be excluded from automatic cards");
+
+  const swappedHomepage = firstRun.replace(
+    'href="/posts/general-11">Article general-11',
+    'href="/posts/general-12">Article general-12'
+  );
+  assert.notEqual(swappedHomepage, firstRun, "fixture should replace the initially featured article");
+  fs.writeFileSync(path.join(root, "index.html"), swappedHomepage);
   runNode("update-homepage.js", root);
   const secondRun = fs.readFileSync(path.join(root, "index.html"), "utf8");
+  runNode("update-homepage.js", root);
+  const thirdRun = fs.readFileSync(path.join(root, "index.html"), "utf8");
 
-  assert.equal(secondRun, firstRun, "running the homepage generator twice should produce identical HTML");
-  assert.match(secondRun, /href=["']\/posts\/general-12["']/i, "manually featured article should remain");
-  assert.match(secondRun, /href=["']\/posts\/security-a["']/i, "external URL with the same pathname must not suppress the automatic security article");
+  assert.equal(thirdRun, secondRun, "running the homepage generator twice after the swap should produce identical HTML");
+  assert.match(secondRun, /href=["']\\/posts\\/general-12["']/i, "new manually featured article should remain");
+  assert.match(secondRun, /href=["']\\/posts\\/general-11["']/i, "removed featured article should return to automatic articles");
+  assert.match(secondRun, /href=["']\\/posts\\/security-a["']/i, "external URL with the same pathname must not suppress the automatic security article");
 
   const securitySection = secondRun.split("<!-- AUTO-SECURITY-START -->")[1].split("<!-- AUTO-SECURITY-END -->")[0];
   const menuSection = secondRun.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0];
   const latestSection = secondRun.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0];
   const automaticHrefs = [securitySection, menuSection, latestSection].join("");
-  assert.doesNotMatch(automaticHrefs, /href=["']\/posts\/general-12["']/i, "manual article must not be duplicated in automatic cards");
+  assert.doesNotMatch(automaticHrefs, /href=["']\\/posts\\/general-12["']/i, "new manual article must not be duplicated in automatic cards");
+  assert.match(automaticHrefs, /href=["']\\/posts\\/general-11["']/i, "removed featured article must appear in automatic cards");
 
   const allManualAndAutomatic = generatedArticleHrefs(secondRun);
   assert.ok(allManualAndAutomatic.includes("/posts/general-12"));
+  assert.ok(allManualAndAutomatic.includes("/posts/general-11"));
   assert.ok(allManualAndAutomatic.includes("/posts/security-a"));
   assert.equal(posts.length, 13);
 });
