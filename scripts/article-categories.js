@@ -30,6 +30,7 @@ const ALIASES = {
   "menu": "Digital Menu & Branding",
   "digital menu & branding": "Digital Menu & Branding",
   "vcard": "vCard & Contact Management",
+  "vcard & mobile wallet guides": "vCard & Contact Management",
   "vcard & contact management": "vCard & Contact Management",
   "contact": "vCard & Contact Management",
   "contact management": "vCard & Contact Management",
