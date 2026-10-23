@@ -111,13 +111,13 @@ test("manual featured swap returns the removed article to automation and is idem
   const securitySection = secondRun.split("<!-- AUTO-SECURITY-START -->")[1].split("<!-- AUTO-SECURITY-END -->")[0];
   const menuSection = secondRun.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0];
   const latestSection = secondRun.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0];
-  const automaticHrefs = [...securitySection, ...menuSection, ...latestSection].join("");
+  const automaticHrefs = [securitySection, menuSection, latestSection].join("");
   assert.doesNotMatch(automaticHrefs, /href=["']\/posts\/general-12["']/i, "manual article must not be duplicated in automatic cards");
 
   const allManualAndAutomatic = generatedArticleHrefs(secondRun);
   assert.ok(allManualAndAutomatic.includes("/posts/general-12"));
   assert.ok(allManualAndAutomatic.includes("/posts/security-a"));
-  assert.equal(posts.length, 12);
+  assert.equal(posts.length, 13);
 });
 
 test("shrinking the article set removes obsolete generated pagination and sitemap URLs", (t) => {
