@@ -597,7 +597,7 @@ Load your transparent PNG or vector SVG logo, confirm the error-correction setti
 -
 **Incorporate Scenario-Specific Features:**
 
-If building QR codes for food and hospitality, consult our step-by-step guide on [adding logos to digital restaurant menus](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide) or read our technical whitepaper on [client-side canvas image sanitization](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide).
+If building QR codes for food and hospitality, consult our step-by-step guide on [adding logos to digital restaurant menus](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide) or read our technical whitepaper on [client-side canvas image sanitization](https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization).
 
 -
 **Test and Export Vector Files:**
