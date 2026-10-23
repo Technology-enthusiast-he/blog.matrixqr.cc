@@ -7,6 +7,7 @@ const POSTS_DIR = path.join(ROOT, "posts");
 const POSTS_FILE = path.join(ROOT, "posts.json");
 
 const SITE_URL = "https://blog.matrixqr.cc";
+const { normalizeCategory, CATEGORIES: CATEGORY_MAP } = require("./article-categories");
 const PAGE_SIZE = 6;
 
 const ARCHIVE_START = "<!-- AUTO-ARCHIVE-START -->";
@@ -48,21 +49,8 @@ function escapeHtml(value = "") {
 }
 
 function getCategory(post) {
-    const raw = String(post.category || "General").trim().toLowerCase();
-
-    if (raw.includes("security") || raw.includes("privacy")) {
-        return "QR Code Security & Privacy";
-    }
-
-    if (raw.includes("menu") || raw.includes("branding")) {
-        return "Digital Menu & Branding";
-    }
-
-    if (raw.includes("vcard") || raw.includes("contact")) {
-        return "vCard & Contact Management";
-    }
-
-    return "General";
+    const raw = normalizeCategory(post.category || "General");
+    return CATEGORY_MAP[raw] || "General";
 }
 
 function getPostPath(post) {
