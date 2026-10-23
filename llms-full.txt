@@ -98,6 +98,8 @@ Creating a digital menu QR code does not have to be complicated. With a suitable
 
 - **Place it where guests can see it:** Tables, counters, entrance areas, or other appropriate locations can be considered depending on the restaurant's layout.
 
+If you want the menu QR code to match your restaurant's visual identity, see our guide to [adding a custom logo to a QR code menu](https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide).
+
 ## Security and Privacy Considerations for Digital Menu QR Codes
 
 Security is an important consideration whenever a business moves information from paper to digital. Restaurant owners should understand where their menu files are stored, who can access uploaded resources, and how the QR generator handles the information used to create the code.
