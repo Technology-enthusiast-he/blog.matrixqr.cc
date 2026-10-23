@@ -14,6 +14,7 @@ test("normalizes known aliases consistently", () => {
   assert.equal(CATEGORIES[normalizeCategory("Digital Menu & Restaurant Technology")], "Digital Menu & Branding");
   assert.equal(CATEGORIES[normalizeCategory("Security")], "QR Code Security & Privacy");
   assert.equal(CATEGORIES[normalizeCategory("vCard & Contact Management")], "vCard & Contact Management");
+  assert.equal(CATEGORIES[normalizeCategory("vCard & Mobile Wallet Guides")], "vCard & Contact Management");
 });
 
 test("unknown and missing categories are detectable instead of silently mapped", () => {
