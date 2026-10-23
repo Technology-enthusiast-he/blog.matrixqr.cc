@@ -8,33 +8,38 @@ const SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
 
 const START_MARKER = "<!-- AUTO-SITEMAP-START -->";
 const END_MARKER = "<!-- AUTO-SITEMAP-END -->";
+const { CATEGORY_NAMES } = require("./article-categories");
 
-const CATEGORIES = [
-    {
-        name: "QR Code Security & Privacy",
+const CATEGORY_PRESENTATION = {
+    "QR Code Security & Privacy": {
         title: "Privacy & Security",
         icon: "shield-check",
         color: "cyan"
     },
-    {
-        name: "Digital Menu & Branding",
+    "Digital Menu & Branding": {
         title: "Digital Menu & Branding",
         icon: "utensils",
         color: "amber"
     },
-    {
-        name: "vCard & Contact Management",
+    "vCard & Contact Management": {
         title: "vCard & Contact Management",
         icon: "contact",
         color: "violet"
     },
-    {
-        name: "General",
+    "General": {
         title: "Tech & Guides",
         icon: "book-open",
         color: "emerald"
     }
-];
+};
+
+const CATEGORIES = CATEGORY_NAMES.map((name) => {
+    const presentation = CATEGORY_PRESENTATION[name];
+    if (!presentation) {
+        throw new Error("Missing sitemap presentation for canonical category: " + name);
+    }
+    return { name, ...presentation };
+});
 
 function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>"']/g, (char) => ({
