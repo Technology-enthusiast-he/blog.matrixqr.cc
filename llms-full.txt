@@ -170,7 +170,7 @@ Actually, most of the time I still prefer flipping through a paper menuâ€”but Iâ
 - Published: 2026-10-08T00:00:00+00:00
 - Updated: 2026-10-21T00:00:00+00:00
 - Category: General
-- Description: Create static website-link QR codes in your browser with custom colors and logo options. MatrixQR processes the QR payload client-side; hosting and analytics may separately process page visits.
+- Description: Create static website-link QR codes in your browser with custom colors and logo options. MatrixQR processes the QR payload client-side; hosting providers may still process technical request data.
 
 Product Release & Privacy Updates
 
