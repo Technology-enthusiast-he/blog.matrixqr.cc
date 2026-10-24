@@ -69,43 +69,6 @@
             margin: 20px 0;
         }
     </style>
-    
-    <!-- Google tag (gtag.js) 延迟加载优化 -->
-<script>
-  // 定义加载函数
-  function loadGtag() {
-    if (window.gtagLoaded) return;
-    window.gtagLoaded = true;
-
-    // 1. 动态注入 gtag 脚本
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-F2RCJE29QT';
-    document.head.appendChild(script);
-
-    // 2. 初始化数据层
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    window.gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', 'G-F2RCJE29QT');
-  }
-
-  // 3. 触发策略：用户首次交互（滚动、点击、移动等）或 4 秒后自动加载
-  const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
-  const triggerLoad = () => {
-    loadGtag();
-    events.forEach(event => window.removeEventListener(event, triggerLoad, { passive: true }));
-  };
-
-  events.forEach(event => {
-    window.addEventListener(event, triggerLoad, { once: true, passive: true });
-  });
-
-  // 保底机制：如果用户一直没有交互，页面加载 4 秒后也会自动加载统计脚本
-  setTimeout(loadGtag, 4000);
-</script>
-    
 </head>
 <body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
 
@@ -139,7 +102,7 @@
             <header class="header-banner">
                 <div class="text-xs uppercase font-bold text-cyan-400 tracking-wider mb-2">Legal Information</div>
                 <h1>Privacy Policy</h1>
-                <div class="text-xs text-slate-400">Last updated: August 15, 2026</div>
+                <div class="text-xs text-slate-400">Last updated: October 24, 2026</div>
             </header>
 
             <p class="text-base text-slate-300 mb-4 leading-relaxed">
@@ -149,11 +112,11 @@
             <div class="callout-box">
                 <div class="font-bold text-cyan-400 mb-1">🔒 Client-Side Processing & Secure Media Hosting</div>
                 <p class="text-sm text-slate-300 leading-relaxed">
-                    Standard QR utilities (such as Wi-Fi, vCard, and text generators) process the QR payload in your browser; the payload is not sent to MatrixQR's server for QR generation. This does not mean that no network requests occur: the page may load analytics or third-party assets, and hosting providers may process technical request data as described below. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), user-uploaded menu images or PDFs are stored on cloud storage to provide scannable access links.
+                    Standard QR utilities (such as Wi-Fi, vCard, and text generators) process the QR payload in your browser; the payload is not sent to MatrixQR's server for QR generation. The MatrixQR Blog does not load Google Analytics. Pages may still request third-party assets, and hosting providers may process technical request data as described below. Other MatrixQR tools may use different services depending on their configuration; consult the relevant tool's disclosures. For our Digital Menu Service (<code>menu.matrixqr.cc</code>), user-uploaded menu images or PDFs are stored on cloud storage to provide scannable access links.
                 </p>
             </div>
 
-            <h2>1. Log Files & Analytics</h2>
+            <h2>1. Log Files & Technical Data</h2>
             <p class="text-slate-300 leading-relaxed">
                 Our hosting and infrastructure providers may process technical request logs when visitors access our websites. Depending on the provider and configuration, these logs may include IP addresses, browser or device information, timestamps, referring URLs, and requested resources. The QR payload entered into a client-side generator is separate from this website-level request metadata.
             </p>
@@ -175,7 +138,7 @@
 
             <h2>4. Third-Party Links & Hosting</h2>
             <p class="text-slate-300 leading-relaxed">
-                Our websites are hosted on Vercel, Cloudflare, and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) and analytics services may receive requests when their scripts or assets are loaded. Those services may process technical request data under their own policies. Client-side QR payload processing should not be interpreted as a promise that the website makes no third-party requests.
+                Our websites are hosted on Vercel, Cloudflare, and GitHub Infrastructure. Third-party content delivery networks (CDNs such as jsDelivr and Unpkg) may receive requests when their scripts or assets are loaded. The MatrixQR Blog does not load Google Analytics; other MatrixQR properties may use analytics services depending on their current configuration. Such providers may process technical request data under their own policies. Client-side QR payload processing should not be interpreted as a promise that a website makes no third-party requests.
             </p>
 
             <h2>5. Consent</h2>
