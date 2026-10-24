@@ -802,7 +802,7 @@ This is a practical comparison checklist, not a controlled benchmark of every pr
 
 | Generator | Features to Verify | Pricing and Terms | Data-Handling Checks | Potential Fit (Not a Ranking) |
 | --- | --- | --- | --- | --- |
-| MatrixQR | Colors, logo and styling; inspect exported files before assuming SVG contains vector paths | The generator is free; the public source repository lists the MIT license. Check license terms for reuse or redistribution. | The reviewed workflow generates QR payloads in the browser, but the page includes a Google Analytics loader. Distinguish payload processing from page analytics. | Browser-side generation and source review |
+| MatrixQR | Colors, logo and styling; inspect exported files before assuming SVG contains vector paths | The generator is free; the public source repository lists the MIT license. Check license terms for reuse or redistribution. | QR payload generation occurs in the browser; separately verify the current site's analytics configuration, hosting logs, and third-party requests. | Browser-side generation and source review |
 | QR Code Monkey | Verify current logo, color, design and export options on the official product page | Check current plan limits and terms directly; this article does not independently verify its current pricing. | Review the current privacy documentation and inspect whether the selected workflow sends payloads to a service or uses redirects. | Branded codes, if the current options meet your needs |
 | Unitag | Verify current templates, styling and export formats for the specific product | Check current plan names, export limits and terms directly. | Distinguish static-code generation from any dynamic-code or campaign-management service; review the relevant data policy. | Design workflows that need its available templates |
 | Adobe Express | Check the current QR generator’s styling and download options | Confirm which features are included in the current free or paid offering, if applicable. | Review Adobe’s current privacy terms and the data handled by the specific product flow. | Users already working in Adobe Express |
@@ -814,7 +814,7 @@ This is a practical comparison checklist, not a controlled benchmark of every pr
 
 - **Browser-side processing:** QR payload generation can take place locally, reducing the need to send payload content to a dedicated generation endpoint.
 
-- **Page-level analytics:** The reviewed page includes a Google Analytics loader. Do not describe the overall page as having zero telemetry; inspect what is sent and under what consent settings.
+- **Page-level analytics:** Site-level analytics and technical request data are separate from QR payload processing. Verify the current live site's network requests and privacy disclosures before making a zero-telemetry claim.
 
 - **Privacy limits:** Client-side generation does not itself prove GDPR, CCPA, or HIPAA compliance. Review the complete application, network requests, hosting, and applicable data practices.
 
@@ -861,7 +861,7 @@ The reviewed workflow is designed to handle QR generation in the browser. To ver
 
 ### Does MatrixQR collect telemetry or scan statistics?
 
-The QR code workflow may not use a tracking redirect by default, but the reviewed page includes a Google Analytics loader. Distinguish QR scan tracking from website analytics and inspect the network requests and privacy settings before making a zero-telemetry claim.
+The QR code workflow can generate the QR payload in the browser without a QR-provider tracking redirect. Website analytics, hosting logs, and third-party requests are separate from QR scan tracking, so verify the current live site's network requests and privacy disclosures before making a zero-telemetry claim.
 
 ### Does MatrixQR work without internet access?
 
