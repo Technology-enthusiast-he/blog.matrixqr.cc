@@ -2,12 +2,12 @@
 
 > The official MatrixQR technical blog covering QR code generation, digital menus, client-side processing, and practical privacy and security considerations.
 
-MatrixQR publishes implementation guides and product updates. Privacy and data-handling statements should be read in the context of the specific tool and workflow described; the blog itself may use analytics.
+MatrixQR publishes implementation guides and product updates. Privacy and data-handling statements should be read in the context of the specific tool and workflow described. The MatrixQR Blog does not load Google Analytics; hosting providers and third-party assets may still process technical request data.
 
 ## Official Resources
 - [MatrixQR QR Code Generator](https://www.matrixqr.cc/): Main QR code generator website.
 - [Digital Menu Tool](https://menu.matrixqr.cc/): Tools and workflows for digital menus.
-- [Privacy Policy](https://blog.matrixqr.cc/posts/privacy-policy): The blog's privacy and analytics disclosures.
+- [Privacy Policy](https://blog.matrixqr.cc/posts/privacy-policy): The blog's privacy and data-handling disclosures.
 
 ## Latest Articles
 - [Why Restaurants Should Offer Both Paper and QR Code Menus](https://blog.matrixqr.cc/posts/2026-10/traditional-menus-digital-menu-qr-code): Discover how restaurant QR code menus can complement paper menus, improve access during busy service, and give diners more choice without forcing a fully digital experience.
