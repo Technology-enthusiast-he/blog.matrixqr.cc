@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">QR code logo size comparison</title>
+<desc id="desc">Three conceptual QR-style diagrams compare a small centered logo, a moderate logo, and an oversized logo. The image explains visual trade-offs and is not a scannable QR code.</desc>
+<defs>
+  <pattern id="modules" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#f8fafc"/><rect x="0" y="0" width="12" height="12" fill="#0f172a"/><rect x="12" y="12" width="12" height="12" fill="#0f172a"/></pattern>
+  <g id="finder"><rect width="72" height="72" rx="3" fill="#0f172a"/><rect x="12" y="12" width="48" height="48" fill="#f8fafc"/><rect x="24" y="24" width="24" height="24" fill="#0f172a"/></g>
+</defs>
+<rect width="1200" height="630" rx="28" fill="#080d1a"/>
+<text x="64" y="76" fill="#f8fafc" font-family="Arial,sans-serif" font-size="34" font-weight="700">Logo size changes scan risk</text>
+<text x="64" y="112" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">A practical visual comparison — not a universal safe-size formula</text>
+<g transform="translate(64 155)">
+  <rect width="330" height="400" rx="20" fill="#111c30" stroke="#334155"/>
+  <rect x="55" y="54" width="220" height="220" fill="url(#modules)"/>
+  <use href="#finder" x="55" y="54"/><use href="#finder" x="203" y="54"/><use href="#finder" x="55" y="202"/>
+  <rect x="132" y="132" width="66" height="66" rx="12" fill="#fff" stroke="#22d3ee" stroke-width="4"/><path d="M151 163l14 -15 14 15 -14 15z" fill="#0891b2"/>
+  <text x="165" y="320" text-anchor="middle" fill="#67e8f9" font-family="Arial,sans-serif" font-size="22" font-weight="700">Start small</text>
+  <text x="165" y="350" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">Leaves more modules visible</text>
+</g>
+<g transform="translate(435 155)">
+  <rect width="330" height="400" rx="20" fill="#111c30" stroke="#334155"/>
+  <rect x="55" y="54" width="220" height="220" fill="url(#modules)"/>
+  <use href="#finder" x="55" y="54"/><use href="#finder" x="203" y="54"/><use href="#finder" x="55" y="202"/>
+  <rect x="118" y="118" width="94" height="94" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M142 165l23 -24 23 24 -23 24z" fill="#0284c7"/>
+  <text x="165" y="320" text-anchor="middle" fill="#bae6fd" font-family="Arial,sans-serif" font-size="22" font-weight="700">Test carefully</text>
+  <text x="165" y="350" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">Validate at final output size</text>
+</g>
+<g transform="translate(806 155)">
+  <rect width="330" height="400" rx="20" fill="#111c30" stroke="#7f1d1d"/>
+  <rect x="55" y="54" width="220" height="220" fill="url(#modules)"/>
+  <use href="#finder" x="55" y="54"/><use href="#finder" x="203" y="54"/><use href="#finder" x="55" y="202"/>
+  <rect x="96" y="96" width="138" height="138" rx="12" fill="#fff" stroke="#f87171" stroke-width="5"/><path d="M130 165l35 -35 35 35 -35 35z" fill="#dc2626"/>
+  <text x="165" y="320" text-anchor="middle" fill="#fca5a5" font-family="Arial,sans-serif" font-size="22" font-weight="700">Avoid oversized</text>
+  <text x="165" y="350" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">May obscure too much data</text>
+</g>
+<text x="64" y="594" fill="#64748b" font-family="Arial,sans-serif" font-size="14">Conceptual illustration only. These patterns are not valid, scannable QR codes.</text>
+</svg>
