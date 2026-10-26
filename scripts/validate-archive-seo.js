@@ -16,7 +16,7 @@ function readArchivePage(page) {
         throw new Error(`Archive page ${page} is missing: ${path.relative(ROOT, file)}`);
     }
 
-    return { file, html: fs.readFileSync(file, "utf8") };
+    return { page, file, html: fs.readFileSync(file, "utf8") };
 }
 
 function extractLink(html, rel) {
@@ -93,11 +93,6 @@ function expectedUrl(page) {
         : `${SITE_URL}/posts/page/${page}/`;
 }
 
-function getPageNumber(file) {
-    const match = file.match(/[\\/]page[\\/]([0-9]+)[\\/]index\\.html$/);
-    return match ? Number(match[1]) : 1;
-}
-
 function main() {
     const generatedPages = [readArchivePage(1)];
     const pageRoot = path.join(POSTS_DIR, "page");
@@ -110,12 +105,11 @@ function main() {
         }
     }
 
-    generatedPages.sort((a, b) => getPageNumber(a.file) - getPageNumber(b.file));
+    generatedPages.sort((a, b) => a.page - b.page);
 
     const errors = [];
 
-    generatedPages.forEach(({ file, html }) => {
-        const page = getPageNumber(file);
+    generatedPages.forEach(({ page, file, html }) => {
         const expected = expectedUrl(page);
         const relative = path.relative(ROOT, file);
         const canonical = extractLink(html, "canonical");
