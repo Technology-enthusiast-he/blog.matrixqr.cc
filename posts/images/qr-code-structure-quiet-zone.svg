@@ -5,7 +5,7 @@
 <rect width="1200" height="630" rx="28" fill="#080d1a"/>
 <text x="64" y="76" fill="#f8fafc" font-family="Arial,sans-serif" font-size="34" font-weight="700">Protect the parts scanners rely on</text>
 <text x="64" y="112" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">Keep the border clear, preserve corner markers, and avoid excessive coverage</text>
-<rect x="105" y="135" width="450" height="440" rx="18" fill="#f8fafc" stroke="#4ade80" stroke-width="3"/>
+<rect x="101" y="131" width="458" height="448" rx="18" fill="#f8fafc" stroke="#4ade80" stroke-width="3"/>
 <rect x="193" y="223" width="264" height="264" fill="url(#grid)" stroke="#334155" stroke-width="2"/>
 <use href="#finder" x="193" y="223"/><use href="#finder" x="391" y="223"/><use href="#finder" x="193" y="421"/>
 <rect x="287" y="318" width="76" height="76" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M305 356l20 -20 20 20 -20 20z" fill="#0284c7"/>
