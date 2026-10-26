@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://blog.matrixqr.cc/</loc>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/posts/</loc>
+  </url>
+  <url>
     <loc>https://blog.matrixqr.cc/posts/2026-10/introducing-matrixqr-url-generator</loc>
     <lastmod>2026-10-21</lastmod>
   </url>
@@ -9,14 +15,7 @@
     <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://blog.matrixqr.cc/posts/page/2/</loc>
-  </url>
-  <url>
-    <loc>https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization</loc>
-    <lastmod>2026-10-21</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo</loc>
+    <loc>https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization</loc>
     <lastmod>2026-10-21</lastmod>
   </url>
   <url>
@@ -24,14 +23,26 @@
     <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization</loc>
+    <loc>https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo</loc>
     <lastmod>2026-10-21</lastmod>
   </url>
   <url>
-    <loc>https://blog.matrixqr.cc/</loc>
+    <loc>https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it</loc>
+    <lastmod>2026-10-26</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/image-to-qr-menu-guide</loc>
+    <lastmod>2026-10-21</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/posts/page/2/</loc>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/posts/static-vs-dynamic-qr</loc>
     <lastmod>2026-10-21</lastmod>
   </url>
   <url>
@@ -41,12 +52,5 @@
   <url>
     <loc>https://blog.matrixqr.cc/posts/vcard-qr-setup</loc>
     <lastmod>2026-10-21</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.matrixqr.cc/posts/static-vs-dynamic-qr</loc>
-    <lastmod>2026-10-21</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.matrixqr.cc/posts/</loc>
   </url>
 </urlset>
