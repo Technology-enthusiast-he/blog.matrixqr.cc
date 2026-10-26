@@ -20,7 +20,7 @@
   <rect width="330" height="400" rx="20" fill="#111c30" stroke="#334155"/>
   <rect x="55" y="54" width="220" height="220" fill="url(#modules)"/>
   <use href="#finder" x="55" y="54"/><use href="#finder" x="203" y="54"/><use href="#finder" x="55" y="202"/>
-  <rect x="118" y="118" width="94" height="94" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M142 165l23 -24 23 24 -23 24z" fill="#0284c7"/>
+  <rect x="128" y="128" width="74" height="74" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M146 165l19 -19 19 19 -19 19z" fill="#0284c7"/>
   <text x="165" y="320" text-anchor="middle" fill="#bae6fd" font-family="Arial,sans-serif" font-size="22" font-weight="700">Test carefully</text>
   <text x="165" y="350" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">Validate at final output size</text>
 </g>
