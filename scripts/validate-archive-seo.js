@@ -16,30 +16,26 @@ function readArchivePage(page) {
         throw new Error(`Archive page ${page} is missing: ${path.relative(ROOT, file)}`);
     }
 
-    return {
-        file,
-        html: fs.readFileSync(file, "utf8")
-    };
+    return { file, html: fs.readFileSync(file, "utf8") };
 }
 
 function extractLink(html, rel) {
-    const match = html.match(
-        new RegExp(`<link\\b[^>]*\\brel=["']${rel}["'][^>]*\\bhref=["']([^"']+)["'][^>]*>`, "i")
+    const pattern = new RegExp(
+        "<link[^>]*rel=[\\\"']" + rel + "[\\\"'][^>]*href=[\\\"']([^\\\"']+)[\\\"'][^>]*>",
+        "i"
     );
+    const match = html.match(pattern);
     return match ? match[1].trim() : "";
 }
 
 function extractMeta(html, attribute, key) {
-    const tags = html.match(/<meta\\b[^>]*>/gi) || [];
+    const tags = html.match(/<meta[^>]*>/gi) || [];
+    const escapedKey = key.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&");
+    const attributePattern = new RegExp("\\b" + attribute + "=[\\\"']" + escapedKey + "[\\\"']", "i");
 
     for (const tag of tags) {
-        const attrMatch = tag.match(
-            new RegExp(`\\b${attribute}=["']${key.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}["']`, "i")
-        );
-
-        if (!attrMatch) continue;
-
-        const content = tag.match(/\\bcontent=["']([^"']*)["']/i);
+        if (!attributePattern.test(tag)) continue;
+        const content = tag.match(/content=["']([^"']*)["']/i);
         return content ? content[1].trim() : "";
     }
 
@@ -48,12 +44,12 @@ function extractMeta(html, attribute, key) {
 
 function extractCollectionPageUrl(html) {
     const scripts = html.match(
-        /<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi
+        /<script[^>]*type=["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi
     ) || [];
 
     for (const script of scripts) {
         const jsonText = script
-            .replace(/^<script\\b[^>]*>/i, "")
+            .replace(/^<script[^>]*>/i, "")
             .replace(/<\\/script>$/i, "")
             .trim();
 
@@ -83,7 +79,8 @@ function extractCollectionPageUrl(html) {
                 }
             }
         } catch {
-            // Other JSON-LD blocks may use formats unrelated to the archive.
+            // Ignore unrelated or malformed JSON-LD blocks; the validator will
+            // report a missing CollectionPage URL if none can be parsed.
         }
     }
 
@@ -96,52 +93,43 @@ function expectedUrl(page) {
         : `${SITE_URL}/posts/page/${page}/`;
 }
 
-function main() {
-    const generatedPages = [];
-    const first = readArchivePage(1);
-    generatedPages.push(first);
+function getPageNumber(file) {
+    const match = file.match(/[\\/]page[\\/]([0-9]+)[\\/]index\\.html$/);
+    return match ? Number(match[1]) : 1;
+}
 
+function main() {
+    const generatedPages = [readArchivePage(1)];
     const pageRoot = path.join(POSTS_DIR, "page");
+
     if (fs.existsSync(pageRoot)) {
         for (const entry of fs.readdirSync(pageRoot, { withFileTypes: true })) {
-            if (!entry.isDirectory() || !/^\\d+$/.test(entry.name)) continue;
+            if (!entry.isDirectory() || !/^\d+$/.test(entry.name)) continue;
             const page = Number(entry.name);
-            if (page < 2) continue;
-            generatedPages.push(readArchivePage(page));
+            if (page >= 2) generatedPages.push(readArchivePage(page));
         }
     }
 
-    generatedPages.sort((a, b) => {
-        const pageA = a.file.includes(`${path.sep}page${path.sep}`)
-            ? Number(a.file.match(/page[\\/]([0-9]+)[\\/]index\\.html$/)?.[1] || 1)
-            : 1;
-        const pageB = b.file.includes(`${path.sep}page${path.sep}`)
-            ? Number(b.file.match(/page[\\/]([0-9]+)[\\/]index\\.html$/)?.[1] || 1)
-            : 1;
-        return pageA - pageB;
-    });
+    generatedPages.sort((a, b) => getPageNumber(a.file) - getPageNumber(b.file));
 
     const errors = [];
 
     generatedPages.forEach(({ file, html }) => {
-        const pageMatch = file.match(/page[\\/]([0-9]+)[\\/]index\\.html$/);
-        const page = pageMatch ? Number(pageMatch[1]) : 1;
+        const page = getPageNumber(file);
         const expected = expectedUrl(page);
-
+        const relative = path.relative(ROOT, file);
         const canonical = extractLink(html, "canonical");
         const ogUrl = extractMeta(html, "property", "og:url");
         const collectionUrl = extractCollectionPageUrl(html);
 
         if (canonical !== expected) {
-            errors.push(`${path.relative(ROOT, file)}: canonical is ${canonical || "missing"}; expected ${expected}`);
+            errors.push(`${relative}: canonical is ${canonical || "missing"}; expected ${expected}`);
         }
-
         if (ogUrl !== expected) {
-            errors.push(`${path.relative(ROOT, file)}: og:url is ${ogUrl || "missing"}; expected ${expected}`);
+            errors.push(`${relative}: og:url is ${ogUrl || "missing"}; expected ${expected}`);
         }
-
         if (collectionUrl !== expected) {
-            errors.push(`${path.relative(ROOT, file)}: CollectionPage.url is ${collectionUrl || "missing"}; expected ${expected}`);
+            errors.push(`${relative}: CollectionPage.url is ${collectionUrl || "missing"}; expected ${expected}`);
         }
     });
 
