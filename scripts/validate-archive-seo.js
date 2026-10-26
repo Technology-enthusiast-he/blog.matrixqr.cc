@@ -44,13 +44,13 @@ function extractMeta(html, attribute, key) {
 
 function extractCollectionPageUrl(html) {
     const scripts = html.match(
-        /<script[^>]*type=["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi
+        /<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi
     ) || [];
 
     for (const script of scripts) {
         const jsonText = script
             .replace(/^<script[^>]*>/i, "")
-            .replace(/<\\/script>$/i, "")
+            .replace(/<\/script>$/i, "")
             .trim();
 
         try {
