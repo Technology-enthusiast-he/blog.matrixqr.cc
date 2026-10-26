@@ -11,7 +11,7 @@
 <rect x="287" y="318" width="76" height="76" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M305 356l20 -20 20 20 -20 20z" fill="#0284c7"/>
 <path d="M520 205 C570 205 590 245 630 245" fill="none" stroke="#4ade80" stroke-width="3"/><circle cx="520" cy="205" r="5" fill="#4ade80"/>
 <text x="655" y="238" fill="#86efac" font-family="Arial,sans-serif" font-size="22" font-weight="700">Quiet zone</text>
-<text x="655" y="268" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">Leave a clean margin around</text><text x="655" y="293" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">the entire QR symbol.</text>
+<text x="655" y="268" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">Leave at least 4 modules clear</text><text x="655" y="293" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">around every side of the symbol.</text>
 <path d="M424 255 C520 300 570 365 630 365" fill="none" stroke="#fbbf24" stroke-width="3"/><circle cx="424" cy="255" r="5" fill="#fbbf24"/>
 <text x="655" y="358" fill="#fcd34d" font-family="Arial,sans-serif" font-size="22" font-weight="700">Finder patterns</text>
 <text x="655" y="388" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">Keep the three corner markers</text><text x="655" y="413" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">fully visible and unobstructed.</text>
