@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>How to Add a Logo to a QR Code Without Breaking It | MatrixQR Blog</title>
+    <meta name="description" content="Learn how to add a logo to a QR code without hurting scan reliability. Covers logo size, error correction, contrast, quiet zones, testing, and export tips.">
+    <meta name="keywords" content="how to add a logo to a QR code, QR code logo size, QR code error correction, branded QR code, QR code scannability, QR code testing">
+
+    <link rel="canonical" href="https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it">
+    <link rel="icon" type="image/png" href="/favicon-64x64.png" sizes="64x64">
+
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2026-10-26T08:00:00+00:00">
+    <meta property="article:modified_time" content="2026-10-26T08:00:00+00:00">
+    <meta property="og:url" content="https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it">
+    <meta property="og:site_name" content="MatrixQR Blog">
+    <meta property="og:title" content="How to Add a Logo to a QR Code Without Breaking It | MatrixQR Blog">
+    <meta property="og:description" content="Learn how to add a logo to a QR code without hurting scan reliability. Covers logo size, error correction, contrast, quiet zones, testing, and export tips.">
+    <meta property="og:image" content="https://blog.matrixqr.cc/posts/images/Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Branded QR code with a logo and guidance for reliable scanning">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How to Add a Logo to a QR Code Without Breaking It | MatrixQR Blog">
+    <meta name="twitter:description" content="Learn how to add a logo to a QR code without hurting scan reliability. Covers logo size, error correction, contrast, quiet zones, testing, and export tips.">
+    <meta name="twitter:image" content="https://blog.matrixqr.cc/posts/images/Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo.webp">
+    <meta name="twitter:image:alt" content="Branded QR code with a logo and guidance for reliable scanning">
+
+    <link rel="stylesheet" href="/dist/output.css">
+    <script src="https://unpkg.com/lucide@1.38.0/dist/umd/lucide.min.js"></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BlogPosting",
+          "@id": "https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it#article",
+          "headline": "How to Add a Logo to a QR Code Without Breaking It",
+          "description": "Learn how to add a logo to a QR code without hurting scan reliability. Covers logo size, error correction, contrast, quiet zones, testing, and export tips.",
+          "author": {
+            "@type": "Organization",
+            "name": "MatrixQR Studio",
+            "url": "https://www.matrixqr.cc/"
+          },
+          "datePublished": "2026-10-26T08:00:00+00:00",
+          "dateModified": "2026-10-26T08:00:00+00:00",
+          "publisher": {
+            "@type": "Organization",
+            "name": "MatrixQR Studio",
+            "url": "https://www.matrixqr.cc/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://blog.matrixqr.cc/favicon-64x64.png"
+            }
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it"
+          },
+          "articleSection": "Branding",
+          "keywords": ["how to add a logo to a QR code", "QR code logo size", "QR code error correction", "QR code scannability", "QR code testing"],
+          "image": [
+            "https://blog.matrixqr.cc/posts/images/Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo.webp"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://blog.matrixqr.cc/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Articles",
+              "item": "https://blog.matrixqr.cc/posts/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "How to Add a Logo to a QR Code Without Breaking It",
+              "item": "https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it"
+            }
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "How large should a logo be on a QR code?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no single logo percentage that is safe for every QR code. Keep the logo modest, avoid covering finder patterns and important edge areas, preserve contrast, and test the final exported code at its real display or print size."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does higher QR code error correction make a logo safe?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Higher error correction can provide more resilience to damage, but its nominal correction capacity is not a guaranteed logo-area allowance. A logo can still interfere with scanning because of poor contrast, excessive coverage, blur, or print defects."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where should I place a logo in a QR code?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A small logo is commonly placed near the center, while the three finder patterns and the surrounding quiet zone should remain unobstructed. The exact safe area depends on the generated symbol and final design, so always test the finished code."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How can I test a QR code with a logo?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Test the final exported file with multiple phones or scanning apps, under the lighting and distance expected in real use. For print, test an actual sample at its intended physical size rather than relying only on a large screen preview."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I add a logo to a QR code without uploading the logo to a server?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, if the generator performs logo composition locally in the browser. In that design, the image and QR payload can be processed client-side instead of being uploaded to a QR-rendering server. Other site requests, analytics, and the eventual QR destination are separate privacy considerations."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        .header-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 1px solid #334155;
+            color: #ffffff;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+        .blog-category {
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            color: #38bdf8;
+            margin-bottom: 12px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin: 0 0 12px 0;
+            color: #ffffff;
+        }
+        .meta-info {
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+        .intro-text {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            margin-bottom: 28px;
+            line-height: 1.75;
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            padding-left: 12px;
+            border-left: 4px solid #38bdf8;
+        }
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #38bdf8;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        .callout-box {
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 1px solid #0284c7;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 32px 0;
+        }
+        .callout-title {
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+        article ul, article ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
+        }
+        article ul { list-style-type: disc; }
+        article ol { list-style-type: decimal; }
+        article ul li, article ol li {
+            margin-bottom: 0.5rem;
+            line-height: 1.65;
+        }
+        article a {
+            color: #38bdf8;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+        article a:hover { color: #7dd3fc; }
+        .checklist {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
+
+    <header class="bg-[#080d1a]/80 backdrop-blur-xl border-b border-slate-800/80 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="https://blog.matrixqr.cc/" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="qr-code" class="w-5 h-5 text-white"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-black text-xl tracking-wider text-white">MATRIX<span class="text-cyan-400">BLOG</span></span>
+                    <span class="text-[10px] text-slate-300 uppercase tracking-widest -mt-1 font-medium">Tech & Security</span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="/posts/" class="text-cyan-400 flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    All Articles
+                </a>
+                <a href="https://www.matrixqr.cc/" class="px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl transition-all shadow-md shadow-cyan-500/10 flex items-center gap-2">
+                    Launch App ↗
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-4xl mx-auto px-6 py-12">
+        <nav aria-label="Breadcrumb" class="mb-6 text-xs text-slate-400">
+            <ol class="flex items-center gap-2">
+                <li><a href="https://blog.matrixqr.cc/" class="hover:text-cyan-400 transition-colors">Home</a></li>
+                <li><span>/</span></li>
+                <li><a href="https://blog.matrixqr.cc/posts/" class="hover:text-cyan-400 transition-colors">Posts</a></li>
+                <li><span>/</span></li>
+                <li class="text-slate-200 font-medium" aria-current="page">How-to-Add-Logo-to-QR-Code-Without-Breaking-It</li>
+            </ol>
+        </nav>
+
+        <article class="w-full">
+            <header class="header-banner">
+                <div class="blog-category">Guides & QR Code Branding</div>
+                <h1>How to Add a Logo to a QR Code Without Breaking It</h1>
+                <div class="meta-info">Published on October 26, 2026 • By MatrixQR Studio</div>
+            </header>
+
+            <section class="callout-box">
+                <div class="callout-title">Can You Put a Logo in a QR Code?</div>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Yes. A logo can be placed inside a QR code when the final design preserves enough usable QR modules, contrast, the quiet zone, and the three finder patterns. Error correction can improve resilience to some damage, but it does not create a guaranteed safe percentage for logo coverage. The reliable approach is to keep the logo modest and test the exported code at its real size.
+                </p>
+            </section>
+
+            <p class="intro-text">
+                Adding a logo is one of the simplest ways to turn a plain QR code into a branded QR code. The difficult part is not placing the image; it is making sure the finished symbol still scans reliably after customization, compression, resizing, printing, or display on a phone.
+            </p>
+
+            <p class="text-slate-300 leading-relaxed mb-6">
+                This guide explains how to add a logo without relying on a misleading “safe logo percentage.” Instead, it focuses on the factors that actually affect scanning: logo coverage, error correction, contrast, quiet-zone protection, output quality, and real-world testing.
+            </p>
+
+            <h2>Why a Logo Can Break a QR Code</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                A QR code is not simply a decorative grid. Its finder patterns, timing information, alignment patterns, data modules, and error-correction information work together so a scanner can locate and decode the symbol. Covering or distorting too much of that structure can make decoding harder.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                The problem can become worse when a logo is combined with low contrast, a busy background, rounded modules, blur, aggressive compression, or a print process that reduces the smallest details. A design that scans instantly on a large desktop preview may behave differently when printed on a small label.
+            </p>
+
+            <div class="checklist">
+                <h3 class="mt-0">The five things to protect</h3>
+                <ol class="mb-0">
+                    <li><strong>Finder patterns:</strong> keep the three large corner markers clear.</li>
+                    <li><strong>Quiet zone:</strong> preserve a clear margin around the entire symbol.</li>
+                    <li><strong>Contrast:</strong> keep the QR modules clearly distinguishable from the background.</li>
+                    <li><strong>Module detail:</strong> avoid making the smallest modules too fine for the final output size.</li>
+                    <li><strong>Decoding margin:</strong> test the finished design rather than assuming theoretical error correction will compensate for every change.</li>
+                </ol>
+            </div>
+
+            <h2>Step 1: Start With a Simple, High-Contrast QR Code</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Before adding a logo, generate a clean QR code and confirm that it scans. A dark foreground on a light background is usually a straightforward starting point. If your brand requires custom colors, change one variable at a time and test the result.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Avoid placing the code directly over photographs, gradients, textures, or other visual elements unless the QR symbol has a controlled background and sufficient contrast. A branded design should make the QR code easier to identify, not harder for a camera to separate from its surroundings.
+            </p>
+
+            <h2>Step 2: Choose the Right Logo Size</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                There is no universal logo size that is guaranteed to work across every QR version, payload, output size, and scanner. A percentage that works for one code can fail on another because the underlying module layout is different.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                A practical starting point is to keep the logo visually modest and centered, then increase its size only if testing shows that the code remains reliable. Do not use the logo to cover any of the three finder patterns, and avoid pushing the logo toward the edges where it can interfere with other structural elements.
+            </p>
+            <ul>
+                <li>Start smaller rather than larger.</li>
+                <li>Use a simple logo mark when possible instead of a detailed photographic image.</li>
+                <li>Give the logo a clean boundary or background if its edges blend into the QR modules.</li>
+                <li>Inspect the QR at the actual size people will scan.</li>
+            </ul>
+
+            <h2>Step 3: Understand Error Correction</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                QR codes include error-correction mechanisms that allow a decoder to recover from some missing or damaged information. Higher correction levels generally provide more resilience, but that does not mean you can safely cover a fixed percentage of the visible QR area with a logo.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Error correction is only one part of the equation. A QR code can still fail because the camera cannot distinguish the modules, the quiet zone is missing, the image is blurred, or the logo interferes with important structural features. Treat error correction as a resilience feature, not permission to cover the code aggressively.
+            </p>
+
+            <h2>Step 4: Protect Contrast and the Quiet Zone</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                The quiet zone is the blank area surrounding the QR symbol. It helps a scanner distinguish the code from nearby content. Keep this margin clear even when you add a frame, headline, decorative border, or call to action.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Contrast matters just as much. A dark QR code on a light, uncluttered background is easier to decode than a low-contrast color combination. If you use brand colors, check the actual exported image rather than judging the colors only from a design editor.
+            </p>
+
+            <h2>Step 5: Export Without Destroying the Design</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                A QR code that scans before export can fail after export if the file is resized, compressed, or converted poorly. For digital use, a sufficiently large PNG can be practical. For print and layout workflows, SVG can be useful when the generator provides a genuine vector export.
+            </p>
+            <ul>
+                <li>Do not repeatedly resize a raster QR image.</li>
+                <li>Keep edges crisp and avoid unnecessary blur or smoothing.</li>
+                <li>Inspect the final file after export.</li>
+                <li>For print, proof the code at the intended physical dimensions.</li>
+            </ul>
+
+            <h2>Step 6: Test the Final QR Code in Real Conditions</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Testing is the most important step because the final QR code is what users will actually scan. Test the exported file, not only the generator preview.
+            </p>
+            <ol>
+                <li><strong>Use more than one phone:</strong> different cameras and scanning software can behave differently.</li>
+                <li><strong>Test at the intended distance:</strong> a code designed for a poster should be tested from a realistic viewing distance.</li>
+                <li><strong>Test under realistic lighting:</strong> glare, shadows, and dim environments can affect scanning.</li>
+                <li><strong>Test the printed sample:</strong> paper texture, ink spread, and printer resolution can change the result.</li>
+                <li><strong>Test after every major design change:</strong> changing logo size, colors, border, or output dimensions can alter scan reliability.</li>
+            </ol>
+
+            <div class="callout-box">
+                <div class="callout-title">A Better Rule Than “30% Is Safe”</div>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    You may see advice claiming that a QR code can always have a certain percentage of its area covered because of error correction. Treat fixed percentages with caution. QR versions, payload density, logo shape, contrast, output quality, and scanner conditions all matter. The useful rule is: <strong>keep the logo modest, protect structural areas, and validate the final design in the conditions where it will be used.</strong>
+                </p>
+            </div>
+
+            <h2>Browser-Side Logo Processing and Privacy</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                The way a QR generator processes your logo is another consideration. If QR generation and logo composition happen locally in the browser, the image and QR payload do not need to be uploaded to a QR-rendering server just to create the visual output.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-6">
+                This is different from other requests a website may make, including analytics, hosting logs, external libraries, or the website that eventually receives the QR scan. A privacy-focused workflow should distinguish client-side rendering from those separate data flows. For more background, see the <a href="https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo">complete custom QR code generator with logo guide</a>.
+            </p>
+
+            <h2>Quick Pre-Publishing Checklist</h2>
+            <div class="checklist">
+                <ul class="mb-0">
+                    <li>☐ The three finder patterns are unobstructed.</li>
+                    <li>☐ The quiet zone is still visible around the code.</li>
+                    <li>☐ Foreground and background have strong contrast.</li>
+                    <li>☐ The logo is small enough to leave a comfortable scanning margin.</li>
+                    <li>☐ The exported file is crisp and not unexpectedly compressed.</li>
+                    <li>☐ The final QR scans on multiple devices.</li>
+                    <li>☐ A printed sample scans at the intended physical size when applicable.</li>
+                    <li>☐ The destination is verified independently of the logo or branding.</li>
+                </ul>
+            </div>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <h3>How large should a logo be on a QR code?</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                There is no single logo percentage that is safe for every QR code. Keep the logo modest, avoid covering finder patterns and important edge areas, preserve contrast, and test the final exported code at its real display or print size.
+            </p>
+
+            <h3>Does higher QR code error correction make a logo safe?</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Higher error correction can provide more resilience to damage, but its nominal correction capacity is not a guaranteed logo-area allowance. A logo can still interfere with scanning because of poor contrast, excessive coverage, blur, or print defects.
+            </p>
+
+            <h3>Where should I place a logo in a QR code?</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                A small logo is commonly placed near the center, while the three finder patterns and the surrounding quiet zone should remain unobstructed. The exact safe area depends on the generated symbol and final design, so always test the finished code.
+            </p>
+
+            <h3>How can I test a QR code with a logo?</h3>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                Test the final exported file with multiple phones or scanning apps, under the lighting and distance expected in real use. For print, test an actual sample at its intended physical size rather than relying only on a large screen preview.
+            </p>
+
+            <h3>Can I add a logo to a QR code without uploading the logo to a server?</h3>
+            <p class="text-slate-300 leading-relaxed mb-6">
+                Yes, if the generator performs logo composition locally in the browser. In that design, the image and QR payload can be processed client-side instead of being uploaded to a QR-rendering server. Other site requests, analytics, and the eventual QR destination are separate privacy considerations.
+            </p>
+
+            <h2>Create and Test a Branded QR Code</h2>
+            <p class="text-slate-300 leading-relaxed mb-4">
+                A logo can make a QR code more recognizable, but reliable branding comes from treating the QR symbol as functional artwork rather than a decoration. Keep the design simple, protect the QR structure, export carefully, and test the exact version that users will scan.
+            </p>
+            <p class="text-slate-300 leading-relaxed mb-6">
+                If you want to create a branded QR code, you can try the <a href="https://www.matrixqr.cc/" title="MatrixQR QR Code Generator">MatrixQR QR Code Generator</a>, which performs QR rendering in the browser. For the broader design and generator comparison, continue with the <a href="https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo">Custom QR Code Generator with Logo guide</a>.
+            </p>
+        </article>
+    </main>
+
+    <footer class="border-t border-slate-800/80 bg-slate-950 py-8 px-4 text-xs text-slate-300 text-center">
+        <p>© 2026 MatrixQR Studio. All rights reserved.</p>
+        <div class="flex flex-wrap justify-center items-center gap-1.5 py-2 px-3">
+            <a href="https://www.matrixqr.cc/" class="group inline-flex items-center gap-1.5 text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors duration-200 rounded">
+                <span class="group-hover:underline underline-offset-4 decoration-cyan-400/60">Main Studio</span>
+            </a>
+            <span class="text-slate-700">|</span>
+            <a href="/sitemap/" class="font-medium text-slate-300 hover:text-cyan-400">Sitemap</a>
+            <span class="text-gray-500">|</span>
+            <a href="https://menu.matrixqr.cc/" class="text-cyan-400 hover:underline flex items-center gap-1 py-2 px-3 rounded-md" title="Free Digital Menu QR Code Generator">Digital Menu QR</a>
+            <span class="text-gray-500">|</span>
+            <a href="/posts/privacy-policy" class="hover:text-cyan-600 transition-colors">Privacy Policy</a>
+        </div>
+    </footer>
+
+    <script src="/script.js"></script>
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
