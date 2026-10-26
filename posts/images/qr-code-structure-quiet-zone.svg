@@ -7,6 +7,7 @@
 <text x="64" y="112" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">Keep the border clear, preserve corner markers, and avoid excessive coverage</text>
 <rect x="105" y="135" width="450" height="440" rx="18" fill="#dcfce7" stroke="#4ade80" stroke-width="3"/>
 <text x="330" y="165" text-anchor="middle" fill="#166534" font-family="Arial,sans-serif" font-size="18" font-weight="700">QUIET ZONE — KEEP CLEAR</text>
+<text x="330" y="191" text-anchor="middle" fill="#166534" font-family="Arial,sans-serif" font-size="15">At least 4 modules on every side</text>
 <rect x="193" y="223" width="264" height="264" fill="url(#grid)" stroke="#334155" stroke-width="2"/>
 <use href="#finder" x="193" y="223"/><use href="#finder" x="391" y="223"/><use href="#finder" x="193" y="421"/>
 <rect x="287" y="318" width="76" height="76" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M305 356l20 -20 20 20 -20 20z" fill="#0284c7"/>
