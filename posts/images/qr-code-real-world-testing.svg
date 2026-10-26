@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
 <title id="title">Test a QR code in real-world conditions</title>
-<desc id="desc">Three test cards show checking a QR code on a phone, on a printed sample at its real size, and under realistic lighting and distance. The diagram is a testing checklist.</desc>
+<desc id="desc">Three test cards show checking a conceptual, non-scannable QR-style pattern on a phone, proofing a printed sample at its real size, and testing under realistic lighting and distance. All QR-like patterns in this infographic are illustrative only, not scannable codes.</desc>
 <rect width="1200" height="630" rx="28" fill="#080d1a"/>
 <text x="64" y="76" fill="#f8fafc" font-family="Arial,sans-serif" font-size="34" font-weight="700">Test the exported code, not just the preview</text>
 <text x="64" y="112" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">A quick three-part check before publishing or printing</text>
@@ -10,6 +10,7 @@
  <rect x="127" y="57" width="76" height="132" rx="5" fill="#e2e8f0"/>
  <path d="M138 80h16v16h-16z M162 80h16v16h-16z M138 104h16v16h-16z M174 104h16v16h-16z M150 128h16v16h-16z M174 140h16v16h-16z" fill="#0f172a"/>
  <path d="M150 221l16 16 33 -36" fill="none" stroke="#4ade80" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+ <text x="165" y="254" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="11">Illustrative screen pattern — not scannable</text>
  <text x="165" y="282" text-anchor="middle" fill="#67e8f9" font-family="Arial,sans-serif" font-size="22" font-weight="700">Multiple devices</text>
  <text x="165" y="313" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">Try different phones or</text><text x="165" y="336" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">scanning apps.</text>
 </g>
@@ -31,5 +32,5 @@
  <text x="165" y="282" text-anchor="middle" fill="#67e8f9" font-family="Arial,sans-serif" font-size="22" font-weight="700">Real conditions</text>
  <text x="165" y="313" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">Check lighting, glare, angle,</text><text x="165" y="336" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="16">and scanning distance.</text>
 </g>
-<text x="64" y="590" fill="#64748b" font-family="Arial,sans-serif" font-size="14">Repeat the test after changing logo size, colors, borders, or export dimensions.</text>
+<text x="64" y="590" fill="#64748b" font-family="Arial,sans-serif" font-size="14">Repeat the test after changing logo size, colors, borders, or export dimensions. All QR-like patterns shown are illustrative, not scannable.</text>
 </svg>
