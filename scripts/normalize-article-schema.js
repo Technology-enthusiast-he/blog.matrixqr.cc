@@ -6,6 +6,7 @@ const POSTS_DIR = path.join(ROOT, "posts");
 
 const AUTHOR = {
     "@type": "Organization",
+    "@id": "https://blog.matrixqr.cc/#organization",
     "name": "MatrixQR Studio",
     "url": "https://www.matrixqr.cc/",
     "sameAs": [
