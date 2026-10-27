@@ -162,6 +162,78 @@ function isInternalPageUrl(value) {
     }
 }
 
+function getEntityId(value) {
+    if (typeof value === "string") return value;
+    if (value && typeof value === "object") return value["@id"] || "";
+    return "";
+}
+
+function validateSiteEntityRelationships(articleFiles) {
+    const homepageFile = path.join(ROOT, "index.html");
+    if (!fs.existsSync(homepageFile)) {
+        fail("Site entity validation: homepage index.html is missing.");
+        return;
+    }
+
+    const homepageNodes = extractJsonLd(fs.readFileSync(homepageFile, "utf8"), "index.html").flatMap(flattenJsonLd);
+    const websiteId = SITE_ORIGIN + "/#website";
+    const organizationId = SITE_ORIGIN + "/#organization";
+    const websiteNodes = homepageNodes.filter(node => getTypes(node).includes("WebSite"));
+    const organizationNodes = homepageNodes.filter(node => getTypes(node).includes("Organization"));
+
+    if (websiteNodes.length !== 1) {
+        fail(`index.html: expected exactly one WebSite JSON-LD node, found ${websiteNodes.length}.`);
+    }
+    if (organizationNodes.length !== 1) {
+        fail(`index.html: expected exactly one Organization JSON-LD node, found ${organizationNodes.length}.`);
+    }
+
+    const website = websiteNodes[0];
+    if (website) {
+        if (website["@id"] !== websiteId) fail(`index.html: WebSite @id must be ${websiteId}.`);
+        if (canonicalizeUrl(website.url) !== SITE_ORIGIN + "/") fail("index.html: WebSite url must point to the blog homepage.");
+        if (getEntityId(website.publisher) !== organizationId) fail("index.html: WebSite publisher must reference the stable Organization @id.");
+    }
+
+    const organization = organizationNodes[0];
+    const organizationName = "MatrixQR Studio";
+    const organizationUrl = "https://www.matrixqr.cc/";
+    const organizationLogo = SITE_ORIGIN + "/favicon-64x64.png";
+    if (organization) {
+        if (organization["@id"] !== organizationId) fail(`index.html: Organization @id must be ${organizationId}.`);
+        if (organization.name !== organizationName) fail(`index.html: Organization name must match the article publisher name "${organizationName}".`);
+        if (organization.url !== organizationUrl) fail(`index.html: Organization url must be ${organizationUrl}.`);
+        if (getSchemaUrl(organization.logo) !== organizationLogo) fail("index.html: Organization logo must match the stable blog logo URL.");
+    }
+
+    for (const file of articleFiles) {
+        const label = path.relative(ROOT, file);
+        const nodes = extractJsonLd(fs.readFileSync(file, "utf8"), label).flatMap(flattenJsonLd);
+        for (const article of nodes.filter(isArticleNode)) {
+            const author = getNamedEntity(article.author);
+            const publisher = getNamedEntity(article.publisher);
+            if (getEntityId(author) !== organizationId) {
+                fail(`${label}: Article/BlogPosting author must reference the stable Organization @id.`);
+            }
+            if (getEntityId(publisher) !== organizationId) {
+                fail(`${label}: Article/BlogPosting publisher must reference the stable Organization @id.`);
+            }
+            if (publisher && publisher.name !== organizationName) {
+                fail(`${label}: publisher name does not match the site Organization name.`);
+            }
+            if (publisher && publisher.url !== organizationUrl) {
+                fail(`${label}: publisher url does not match the site Organization url.`);
+            }
+            if (publisher && getSchemaUrl(publisher.logo) !== organizationLogo) {
+                fail(`${label}: publisher logo does not match the site Organization logo.`);
+            }
+            if (getEntityId(article.isPartOf) !== websiteId) {
+                fail(`${label}: Article/BlogPosting isPartOf must reference the stable WebSite @id.`);
+            }
+        }
+    }
+}
+
 function getGeneratedPageFiles() {
     const pages = [];
     const addNumericPages = (root, prefix) => {
@@ -436,6 +508,7 @@ function main() {
 
     const articleFiles = walkHtmlFiles(path.join(ROOT, "posts")).filter(isArticleSourceFile);
     articleFiles.forEach(validateArticle);
+    validateSiteEntityRelationships(articleFiles);
 
     validateHtmlSitemap(posts);
 
@@ -458,7 +531,7 @@ function main() {
         process.exit(1);
     }
 
-    console.log("PASS: canonical/og:url, CollectionPage URLs, article descriptions/images/dates, author/publisher entities, BreadcrumbList URLs/positions, mainEntityOfPage, and HTML sitemap targets are consistent.");
+    console.log("PASS: canonical/og:url, CollectionPage URLs, article descriptions/images/dates, author/publisher and site entity references, BreadcrumbList URLs/positions, mainEntityOfPage, and HTML sitemap targets are consistent.");
 }
 
 try {
