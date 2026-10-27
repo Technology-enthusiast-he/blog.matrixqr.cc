@@ -2,6 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 
 const {
+  EXCLUDED_ARTICLES,
   MARKER,
   TOPIC_LINKS,
   buildRelatedLinks,
@@ -130,3 +131,8 @@ test("generated article HTML contains every configured topic link and reciprocal
   }
 });
 
+
+test("does not configure topic-link injection for explicitly excluded articles", () => {
+  assert.ok(EXCLUDED_ARTICLES.has("posts/image-to-qr-menu-guide.html"));
+  assert.equal(Object.hasOwn(TOPIC_LINKS, "posts/image-to-qr-menu-guide.html"), false);
+});
