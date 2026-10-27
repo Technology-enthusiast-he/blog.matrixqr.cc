@@ -31,6 +31,7 @@ jobs:
           node --check scripts/inject-topic-cluster-links.js
           node --check scripts/normalize-article-schema.js
           node --check scripts/validate-article-schema.js
+          node --check scripts/validate-article-url-paths.js
           node --check scripts/validate-content-consistency.js
           node --check scripts/validate-pagination-seo.js
           node --check scripts/sync-generated-page-schema.js

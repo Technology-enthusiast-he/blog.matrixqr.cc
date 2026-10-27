@@ -1,0 +1,110 @@
+"use strict";
+
+const fs = require("fs");
+const path = require("path");
+
+const ROOT = path.join(__dirname, "..");
+const POSTS_DIR = path.join(ROOT, "posts");
+const SITE_URL = "https://blog.matrixqr.cc";
+
+function walkHtmlFiles(directory, relativeDirectory = "") {
+    const files = [];
+
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const fullPath = path.join(directory, entry.name);
+        const relativePath = path.posix.join(relativeDirectory, entry.name);
+
+        if (entry.isDirectory()) {
+            files.push(...walkHtmlFiles(fullPath, relativePath));
+            continue;
+        }
+
+        if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) {
+            const normalized = relativePath.replace(/\\/g, "/").toLowerCase();
+
+            // These are non-article pages stored beneath posts/.
+            if (
+                relativePath === "index.html" ||
+                relativePath === "privacy-policy.html" ||
+                normalized === "page/index.html" ||
+                /^page\/\d+\/index\.html$/.test(normalized)
+            ) {
+                continue;
+            }
+
+            files.push({ fullPath, relativePath });
+        }
+    }
+
+    return files;
+}
+
+function getCanonical(html) {
+    const match = html.match(
+        /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i
+    );
+    return match ? match[1].trim() : "";
+}
+
+function main() {
+    if (!fs.existsSync(POSTS_DIR)) {
+        throw new Error("Posts directory not found: " + POSTS_DIR);
+    }
+
+    const files = walkHtmlFiles(POSTS_DIR);
+    const errors = [];
+    const canonicalToFile = new Map();
+
+    for (const file of files) {
+        const html = fs.readFileSync(file.fullPath, "utf8");
+        const canonical = getCanonical(html);
+        const slugPath = file.relativePath.replace(/\.html$/i, "");
+        const expected = SITE_URL + "/posts/" + slugPath;
+
+        if (!canonical) {
+            errors.push(file.relativePath + ": missing canonical URL.");
+            continue;
+        }
+
+        let parsed;
+        try {
+            parsed = new URL(canonical);
+        } catch {
+            errors.push(file.relativePath + ": invalid canonical URL: " + canonical);
+            continue;
+        }
+
+        if (parsed.origin !== SITE_URL || parsed.pathname !== new URL(expected).pathname || parsed.search || parsed.hash) {
+            errors.push(
+                file.relativePath +
+                ": canonical URL is " + canonical +
+                "; expected " + expected +
+                " based on the source file path."
+            );
+        }
+
+        const normalized = canonical.replace(/\/+$/, "");
+        if (canonicalToFile.has(normalized)) {
+            errors.push(
+                "Duplicate canonical URL " + canonical +
+                " in " + canonicalToFile.get(normalized) +
+                " and " + file.relativePath + "."
+            );
+        } else {
+            canonicalToFile.set(normalized, file.relativePath);
+        }
+    }
+
+    if (errors.length) {
+        console.error("Article URL/path consistency check failed:");
+        errors.forEach(error => console.error("  - " + error));
+        process.exit(1);
+    }
+
+    console.log(
+        "Article URL/path consistency check passed for " +
+        files.length + " article source file(s)."
+    );
+}
+
+main();
