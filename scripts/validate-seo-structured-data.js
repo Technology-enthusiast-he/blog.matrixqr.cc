@@ -312,7 +312,7 @@ function validateArticle(file) {
             }
         }
         const firstUrl = canonicalizeUrl(getSchemaUrl(items[0]?.item));
-        if (firstUrl !== SITE_ORIGIN) {
+        if (firstUrl !== SITE_ORIGIN + "/") {
             fail(`${label}: BreadcrumbList first item must link to the site homepage.`);
         }
         const lastUrl = canonicalizeUrl(getSchemaUrl(items[items.length - 1]?.item));
