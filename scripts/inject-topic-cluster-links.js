@@ -3,16 +3,13 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const MARKER = "<!-- SEO/GEO Topic Cluster Links -->";
+const EXCLUDED_ARTICLES = new Set(["posts/image-to-qr-menu-guide.html"]);
 
 const TOPIC_LINKS = {
   "posts/2026-10/traditional-menus-digital-menu-qr-code.html": [
     ["Convert a menu image into a QR code", "/posts/image-to-qr-menu-guide"],
     ["Add a custom logo to a restaurant QR menu", "/posts/custom-logo-qr-code-menu-guide"],
     ["How MatrixQR secures digital menu QR codes", "/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization"],
-  ],
-  "posts/image-to-qr-menu-guide.html": [
-    ["Why this digital menu approach works well for restaurants", "/posts/2026-10/traditional-menus-digital-menu-qr-code"],
-    ["Customize a restaurant QR menu with a logo", "/posts/custom-logo-qr-code-menu-guide"],
   ],
   "posts/custom-logo-qr-code-menu-guide.html": [
     ["Convert an existing menu image into a QR code", "/posts/image-to-qr-menu-guide"],
@@ -74,11 +71,12 @@ function updateArticle(filePath, links) {
 if (require.main === module) {
   let updatedCount = 0;
   for (const [relativePath, links] of Object.entries(TOPIC_LINKS)) {
+    if (EXCLUDED_ARTICLES.has(relativePath)) continue;
     const filePath = path.join(ROOT, relativePath);
     if (!fs.existsSync(filePath)) throw new Error(`Missing article: ${relativePath}`);
     if (updateArticle(filePath, links)) updatedCount += 1;
   }
-  console.log(`[topic-links] Updated ${updatedCount}/${Object.keys(TOPIC_LINKS).length} article(s).`);
+  console.log(`[topic-links] Updated ${updatedCount} article(s); excluded ${EXCLUDED_ARTICLES.size} article(s) by policy.`);
 }
 
-module.exports = { MARKER, TOPIC_LINKS, buildRelatedLinks, injectTopicClusterLinks };
+module.exports = { EXCLUDED_ARTICLES, MARKER, TOPIC_LINKS, buildRelatedLinks, injectTopicClusterLinks };
