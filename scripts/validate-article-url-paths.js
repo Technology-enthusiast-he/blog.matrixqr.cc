@@ -83,7 +83,7 @@ function main() {
             );
         }
 
-        const normalized = canonical.replace(/\/+$/, "").toLowerCase();
+        const normalized = canonical.replace(/\/+$/, "");
         if (canonicalToFile.has(normalized)) {
             errors.push(
                 "Duplicate canonical URL " + canonical +
