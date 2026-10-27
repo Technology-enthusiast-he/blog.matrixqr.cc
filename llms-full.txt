@@ -76,6 +76,10 @@ A practical starting point is to keep the logo visually modest and centered, the
 
 - Inspect the QR at the actual size people will scan.
 
+![Conceptual comparison of a small, moderate, and oversized logo placed in a QR-style grid; the illustration is not a scannable QR code.](https://blog.matrixqr.cc/posts/images/qr-logo-size-comparison.svg)
+
+A smaller logo leaves more of the QR pattern visible. There is no universal safe size, so test the final code.
+
 ## Step 3: Understand Error Correction
 
 QR codes include error-correction mechanisms that allow a decoder to recover from some missing or damaged information. Higher correction levels generally provide more resilience, but that does not mean you can safely cover a fixed percentage of the visible QR area with a logo.
@@ -87,6 +91,10 @@ Error correction is only one part of the equation. A QR code can still fail beca
 The quiet zone is the blank area surrounding the QR symbol. It helps a scanner distinguish the code from nearby content. Keep this margin clear even when you add a frame, headline, decorative border, or call to action.
 
 Contrast matters just as much. A dark QR code on a light, uncluttered background is easier to decode than a low-contrast color combination. If you use brand colors, check the actual exported image rather than judging the colors only from a design editor.
+
+![Conceptual QR-style diagram showing a quiet zone at least four modules wide on every side, three unobstructed finder patterns, and modest logo coverage; not a scannable QR code.](https://blog.matrixqr.cc/posts/images/qr-code-structure-quiet-zone.svg)
+
+Keep the quiet zone clear and the three corner finder patterns unobstructed. This is an explanatory diagram, not a scannable QR code.
 
 ## Step 5: Export Without Destroying the Design
 
@@ -113,6 +121,10 @@ Testing is the most important step because the final QR code is what users will 
 - **Test the printed sample:** paper texture, ink spread, and printer resolution can change the result.
 
 - **Test after every major design change:** changing logo size, colors, border, or output dimensions can alter scan reliability.
+
+![Three-part QR code testing checklist: scan on multiple devices, proof at actual print size, and test under realistic lighting and distance.](https://blog.matrixqr.cc/posts/images/qr-code-real-world-testing.svg)
+
+Test the exported QR code on different devices, at its intended physical size, and in realistic lighting.
 
 A Better Rule Than “30% Is Safe”
 
