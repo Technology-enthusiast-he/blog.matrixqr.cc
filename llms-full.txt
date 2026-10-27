@@ -1048,7 +1048,7 @@ Ready to create a branded QR code? Launch [MatrixQR Studio](https://www.matrixqr
 - URL: https://blog.matrixqr.cc/posts/image-to-qr-menu-guide
 - Published: 2026-09-07T08:00:00+00:00
 - Updated: 2026-10-21T00:00:00+00:00
-- Category: General
+- Category: Digital Menu & Branding
 - Description: Convert menu image URLs into static QR codes with MatrixQR. Learn how browser-side generation works, what it means for privacy, and why destination availability still matters.
 
 Restaurant Tech & Free Tools
@@ -1336,7 +1336,7 @@ Creating an **international vCard QR code for sharing contact details** bridges 
 - URL: https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes
 - Published: 2026-08-12T08:00:00+00:00
 - Updated: 2026-10-21T00:00:00+00:00
-- Category: General
+- Category: QR Code Security & Privacy
 - Description: Explore static QR code strengths and limitations, including privacy boundaries, destination availability, scan reliability, and practical business use cases.
 
 Digital Security & Tech Guides
