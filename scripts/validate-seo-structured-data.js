@@ -144,6 +144,15 @@ function getNamedEntity(value) {
     return Array.isArray(value) ? value[0] : value;
 }
 
+function isValidHttpUrl(value) {
+    try {
+        const url = new URL(decodeEntities(value));
+        return (url.protocol === "https:" || url.protocol === "http:") && !url.username && !url.password;
+    } catch {
+        return false;
+    }
+}
+
 function isInternalPageUrl(value) {
     try {
         const url = new URL(decodeEntities(value), SITE_ORIGIN);
@@ -291,14 +300,12 @@ function validateArticle(file) {
             fail(`${label}: BreadcrumbList must contain at least Home and article entries.`);
             continue;
         }
-        const positions = [];
         for (let i = 0; i < items.length; i++) {
             const item = items[i];
             const expectedPosition = i + 1;
             if (item.position !== expectedPosition) {
                 fail(`${label}: BreadcrumbList item ${i + 1} has position ${item.position ?? "missing"}, expected ${expectedPosition}.`);
             }
-            positions.push(item.position);
             const itemUrl = getSchemaUrl(item.item);
             if (!itemUrl || !isInternalPageUrl(itemUrl)) {
                 fail(`${label}: BreadcrumbList item ${i + 1} has a missing or non-site URL.`);
@@ -316,12 +323,12 @@ function validateArticle(file) {
 
     for (const node of articleNodes) {
         const author = getNamedEntity(node.author);
-        if (!author || !getTypes(author).includes("Organization") || !String(author.name || "").trim() || !isInternalPageUrl(author.url)) {
+        if (!author || !getTypes(author).includes("Organization") || !String(author.name || "").trim() || !isValidHttpUrl(author.url)) {
             fail(`${label}: Article/BlogPosting author must be an Organization with a name and valid URL.`);
         }
 
         const publisher = getNamedEntity(node.publisher);
-        if (!publisher || !getTypes(publisher).includes("Organization") || !String(publisher.name || "").trim() || !isInternalPageUrl(publisher.url)) {
+        if (!publisher || !getTypes(publisher).includes("Organization") || !String(publisher.name || "").trim() || !isValidHttpUrl(publisher.url)) {
             fail(`${label}: Article/BlogPosting publisher must be an Organization with a name and valid URL.`);
         } else {
             const logoUrl = getSchemaUrl(publisher.logo);
