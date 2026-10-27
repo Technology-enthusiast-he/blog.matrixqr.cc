@@ -34,6 +34,10 @@ Adding a logo is one of the simplest ways to turn a plain QR code into a branded
 
 This guide explains how to add a logo without relying on a misleading “safe logo percentage.” Instead, it focuses on the factors that actually affect scanning: logo coverage, error correction, contrast, quiet-zone protection, output quality, and real-world testing.
 
+![Example of a branded QR code with a centered logo](https://blog.matrixqr.cc/posts/images/Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo.webp)
+
+A branded QR code should keep the logo modest and preserve the code’s key scanning features.
+
 ## Why a Logo Can Break a QR Code
 
 A QR code is not simply a decorative grid. Its finder patterns, timing information, alignment patterns, data modules, and error-correction information work together so a scanner can locate and decode the symbol. Covering or distorting too much of that structure can make decoding harder.
