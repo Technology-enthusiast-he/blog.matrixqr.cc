@@ -13,20 +13,19 @@ function readArchivePage(page) {
         : path.join(POSTS_DIR, "page", String(page), "index.html");
 
     if (!fs.existsSync(file)) {
-        throw new Error(`Archive page ${page} is missing: ${path.relative(ROOT, file)}`);
+        throw new Error("Archive page " + page + " is missing: " + path.relative(ROOT, file));
     }
 
     return { page, file, html: fs.readFileSync(file, "utf8") };
 }
 
 function getAttribute(tag, attribute) {
-    const escaped = attribute.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&");
-    const match = tag.match(new RegExp("\\b" + escaped + "=[\\\"']([^\\\"']*)[\\\"']", "i"));
+    const match = tag.match(new RegExp("\\b" + attribute + "=[\\\"']([^\\\"']*)[\\\"']", "i"));
     return match ? match[1].trim() : "";
 }
 
 function extractLink(html, rel) {
-    const tags = html.match(/<link\\b[^>]*>/gi) || [];
+    const tags = html.match(/<link\b[^>]*>/gi) || [];
     for (const tag of tags) {
         if (getAttribute(tag, "rel").toLowerCase() === rel.toLowerCase()) {
             return getAttribute(tag, "href");
@@ -36,7 +35,7 @@ function extractLink(html, rel) {
 }
 
 function extractMeta(html, attribute, key) {
-    const tags = html.match(/<meta\\b[^>]*>/gi) || [];
+    const tags = html.match(/<meta\b[^>]*>/gi) || [];
     for (const tag of tags) {
         if (getAttribute(tag, attribute).toLowerCase() === key.toLowerCase()) {
             return getAttribute(tag, "content");
@@ -47,13 +46,13 @@ function extractMeta(html, attribute, key) {
 
 function extractCollectionPageUrl(html) {
     const scripts = html.match(
-        /<script\\b[^>]*type=["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi
+        /<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi
     ) || [];
 
     for (const script of scripts) {
         const jsonText = script
             .replace(/^<script[^>]*>/i, "")
-            .replace(/<\\/script>$/i, "")
+            .replace(/<\/script>$/i, "")
             .trim();
 
         try {
@@ -67,9 +66,8 @@ function extractCollectionPageUrl(html) {
                     return;
                 }
                 nodes.push(value);
-                if (Array.isArray(value["@graph"])) value["@graph"].forEach(visit);
-                for (const [key, nested] of Object.entries(value)) {
-                    if (key !== "@graph" && nested && typeof nested === "object") visit(nested);
+                for (const nested of Object.values(value)) {
+                    if (nested && typeof nested === "object") visit(nested);
                 }
             };
 
@@ -89,8 +87,8 @@ function extractCollectionPageUrl(html) {
 
 function expectedUrl(page) {
     return page === 1
-        ? `${SITE_URL}/posts/`
-        : `${SITE_URL}/posts/page/${page}/`;
+        ? SITE_URL + "/posts/"
+        : SITE_URL + "/posts/page/" + page + "/";
 }
 
 function main() {
@@ -99,7 +97,7 @@ function main() {
 
     if (fs.existsSync(pageRoot)) {
         for (const entry of fs.readdirSync(pageRoot, { withFileTypes: true })) {
-            if (!entry.isDirectory() || !/^\\d+$/.test(entry.name)) continue;
+            if (!entry.isDirectory() || !/^\d+$/.test(entry.name)) continue;
             const page = Number(entry.name);
             if (page >= 2) generatedPages.push(readArchivePage(page));
         }
@@ -116,23 +114,23 @@ function main() {
         const collectionUrl = extractCollectionPageUrl(html);
 
         if (canonical !== expected) {
-            errors.push(`${relative}: canonical is ${canonical || "missing"}; expected ${expected}`);
+            errors.push(relative + ": canonical is " + (canonical || "missing") + "; expected " + expected);
         }
         if (ogUrl !== expected) {
-            errors.push(`${relative}: og:url is ${ogUrl || "missing"}; expected ${expected}`);
+            errors.push(relative + ": og:url is " + (ogUrl || "missing") + "; expected " + expected);
         }
         if (collectionUrl !== expected) {
-            errors.push(`${relative}: CollectionPage.url is ${collectionUrl || "missing"}; expected ${expected}`);
+            errors.push(relative + ": CollectionPage.url is " + (collectionUrl || "missing") + "; expected " + expected);
         }
     });
 
     if (errors.length) {
         console.error("Archive SEO URL consistency check failed:");
-        errors.forEach(error => console.error(`- ${error}`));
+        errors.forEach(error => console.error("- " + error));
         process.exit(1);
     }
 
-    console.log(`Archive SEO URL consistency check passed for ${generatedPages.length} page(s).`);
+    console.log("Archive SEO URL consistency check passed for " + generatedPages.length + " page(s).");
 }
 
 main();
