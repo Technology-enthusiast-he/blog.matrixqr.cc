@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+<title id="title">Protect QR code structure and quiet zone</title>
+<desc id="desc">A conceptual QR-style diagram shows a clear quiet zone at least four modules wide on every side of the symbol, three unobstructed corner finder patterns, and a modest centered logo. It is not a scannable code.</desc>
+<defs><pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="22" height="22" fill="#f8fafc"/><rect width="11" height="11" fill="#0f172a"/><rect x="11" y="11" width="11" height="11" fill="#0f172a"/></pattern><g id="finder"><rect width="66" height="66" fill="#0f172a"/><rect x="11" y="11" width="44" height="44" fill="#f8fafc"/><rect x="22" y="22" width="22" height="22" fill="#0f172a"/></g></defs>
+<rect width="1200" height="630" rx="28" fill="#080d1a"/>
+<text x="64" y="76" fill="#f8fafc" font-family="Arial,sans-serif" font-size="34" font-weight="700">Protect the parts scanners rely on</text>
+<text x="64" y="112" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18">Keep the border clear, preserve corner markers, and avoid excessive coverage</text>
+<rect x="101" y="131" width="458" height="448" rx="18" fill="#f8fafc" stroke="#4ade80" stroke-width="3"/>
+<rect x="193" y="223" width="264" height="264" fill="url(#grid)" stroke="#334155" stroke-width="2"/>
+<use href="#finder" x="193" y="223"/><use href="#finder" x="391" y="223"/><use href="#finder" x="193" y="421"/>
+<rect x="287" y="318" width="76" height="76" rx="12" fill="#fff" stroke="#38bdf8" stroke-width="4"/><path d="M305 356l20 -20 20 20 -20 20z" fill="#0284c7"/>
+<path d="M520 205 C570 205 590 245 630 245" fill="none" stroke="#4ade80" stroke-width="3"/><circle cx="520" cy="205" r="5" fill="#4ade80"/>
+<text x="655" y="238" fill="#86efac" font-family="Arial,sans-serif" font-size="22" font-weight="700">Quiet zone</text>
+<text x="655" y="268" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">Leave at least 4 modules clear</text><text x="655" y="293" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">around every side of the symbol.</text>
+<path d="M424 255 C520 300 570 365 630 365" fill="none" stroke="#fbbf24" stroke-width="3"/><circle cx="424" cy="255" r="5" fill="#fbbf24"/>
+<text x="655" y="358" fill="#fcd34d" font-family="Arial,sans-serif" font-size="22" font-weight="700">Finder patterns</text>
+<text x="655" y="388" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">Keep the three corner markers</text><text x="655" y="413" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">fully visible and unobstructed.</text>
+<path d="M325 356 C470 430 560 500 630 500" fill="none" stroke="#38bdf8" stroke-width="3"/><circle cx="325" cy="356" r="5" fill="#38bdf8"/>
+<text x="655" y="493" fill="#7dd3fc" font-family="Arial,sans-serif" font-size="22" font-weight="700">Logo coverage</text>
+<text x="655" y="523" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">Keep it modest; scan-test the</text><text x="655" y="548" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="17">actual exported design.</text>
+<text x="64" y="606" fill="#64748b" font-family="Arial,sans-serif" font-size="14">Conceptual illustration only. Patterns are not valid, scannable QR codes.</text>
+</svg>
