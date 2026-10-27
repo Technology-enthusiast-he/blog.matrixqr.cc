@@ -134,6 +134,25 @@ function isValidDate(value) {
     return typeof value === "string" && value.trim() !== "" && !Number.isNaN(Date.parse(value));
 }
 
+function getSchemaUrl(value) {
+    if (typeof value === "string") return value;
+    if (value && typeof value === "object") return value.url || value["@id"] || "";
+    return "";
+}
+
+function getNamedEntity(value) {
+    return Array.isArray(value) ? value[0] : value;
+}
+
+function isInternalPageUrl(value) {
+    try {
+        const url = new URL(decodeEntities(value), SITE_ORIGIN);
+        return url.origin === SITE_ORIGIN && !url.username && !url.password;
+    } catch {
+        return false;
+    }
+}
+
 function getGeneratedPageFiles() {
     const pages = [];
     const addNumericPages = (root, prefix) => {
@@ -258,7 +277,59 @@ function validateArticle(file) {
         fail(`${label}: twitter:description differs from meta description.`);
     }
 
+    const allNodes = extractJsonLd(html, label).flatMap(flattenJsonLd);
+    const breadcrumbNodes = allNodes.filter(node => getTypes(node).includes("BreadcrumbList"));
+    if (breadcrumbNodes.length === 0) {
+        fail(`${label}: no BreadcrumbList JSON-LD node found.`);
+    } else if (breadcrumbNodes.length > 1) {
+        warn(`${label}: multiple BreadcrumbList JSON-LD nodes found.`);
+    }
+
+    for (const breadcrumb of breadcrumbNodes) {
+        const items = Array.isArray(breadcrumb.itemListElement) ? breadcrumb.itemListElement : [];
+        if (items.length < 2) {
+            fail(`${label}: BreadcrumbList must contain at least Home and article entries.`);
+            continue;
+        }
+        const positions = [];
+        for (let i = 0; i < items.length; i++) {
+            const item = items[i];
+            const expectedPosition = i + 1;
+            if (item.position !== expectedPosition) {
+                fail(`${label}: BreadcrumbList item ${i + 1} has position ${item.position ?? "missing"}, expected ${expectedPosition}.`);
+            }
+            positions.push(item.position);
+            const itemUrl = getSchemaUrl(item.item);
+            if (!itemUrl || !isInternalPageUrl(itemUrl)) {
+                fail(`${label}: BreadcrumbList item ${i + 1} has a missing or non-site URL.`);
+            }
+        }
+        const firstUrl = canonicalizeUrl(getSchemaUrl(items[0]?.item));
+        if (firstUrl !== SITE_ORIGIN) {
+            fail(`${label}: BreadcrumbList first item must link to the site homepage.`);
+        }
+        const lastUrl = canonicalizeUrl(getSchemaUrl(items[items.length - 1]?.item));
+        if (!lastUrl || lastUrl !== canonical) {
+            fail(`${label}: BreadcrumbList final item must match the article canonical URL.`);
+        }
+    }
+
     for (const node of articleNodes) {
+        const author = getNamedEntity(node.author);
+        if (!author || !getTypes(author).includes("Organization") || !String(author.name || "").trim() || !isInternalPageUrl(author.url)) {
+            fail(`${label}: Article/BlogPosting author must be an Organization with a name and valid URL.`);
+        }
+
+        const publisher = getNamedEntity(node.publisher);
+        if (!publisher || !getTypes(publisher).includes("Organization") || !String(publisher.name || "").trim() || !isInternalPageUrl(publisher.url)) {
+            fail(`${label}: Article/BlogPosting publisher must be an Organization with a name and valid URL.`);
+        } else {
+            const logoUrl = getSchemaUrl(publisher.logo);
+            if (!logoUrl || !isInternalPageUrl(logoUrl)) {
+                fail(`${label}: Article/BlogPosting publisher logo must have a valid URL on the blog site.`);
+            }
+        }
+
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
         if (!mainEntityUrl) fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
         else if (mainEntityUrl !== canonical) fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
@@ -380,7 +451,7 @@ function main() {
         process.exit(1);
     }
 
-    console.log("PASS: canonical/og:url, page-level CollectionPage JSON-LD URLs, article descriptions, social images, publication/modification dates, article mainEntityOfPage, and HTML sitemap canonical targets are consistent.");
+    console.log("PASS: canonical/og:url, CollectionPage URLs, article descriptions/images/dates, author/publisher entities, BreadcrumbList URLs/positions, mainEntityOfPage, and HTML sitemap targets are consistent.");
 }
 
 try {
