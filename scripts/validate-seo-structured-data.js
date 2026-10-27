@@ -219,10 +219,30 @@ function validateArticle(file) {
         return;
     }
 
+    const description = extractMeta(html, "name", "description");
+    const ogDescription = extractMeta(html, "property", "og:description");
+    const twitterDescription = extractMeta(html, "name", "twitter:description");
+
+    if (!description) fail(`${label}: missing meta description.`);
+    if (!ogDescription) fail(`${label}: missing og:description.`);
+    else if (description && ogDescription !== description) {
+        fail(`${label}: og:description differs from meta description.`);
+    }
+    if (!twitterDescription) fail(`${label}: missing twitter:description.`);
+    else if (description && twitterDescription !== description) {
+        fail(`${label}: twitter:description differs from meta description.`);
+    }
+
     for (const node of articleNodes) {
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
         if (!mainEntityUrl) fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
         else if (mainEntityUrl !== canonical) fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
+
+        if (!node.description) {
+            fail(`${label}: Article/BlogPosting JSON-LD is missing description.`);
+        } else if (description && node.description !== description) {
+            fail(`${label}: Article/BlogPosting description differs from meta description.`);
+        }
     }
 }
 
@@ -305,7 +325,7 @@ function main() {
         process.exit(1);
     }
 
-    console.log("PASS: canonical/og:url, page-level CollectionPage JSON-LD URLs, article mainEntityOfPage, and HTML sitemap canonical targets are consistent.");
+    console.log("PASS: canonical/og:url, page-level CollectionPage JSON-LD URLs, article description metadata, article mainEntityOfPage, and HTML sitemap canonical targets are consistent.");
 }
 
 try {
