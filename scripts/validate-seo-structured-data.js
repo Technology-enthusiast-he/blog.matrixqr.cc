@@ -112,6 +112,28 @@ function getMainEntityUrl(node) {
     return "";
 }
 
+function normalizeImageUrl(value) {
+    try {
+        return new URL(decodeEntities(value), SITE_ORIGIN).href;
+    } catch {
+        return "";
+    }
+}
+
+function getSchemaImageUrls(value) {
+    if (typeof value === "string") return [value];
+    if (Array.isArray(value)) return value.flatMap(getSchemaImageUrls);
+    if (value && typeof value === "object") {
+        const url = value.url || value.contentUrl || value["@id"];
+        return typeof url === "string" ? [url] : [];
+    }
+    return [];
+}
+
+function isValidDate(value) {
+    return typeof value === "string" && value.trim() !== "" && !Number.isNaN(Date.parse(value));
+}
+
 function getGeneratedPageFiles() {
     const pages = [];
     const addNumericPages = (root, prefix) => {
@@ -222,6 +244,9 @@ function validateArticle(file) {
     const description = extractMeta(html, "name", "description");
     const ogDescription = extractMeta(html, "property", "og:description");
     const twitterDescription = extractMeta(html, "name", "twitter:description");
+    const ogImage = extractMeta(html, "property", "og:image");
+    const publishedTime = extractMeta(html, "property", "article:published_time");
+    const modifiedTime = extractMeta(html, "property", "article:modified_time");
 
     if (!description) fail(`${label}: missing meta description.`);
     if (!ogDescription) fail(`${label}: missing og:description.`);
@@ -242,6 +267,36 @@ function validateArticle(file) {
             fail(`${label}: Article/BlogPosting JSON-LD is missing description.`);
         } else if (description && node.description !== description) {
             fail(`${label}: Article/BlogPosting description differs from meta description.`);
+        }
+
+        const schemaImages = getSchemaImageUrls(node.image).map(normalizeImageUrl).filter(Boolean);
+        const normalizedOgImage = normalizeImageUrl(ogImage);
+        if (!ogImage) {
+            fail(`${label}: missing og:image.`);
+        } else if (!schemaImages.length) {
+            fail(`${label}: Article/BlogPosting JSON-LD is missing a usable image URL.`);
+        } else if (!normalizedOgImage || !schemaImages.includes(normalizedOgImage)) {
+            fail(`${label}: Article/BlogPosting image does not include the og:image URL.`);
+        }
+
+        if (!publishedTime || !isValidDate(publishedTime)) {
+            fail(`${label}: missing or invalid article:published_time.`);
+        }
+        if (!modifiedTime || !isValidDate(modifiedTime)) {
+            fail(`${label}: missing or invalid article:modified_time.`);
+        }
+        if (!isValidDate(node.datePublished)) {
+            fail(`${label}: Article/BlogPosting JSON-LD has missing or invalid datePublished.`);
+        } else if (publishedTime && node.datePublished !== publishedTime) {
+            fail(`${label}: datePublished differs from article:published_time.`);
+        }
+        if (!isValidDate(node.dateModified)) {
+            fail(`${label}: Article/BlogPosting JSON-LD has missing or invalid dateModified.`);
+        } else if (modifiedTime && node.dateModified !== modifiedTime) {
+            fail(`${label}: dateModified differs from article:modified_time.`);
+        }
+        if (isValidDate(node.datePublished) && isValidDate(node.dateModified) && Date.parse(node.dateModified) < Date.parse(node.datePublished)) {
+            fail(`${label}: dateModified is earlier than datePublished.`);
         }
     }
 }
@@ -325,7 +380,7 @@ function main() {
         process.exit(1);
     }
 
-    console.log("PASS: canonical/og:url, page-level CollectionPage JSON-LD URLs, article description metadata, article mainEntityOfPage, and HTML sitemap canonical targets are consistent.");
+    console.log("PASS: canonical/og:url, page-level CollectionPage JSON-LD URLs, article descriptions, social images, publication/modification dates, article mainEntityOfPage, and HTML sitemap canonical targets are consistent.");
 }
 
 try {
