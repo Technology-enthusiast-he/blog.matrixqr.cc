@@ -96,7 +96,7 @@ function normalizeAuthors(html) {
         const oldObject = html.slice(valueStart, valueEnd);
         const oldTypeMatch = oldObject.match(/"@type"\s*:\s*"([^"]+)"/);
 
-        if (!oldTypeMatch || oldTypeMatch[1] !== "Person") {
+        if (!oldTypeMatch || !["Person", "Organization"].includes(oldTypeMatch[1])) {
             searchFrom = valueEnd;
             continue;
         }
