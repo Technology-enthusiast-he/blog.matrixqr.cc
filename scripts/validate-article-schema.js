@@ -15,6 +15,8 @@ function walk(dir) {
             results.push(...walk(fullPath));
         } else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) {
             const relative = path.relative(POSTS_DIR, fullPath).split(path.sep).join("/");
+            // This article is intentionally skipped by the SEO/GEO audit workflow.
+            if (relative.toLowerCase() === "image-to-qr-menu-guide.html") continue;
             if (
                 relative === "index.html" ||
                 relative === "privacy-policy.html" ||
