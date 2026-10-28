@@ -7,6 +7,7 @@ const OUT = path.join(ROOT, "llms.txt");
 const FULL = path.join(ROOT, "llms-full.txt");
 const EXCLUDED = new Set(["index.html", "privacy-policy.html"]);
 const { normalizeCategory, CATEGORIES: CATEGORY_MAP, CATEGORY_NAMES } = require("./article-categories");
+const { getLinksByRel } = require("./html-link-utils");
 const CATEGORIES = CATEGORY_NAMES;
 
 function decode(s = "") {
