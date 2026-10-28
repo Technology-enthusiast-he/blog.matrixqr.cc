@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const ORIGIN = "https://blog.matrixqr.cc";
+const { getLinksByRel } = require("./html-link-utils");
 const warnings = [];
 const errors = [];
 const htmlFiles = [];
