@@ -23,8 +23,12 @@ function articleHtml(options) {
   const schemaImage = Object.prototype.hasOwnProperty.call(o, "schemaImage") ? o.schemaImage : ogImage;
   const url = ORIGIN + "/posts/fixture";
   const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", mainEntityOfPage: { "@id": url }, datePublished: published, dateModified: modified, image: schemaImage });
-  const pubText = new Date(published).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
-  const modText = new Date(modified).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  const displayCalendarDate = value => {
+    const [year, month, day] = value.slice(0, 10).split("-").map(Number);
+    return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+  };
+  const pubText = displayCalendarDate(published);
+  const modText = displayCalendarDate(modified);
   return '<html><head><link rel="canonical" href="' + url + '"><meta property="article:published_time" content="' + published + '"><meta property="article:modified_time" content="' + modified + '"><meta property="og:image" content="' + ogImage + '"><meta name="twitter:image" content="' + twitterImage + '"><script type="application/ld+json">' + schema + '</script></head><body><div class="meta-info">Published on ' + pubText + ' • Updated ' + modText + '</div></body></html>';
 }
 function fixture(options) {
@@ -46,6 +50,7 @@ test("rejects date-only publication timestamp", t => { const root = fixture({ pu
 test("rejects mismatched social images", t => { const root = fixture({ twitterImage: "/images/other.png" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /og:image and twitter:image do not match/); });
 test("rejects missing local image files", t => { const root = fixture({ ogImage: "/images/missing.png" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /points to a missing local file/); });
 test("rejects modified date earlier than publication", t => { const root = fixture({ published: "2026-10-03T08:00:00+08:00", modified: "2026-10-02T09:00:00+08:00" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /dateModified is earlier than datePublished/); });
+test("accepts visible calendar dates when timezone offset crosses UTC midnight", t => { const root = fixture({ published: "2026-10-01T00:30:00+08:00", modified: "2026-10-02T00:15:00+08:00" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.equal(result.status, 0, result.stdout + result.stderr); });
 test("rejects visible publication date that differs from JSON-LD", t => { const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const file = path.join(root, "posts", "fixture.html"); fs.writeFileSync(file, fs.readFileSync(file, "utf8").replace("Published on October 1, 2026", "Published on September 30, 2026")); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /visible published date .* differs from Article JSON-LD datePublished/); });
 
 test("rejects missing Open Graph image metadata", t => { const root = fixture({ ogImage: "" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /missing og:image/); });
