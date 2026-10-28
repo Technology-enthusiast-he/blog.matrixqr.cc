@@ -44,6 +44,8 @@ jobs:
           node --check scripts/sync-generated-page-schema.js
           node --check scripts/validate-seo-structured-data.js
           node --check scripts/validate-seo-structured-data.test.js
+          node --check scripts/validate-images.js
+          node --check scripts/validate-images.test.js
           node --check scripts/audit-site-architecture.js
           node --check scripts/validate-sitemap-lastmod.js
           node --check scripts/validate-sitemap-lastmod.test.js
@@ -78,6 +80,9 @@ jobs:
 
       - name: Test SEO structured-data validation regressions
         run: npm run test:seo-regressions
+
+      - name: Test image SEO and accessibility validation regressions
+        run: npm run test:images
 
       - name: Install build dependencies
         run: npm install --no-package-lock
