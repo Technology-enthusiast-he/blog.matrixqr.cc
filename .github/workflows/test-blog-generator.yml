@@ -26,6 +26,8 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
+          node --check scripts/article-source-files.js
+          node --check scripts/article-source-files.test.js
           node --check scripts/generate-blog.js
           node --check scripts/generate-blog-dates.test.js
           node --check scripts/schema-normalization-idempotence.test.js
@@ -45,6 +47,9 @@ jobs:
           node --check scripts/validate-sitemap-lastmod.test.js
           node --check scripts/validate-sitemap-pagination.js
           node --check scripts/validate-build-idempotence.js
+
+      - name: Test shared article source discovery and generated-page exclusions
+        run: node --test scripts/article-source-files.test.js
 
       - name: Test article index date validation and sorting
         run: node --test scripts/generate-blog-dates.test.js
