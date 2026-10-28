@@ -299,6 +299,39 @@ function validateArticleMetadata(html, articleNodes, label) {
     if (twitterImage) checkSameSiteImageExists(twitterImage, label, "twitter:image");
 }
 
+
+function validateVisibleArticleDates(html, articleNodes, label) {
+    const metaInfo = (html.match(/class=["'][^"']*\\bmeta-info\\b[^"']*["'][^>]*>([\\s\\S]*?)<\\/div>/i) || [])[1] || "";
+    if (!metaInfo) return;
+
+    const visibleText = metaInfo.replace(/<[^>]+>/g, " ").replace(/\\s+/g, " ").trim();
+    const checks = [
+        { label: "Published", pattern: /Published\\s+on\\s+([^•|]+)/i, field: "datePublished" },
+        { label: "Updated", pattern: /Updated\\s+(?:on\\s+)?([^•|]+)/i, field: "dateModified" }
+    ];
+
+    for (const check of checks) {
+        const match = visibleText.match(check.pattern);
+        if (!match) continue;
+        const visibleDate = match[1].trim();
+        const parsedVisibleDate = Date.parse(visibleDate);
+        if (Number.isNaN(parsedVisibleDate)) {
+            fail(label + ": visible " + check.label.toLowerCase() + " date is not parseable: " + visibleDate);
+            continue;
+        }
+
+        for (const node of articleNodes) {
+            const schemaDate = node[check.field];
+            if (!isIsoDateTimeWithTimezone(schemaDate)) continue;
+            const schemaDay = new Date(schemaDate).toISOString().slice(0, 10);
+            const visibleDay = new Date(parsedVisibleDate).toISOString().slice(0, 10);
+            if (visibleDay !== schemaDay) {
+                fail(label + ": visible " + check.label.toLowerCase() + " date (" + visibleDate + ") differs from Article JSON-LD " + check.field + " (" + schemaDate + ").");
+            }
+        }
+    }
+}
+
 function validateArticle(file) {
     const label = path.relative(ROOT, file);
     // This article is intentionally excluded from SEO/GEO validation and mutations.
@@ -318,6 +351,7 @@ function validateArticle(file) {
     }
 
     validateArticleMetadata(html, articleNodes, label);
+    validateVisibleArticleDates(html, articleNodes, label);
 
     for (const node of articleNodes) {
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
