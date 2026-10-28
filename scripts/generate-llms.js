@@ -123,8 +123,9 @@ function collect() {
     if(!m){console.warn("[llms] Skipped "+f.rel+": no article element.");continue;}
     const j=articleJson(html)||{},h1=m[1].match(/<h1\b[^>]*>([\s\S]*?)<\/h1\s*>/i);
     const title=String(j.headline||(h1?h1[1].replace(/<[^>]+>/g," "):"")).replace(/\s+/g," ").trim();
-    const date=String(j.datePublished||"").trim(),urlMatch=html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    const url=urlMatch?decode(urlMatch[1]):SITE+"/posts/"+f.rel.replace(/\.html$/i,"");
+    const date=String(j.datePublished||"").trim(),canonicalLinks=getLinksByRel(html,"canonical");
+    if(canonicalLinks.length>1)throw new Error(f.rel+": multiple canonical link tags.");
+    const url=canonicalLinks[0]||SITE+"/posts/"+f.rel.replace(/\.html$/i,"");
     const body=markdown(m[1],url),desc=String(meta(html,"description")||j.description||"").trim();
     if(!title||!date||!body){console.warn("[llms] Skipped "+f.rel+": missing title, publication date, or body.");continue;}
     list.push({title,date,modified:String(j.dateModified||date),url,description:desc,category:category(j.articleSection||""),body});
