@@ -355,10 +355,10 @@ function main() {
         throw new Error("posts.json not found. Run generate-blog.js first.");
     }
 
-    const templatePath = path.join(POSTS_DIR, "index.html");
+    const templatePath = path.join(ROOT, "templates", "archive-template.html");
 
     if (!fs.existsSync(templatePath)) {
-        throw new Error("Archive template not found: posts/index.html");
+        throw new Error("Archive template not found: templates/archive-template.html");
     }
 
     const posts = JSON.parse(fs.readFileSync(POSTS_FILE, "utf8"));
