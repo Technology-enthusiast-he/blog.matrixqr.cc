@@ -47,6 +47,8 @@ jobs:
           node --check scripts/validate-sitemap-lastmod.test.js
           node --check scripts/validate-sitemap-pagination.js
           node --check scripts/validate-build-idempotence.js
+          node --check scripts/validate-llms-consistency.js
+          node --check scripts/validate-llms-consistency.test.js
 
       - name: Test shared article source discovery and generated-page exclusions
         run: node --test scripts/article-source-files.test.js
@@ -138,6 +140,9 @@ jobs:
 
       - name: Validate article structured data
         run: npm run test:article-schema
+
+      - name: Validate LLM article URL coverage and consistency
+        run: node scripts/validate-llms-consistency.js
 
       - name: Check generated LLMs files
         run: |
