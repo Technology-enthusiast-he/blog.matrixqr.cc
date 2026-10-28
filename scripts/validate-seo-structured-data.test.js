@@ -12,7 +12,7 @@ const MODIFIED = "2026-10-02T09:00:00+08:00";
 function pageHtml(url, title) {
   const description = "A test page description.";
   const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", url, name: title, description });
-  return '<html><head><title>' + title + '</title><link rel="canonical" href="' + url + '"><meta name="description" content="' + description + '"><meta property="og:url" content="' + url + '"><meta property="og:title" content="' + title + '"><meta name="twitter:title" content="' + title + '"><meta property="og:description" content="' + description + '"><meta name="twitter:description" content="' + description + '"><script type="application/ld+json">' + schema + '</script></head><body></body></html>';
+  return '<html><head><title>' + title + '</title><link rel="canonical" href="' + url + '"><meta name="description" content="' + description + '"><meta property="og:url" content="' + url + '"><meta property="og:title" content="' + title + '"><meta name="twitter:title" content="' + title + '"><meta property="og:description" content="' + description + '"><meta name="twitter:description" content="' + description + '"><meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">' + schema + '</script></head><body></body></html>';
 }
 function articleHtml(options) {
   const o = options || {};
@@ -22,14 +22,18 @@ function articleHtml(options) {
   const twitterImage = Object.prototype.hasOwnProperty.call(o, "twitterImage") ? o.twitterImage : ogImage;
   const schemaImage = Object.prototype.hasOwnProperty.call(o, "schemaImage") ? o.schemaImage : ogImage;
   const url = ORIGIN + "/posts/fixture";
-  const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", mainEntityOfPage: { "@id": url }, datePublished: published, dateModified: modified, image: schemaImage });
+
   const displayCalendarDate = value => {
     const [year, month, day] = value.slice(0, 10).split("-").map(Number);
     return new Date(Date.UTC(year, month - 1, day)).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
   };
   const pubText = displayCalendarDate(published);
   const modText = displayCalendarDate(modified);
-  return '<html><head><link rel="canonical" href="' + url + '"><meta property="article:published_time" content="' + published + '"><meta property="article:modified_time" content="' + modified + '"><meta property="og:image" content="' + ogImage + '"><meta name="twitter:image" content="' + twitterImage + '"><script type="application/ld+json">' + schema + '</script></head><body><div class="meta-info">Published on ' + pubText + ' • Updated ' + modText + '</div></body></html>';
+  const headline = Object.prototype.hasOwnProperty.call(o, "headline") ? o.headline : "Fixture Article";
+  const description = Object.prototype.hasOwnProperty.call(o, "description") ? o.description : "A fixture article description.";
+  const twitterCard = Object.prototype.hasOwnProperty.call(o, "twitterCard") ? o.twitterCard : "summary_large_image";
+  const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", headline, description, mainEntityOfPage: { "@id": url }, datePublished: published, dateModified: modified, image: schemaImage });
+  return '<html><head><title>' + headline + '</title><link rel="canonical" href="' + url + '"><meta property="article:published_time" content="' + published + '"><meta property="article:modified_time" content="' + modified + '"><meta property="og:title" content="' + (o.ogTitle ?? headline) + '"><meta name="twitter:title" content="' + (o.twitterTitle ?? headline) + '"><meta property="og:description" content="' + (o.ogDescription ?? description) + '"><meta name="twitter:description" content="' + (o.twitterDescription ?? description) + '"><meta name="twitter:card" content="' + twitterCard + '"><meta property="og:image" content="' + ogImage + '"><meta name="twitter:image" content="' + twitterImage + '"><script type="application/ld+json">' + schema + '</script></head><body><div class="meta-info">Published on ' + pubText + ' • Updated ' + modText + '</div></body></html>';
 }
 function fixture(options) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "matrixqr-seo-test-"));
@@ -57,3 +61,9 @@ test("rejects malformed percent-encoded local image paths", t => { const root = 
 test("rejects local image paths that escape the repository root", t => { const root = fixture({ ogImage: "/%2e%2e%2foutside.png" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /resolves outside the repository/); });
 test("rejects missing Open Graph image metadata", t => { const root = fixture({ ogImage: "" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /missing og:image/); });
 test("rejects Article JSON-LD image that differs from og:image", t => { const root = fixture({ schemaImage: "/images/other.png" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /og:image is not included in Article JSON-LD image/); });
+
+test("rejects mismatched Open Graph and Twitter titles", t => { const root = fixture({ twitterTitle: "Different title" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /og:title and twitter:title do not match/); });
+test("rejects mismatched Open Graph and Twitter descriptions", t => { const root = fixture({ twitterDescription: "Different description" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /og:description and twitter:description do not match/); });
+test("rejects unsupported Twitter card type", t => { const root = fixture({ twitterCard: "player" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /twitter:card must be summary or summary_large_image/); });
+test("rejects Article JSON-LD headline that differs from og:title", t => { const root = fixture({ headline: "Schema title differs" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /Article JSON-LD headline differs from og:title/); });
+test("rejects Article JSON-LD description that differs from og:description", t => { const root = fixture({ description: "Schema description differs" }); t.after(() => fs.rmSync(root, { recursive: true, force: true })); const result = run(root); assert.notEqual(result.status, 0); assert.match(result.stderr, /Article JSON-LD description differs from og:description/); });
