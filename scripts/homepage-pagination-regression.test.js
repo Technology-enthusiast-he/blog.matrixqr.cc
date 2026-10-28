@@ -19,11 +19,7 @@ function runNode(script, cwd) {
     cwd,
     encoding: "utf8",
   });
-  assert.equal(
-    result.status,
-    0,
-    `${script} failed.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`
-  );
+  assert.equal(result.status, 0, `${script} failed.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`);
   return result.stdout;
 }
 
@@ -84,9 +80,7 @@ function createFixture() {
   const posts = [
     article("security-a", "QR Code Security & Privacy", 1),
     article("general-12", "General", 2),
-    ...Array.from({ length: 11 }, (_, index) =>
-      article(`general-${index + 1}`, "General", index + 3)
-    ),
+    ...Array.from({ length: 11 }, (_, index) => article(`general-${index + 1}`, "General", index + 3)),
   ];
   writeJson(path.join(root, "posts.json"), posts);
   return { root, posts };
@@ -111,10 +105,7 @@ test("manual featured swap returns the removed article to automation and is idem
   ].join("");
   assert.doesNotMatch(initialAutomatic, /href=["']\/posts\/general-11["']/i, "the initially featured article should be excluded from automatic cards");
 
-  const swappedHomepage = firstRun.replace(
-    'href="/posts/general-11">Article general-11',
-    'href="/posts/general-12">Article general-12'
-  );
+  const swappedHomepage = firstRun.replace('href="/posts/general-11">Article general-11', 'href="/posts/general-12">Article general-12');
   assert.notEqual(swappedHomepage, firstRun, "fixture should replace the initially featured article");
   fs.writeFileSync(path.join(root, "index.html"), swappedHomepage);
   runNode("update-homepage.js", root);
@@ -186,9 +177,7 @@ test("shrinking the article set removes obsolete generated pagination and sitema
   assert.match(generatedArchive, /href=["\']\/posts\/page\/2\//i, "article archive pagination must link to /posts/page/2/");
   assert.ok(fs.existsSync(path.join(root, "posts", "page", "3", "index.html")), "fixture should generate archive page 3");
 
-  const reducedPosts = posts.filter((post) =>
-    ["general-12", "general-1", "general-2"].includes(post.url.split("/").pop())
-  );
+  const reducedPosts = posts.filter((post) => ["general-12", "general-1", "general-2"].includes(post.url.split("/").pop()));
   writeJson(path.join(root, "posts.json"), reducedPosts);
 
   runNode("update-homepage.js", root);
@@ -208,34 +197,21 @@ test("shrinking the article set removes obsolete generated pagination and sitema
   }
 });
 
-
 test("external featured link with a matching article path does not suppress pagination article", (t) => {
   const { root } = createFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
 
   const homepagePath = path.join(root, "index.html");
   let homepage = fs.readFileSync(homepagePath, "utf8");
-  homepage = homepage.replace(
-    '<div id="external-links"><a href="https://partner.example/posts/security-a">External link with a colliding pathname</a></div>',
-    ""
-  );
-  homepage = homepage.replace(
-    '<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article></section>',
-    '<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article><a href="https://partner.example/posts/general-10">External featured link with a matching pathname</a></section>'
-  );
+  homepage = homepage.replace('<div id="external-links"><a href="https://partner.example/posts/security-a">External link with a colliding pathname</a></div>', "");
+  homepage = homepage.replace('<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article></section>', '<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article><a href="https://partner.example/posts/general-10">External featured link with a matching pathname</a></section>');
   fs.writeFileSync(homepagePath, homepage);
 
   runNode("update-homepage.js", root);
   runNode("generate-pagination.js", root);
 
   const generatedHomepage = fs.readFileSync(homepagePath, "utf8");
-  const latestSection = generatedHomepage
-    .split("<!-- AUTO-POSTS-START -->")[1]
-    .split("<!-- AUTO-POSTS-END -->")[0];
+  const latestSection = generatedHomepage.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0];
 
-  assert.match(
-    latestSection,
-    /href=["']\/posts\/general-10["']/i,
-    "the same-path external featured link must not exclude the local article from pagination"
-  );
+  assert.match(latestSection, /href=["']\/posts\/general-10["']/i, "the same-path external featured link must not exclude the local article from pagination");
 });
