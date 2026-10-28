@@ -323,7 +323,9 @@ function validateVisibleArticleDates(html, articleNodes, label) {
         for (const node of articleNodes) {
             const schemaDate = node[check.field];
             if (!isIsoDateTimeWithTimezone(schemaDate)) continue;
-            const schemaDay = new Date(schemaDate).toISOString().slice(0, 10);
+            // The visible date represents the timestamp's stated calendar date, not its UTC-converted day.
+            // Converting schemaDate to UTC can shift timestamps near midnight into the previous/next day.
+            const schemaDay = schemaDate.slice(0, 10);
             const visibleDay = new Date(parsedVisibleDate).toISOString().slice(0, 10);
             if (visibleDay !== schemaDay) {
                 fail(label + ": visible " + check.label.toLowerCase() + " date (" + visibleDate + ") differs from Article JSON-LD " + check.field + " (" + schemaDate + ").");
