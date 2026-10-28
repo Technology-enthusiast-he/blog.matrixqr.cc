@@ -5,6 +5,7 @@ const ROOT = process.env.MATRIXQR_VALIDATION_ROOT ? path.resolve(process.env.MAT
 const SITE_ORIGIN = "https://blog.matrixqr.cc";
 const POSTS_FILE = path.join(ROOT, "posts.json");
 const HTML_SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
+const { getLinksByRel } = require("./html-link-utils");
 
 const errors = [];
 const warnings = [];
