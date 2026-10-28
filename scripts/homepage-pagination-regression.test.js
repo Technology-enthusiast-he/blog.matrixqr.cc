@@ -79,7 +79,7 @@ function createFixture() {
 <!-- AUTO-ARCHIVE-PAGINATION-START -->
 <!-- AUTO-ARCHIVE-PAGINATION-END -->
 </body></html>`;
-  fs.writeFileSync(path.join(root, "templates", "archive-template.html"), archiveTemplate);
+  fs.writeFileSync(path.join(root, "templates", "archive-template.html.template"), archiveTemplate);
 
   const posts = [
     article("security-a", "QR Code Security & Privacy", 1),
