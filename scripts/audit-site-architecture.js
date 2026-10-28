@@ -28,8 +28,8 @@ function normalizeUrl(value) {
     } catch { return ""; }
 }
 function canonical(html) {
-    const m = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    return m ? decode(m[1]) : "";
+    const links = getLinksByRel(html, "canonical");
+    return links[0] || "";
 }
 function meta(html, attr, key) {
     const tags = html.match(/<meta\b[^>]*>/gi) || [];
