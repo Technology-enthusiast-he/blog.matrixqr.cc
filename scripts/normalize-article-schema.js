@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = process.env.MATRIXQR_SCHEMA_ROOT ? path.resolve(process.env.MATRIXQR_SCHEMA_ROOT) : path.join(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
 
 const AUTHOR = {
