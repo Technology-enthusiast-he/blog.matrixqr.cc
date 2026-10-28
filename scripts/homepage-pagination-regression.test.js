@@ -141,6 +141,32 @@ test("manual featured swap returns the removed article to automation and is idem
   assert.equal(posts.length, 13);
 });
 
+test("manual homepage cards do not remove articles from the archive or XML sitemap", (t) => {
+  const { root, posts } = createFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+
+  runNode("update-homepage.js", root);
+  runNode("generate-pagination.js", root);
+  runNode("generate-archive.js", root);
+  runNode("generate-xml-sitemap.js", root);
+
+  const archivePages = [
+    fs.readFileSync(path.join(root, "posts", "index.html"), "utf8"),
+    fs.readFileSync(path.join(root, "posts", "page", "2", "index.html"), "utf8"),
+    fs.readFileSync(path.join(root, "posts", "page", "3", "index.html"), "utf8"),
+  ].join("\n");
+  const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
+
+  for (const post of posts) {
+    const pathname = new URL(post.url).pathname;
+    const slug = pathname.split("/").pop();
+    assert.match(archivePages, new RegExp(`href=["']${pathname}["']`, "i"), `archive must retain ${slug} even when it is manually featured on the homepage`);
+    assert.ok(sitemap.includes(post.url), `XML sitemap must retain ${slug} even when it is manually featured on the homepage`);
+  }
+
+  assert.ok(fs.existsSync(path.join(root, "posts", "page", "3", "index.html")), "all 13 posts should require three archive pages");
+});
+
 test("shrinking the article set removes obsolete generated pagination and sitemap URLs", (t) => {
   const { root, posts } = createFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
