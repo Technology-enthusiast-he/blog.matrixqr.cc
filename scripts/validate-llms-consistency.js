@@ -3,6 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { findArticleHtmlFiles } = require("./article-source-files");
+const { getLinksByRel } = require("./html-link-utils");
 
 const ROOT = path.resolve(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
