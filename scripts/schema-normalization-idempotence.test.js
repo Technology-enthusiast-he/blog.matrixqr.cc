@@ -79,17 +79,25 @@ test("article schema normalization is idempotent and preserves the protected art
   const article = write(root, articlePath, articleHtml());
   const protectedOriginal = '<html><head><title>Protected fixture</title></head><body>must remain byte-identical</body></html>';
   const protectedFile = write(root, protectedPath, protectedOriginal);
+  const archiveOriginal = collectionHtml("Generated Archive", "Generator-owned archive fixture");
+  const archiveFile = write(root, "posts/index.html", archiveOriginal);
+  const paginationOriginal = collectionHtml("Generated Pagination", "Generator-owned pagination fixture");
+  const paginationFile = write(root, "posts/page/2/index.html", paginationOriginal);
 
   const first = run(NORMALIZER, root);
   assert.equal(first.status, 0, first.stdout + first.stderr);
   const afterFirst = fs.readFileSync(article, "utf8");
   assert.notEqual(afterFirst, articleHtml(), "fixture should exercise actual normalization");
   assert.equal(fs.readFileSync(protectedFile, "utf8"), protectedOriginal);
+  assert.equal(fs.readFileSync(archiveFile, "utf8"), archiveOriginal, "generated archive page must remain owned by the archive generator");
+  assert.equal(fs.readFileSync(paginationFile, "utf8"), paginationOriginal, "generated pagination page must remain owned by the pagination generator");
 
   const second = run(NORMALIZER, root);
   assert.equal(second.status, 0, second.stdout + second.stderr);
   assert.equal(fs.readFileSync(article, "utf8"), afterFirst, "second normalization must not rewrite the article");
   assert.equal(fs.readFileSync(protectedFile, "utf8"), protectedOriginal);
+  assert.equal(fs.readFileSync(archiveFile, "utf8"), archiveOriginal, "generated archive page must remain unchanged on every run");
+  assert.equal(fs.readFileSync(paginationFile, "utf8"), paginationOriginal, "generated pagination page must remain unchanged on every run");
   assert.match(second.stdout, /across 0 article file\(s\)/);
 });
 
