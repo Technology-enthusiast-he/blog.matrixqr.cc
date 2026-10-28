@@ -47,8 +47,9 @@ function canonicalizeUrl(value) {
 }
 
 function extractCanonical(html) {
-    const match = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    return match ? decodeEntities(match[1]) : "";
+    const links = getLinksByRel(html, "canonical");
+    if (links.length > 1) fail("Page contains multiple canonical link tags.");
+    return links[0] || "";
 }
 
 function extractMeta(html, attribute, key) {
