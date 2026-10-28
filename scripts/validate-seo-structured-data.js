@@ -267,12 +267,14 @@ function validateArticleMetadata(html, articleNodes, label) {
     const twitterImage = extractMeta(html, "name", "twitter:image");
     const ogTitle = extractMeta(html, "property", "og:title");
     const twitterTitle = extractMeta(html, "name", "twitter:title");
+    const metaDescription = extractMeta(html, "name", "description");
     const ogDescription = extractMeta(html, "property", "og:description");
     const twitterDescription = extractMeta(html, "name", "twitter:description");
     const twitterCard = extractMeta(html, "name", "twitter:card");
 
     if (!ogTitle) fail(label + ": missing og:title.");
     if (!twitterTitle) fail(label + ": missing twitter:title.");
+    if (!metaDescription) fail(label + ": missing meta description.");
     if (!ogDescription) fail(label + ": missing og:description.");
     if (!twitterDescription) fail(label + ": missing twitter:description.");
     if (!["summary", "summary_large_image"].includes(twitterCard)) {
@@ -280,6 +282,12 @@ function validateArticleMetadata(html, articleNodes, label) {
     }
     if (ogTitle && twitterTitle && ogTitle !== twitterTitle) {
         fail(label + ": og:title and twitter:title do not match.");
+    }
+    if (metaDescription && ogDescription && metaDescription !== ogDescription) {
+        warn(label + ": meta description and og:description use different wording; review for intentional variation.");
+    }
+    if (metaDescription && twitterDescription && metaDescription !== twitterDescription) {
+        warn(label + ": meta description and twitter:description use different wording; review for intentional variation.");
     }
     if (ogDescription && twitterDescription && ogDescription !== twitterDescription) {
         fail(label + ": og:description and twitter:description do not match.");
