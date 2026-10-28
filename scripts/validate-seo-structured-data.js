@@ -152,8 +152,15 @@ function validateGeneratedPage(file, expectedUrl) {
     const title = extractTitle(html);
     const ogTitle = extractMeta(html, "property", "og:title");
     const twitterTitle = extractMeta(html, "name", "twitter:title");
+    const twitterCard = extractMeta(html, "name", "twitter:card");
     if (!ogTitle) fail(`${label}: missing og:title.`);
     if (!twitterTitle) fail(`${label}: missing twitter:title.`);
+    if (!["summary", "summary_large_image"].includes(twitterCard)) {
+        fail(`${label}: twitter:card must be summary or summary_large_image.`);
+    }
+    if (ogTitle && twitterTitle && ogTitle !== twitterTitle) {
+        fail(`${label}: og:title and twitter:title do not match.`);
+    }
     if (title && ogTitle && title !== ogTitle) warn(`${label}: title and og:title use different wording.`);
     if (title && twitterTitle && title !== twitterTitle) warn(`${label}: title and twitter:title use different wording.`);
 
@@ -165,6 +172,9 @@ function validateGeneratedPage(file, expectedUrl) {
     if (!twitterDescription) fail(`${label}: missing twitter:description.`);
     if (description && ogDescription && description !== ogDescription) warn(`${label}: meta description and og:description use different wording.`);
     if (description && twitterDescription && description !== twitterDescription) warn(`${label}: meta description and twitter:description use different wording.`);
+    if (ogDescription && twitterDescription && ogDescription !== twitterDescription) {
+        fail(`${label}: og:description and twitter:description do not match.`);
+    }
 
     const collectionNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isCollectionPageNode);
     if (collectionNodes.length === 0) fail(`${label}: no CollectionPage JSON-LD node found.`);
@@ -255,6 +265,25 @@ function validateArticleMetadata(html, articleNodes, label) {
     const modifiedMeta = extractMeta(html, "property", "article:modified_time");
     const ogImage = extractMeta(html, "property", "og:image");
     const twitterImage = extractMeta(html, "name", "twitter:image");
+    const ogTitle = extractMeta(html, "property", "og:title");
+    const twitterTitle = extractMeta(html, "name", "twitter:title");
+    const ogDescription = extractMeta(html, "property", "og:description");
+    const twitterDescription = extractMeta(html, "name", "twitter:description");
+    const twitterCard = extractMeta(html, "name", "twitter:card");
+
+    if (!ogTitle) fail(label + ": missing og:title.");
+    if (!twitterTitle) fail(label + ": missing twitter:title.");
+    if (!ogDescription) fail(label + ": missing og:description.");
+    if (!twitterDescription) fail(label + ": missing twitter:description.");
+    if (!["summary", "summary_large_image"].includes(twitterCard)) {
+        fail(label + ": twitter:card must be summary or summary_large_image.");
+    }
+    if (ogTitle && twitterTitle && ogTitle !== twitterTitle) {
+        fail(label + ": og:title and twitter:title do not match.");
+    }
+    if (ogDescription && twitterDescription && ogDescription !== twitterDescription) {
+        fail(label + ": og:description and twitter:description do not match.");
+    }
 
     if (!publishedMeta) fail(label + ": missing article:published_time.");
     if (!modifiedMeta) fail(label + ": missing article:modified_time.");
@@ -265,6 +294,11 @@ function validateArticleMetadata(html, articleNodes, label) {
     }
 
     for (const node of articleNodes) {
+        if (!node.headline) fail(label + ": Article JSON-LD is missing headline.");
+        else if (ogTitle && node.headline !== ogTitle) fail(label + ": Article JSON-LD headline differs from og:title.");
+        if (!node.description) fail(label + ": Article JSON-LD is missing description.");
+        else if (ogDescription && node.description !== ogDescription) fail(label + ": Article JSON-LD description differs from og:description.");
+
         const published = node.datePublished;
         const modified = node.dateModified;
         if (!published) fail(label + ": Article JSON-LD is missing datePublished.");
