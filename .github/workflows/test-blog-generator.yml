@@ -36,6 +36,7 @@ jobs:
           node --check scripts/validate-pagination-seo.js
           node --check scripts/sync-generated-page-schema.js
           node --check scripts/validate-seo-structured-data.js
+          node --check scripts/validate-seo-structured-data.test.js
           node --check scripts/audit-site-architecture.js
           node --check scripts/validate-sitemap-lastmod.js
           node --check scripts/validate-sitemap-pagination.js
@@ -51,6 +52,9 @@ jobs:
 
       - name: Test homepage swap, pagination cleanup, and sitemap regressions
         run: node --test scripts/homepage-pagination-regression.test.js
+
+      - name: Test SEO structured-data validation regressions
+        run: npm run test:seo-regressions
 
       - name: Install build dependencies
         run: npm install --no-package-lock
