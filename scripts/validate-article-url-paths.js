@@ -7,6 +7,7 @@ const ROOT = path.join(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
 const SITE_URL = "https://blog.matrixqr.cc";
 const { findArticleHtmlFiles } = require("./article-source-files");
+const { getLinksByRel } = require("./html-link-utils");
 
 function walkHtmlFiles(directory) {
     return findArticleHtmlFiles(directory).map(relativePath => ({
@@ -33,6 +34,11 @@ function main() {
 
     for (const file of files) {
         const html = fs.readFileSync(file.fullPath, "utf8");
+        const canonicalLinks = getLinksByRel(html, "canonical");
+        if (canonicalLinks.length > 1) {
+            errors.push(file.relativePath + ": multiple canonical link tags found.");
+            continue;
+        }
         const canonical = getCanonical(html);
         const slugPath = file.relativePath.replace(/\.html$/i, "");
         const expected = SITE_URL + "/posts/" + slugPath;
