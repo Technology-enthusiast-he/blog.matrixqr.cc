@@ -33,9 +33,10 @@ function extractMarkdownUrls(content) {
 }
 
 function canonicalUrlFromHtml(html, relativePath) {
-    const match = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    if (!match) throw new Error(relativePath + ": missing canonical URL.");
-    const url = normalizeUrl(match[1]);
+    const canonicals = getLinksByRel(html, "canonical");
+    if (canonicals.length === 0) throw new Error(relativePath + ": missing canonical URL.");
+    if (canonicals.length > 1) throw new Error(relativePath + ": has multiple canonical link tags.");
+    const url = normalizeUrl(canonicals[0]);
     if (!url) throw new Error(relativePath + ": invalid or off-site canonical URL.");
     return url;
 }
