@@ -26,6 +26,8 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
+          node --check scripts/html-link-utils.js
+          node --check scripts/html-link-utils.test.js
           node --check scripts/article-source-files.js
           node --check scripts/article-source-files.test.js
           node --check scripts/generate-blog.js
@@ -49,6 +51,9 @@ jobs:
           node --check scripts/validate-build-idempotence.js
           node --check scripts/validate-llms-consistency.js
           node --check scripts/validate-llms-consistency.test.js
+
+      - name: Test HTML link attribute parsing and canonical discovery
+        run: node --test scripts/html-link-utils.test.js
 
       - name: Test shared article source discovery and generated-page exclusions
         run: node --test scripts/article-source-files.test.js
