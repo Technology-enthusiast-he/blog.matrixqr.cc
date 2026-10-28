@@ -335,7 +335,7 @@ function validateVisibleArticleDates(html, articleNodes, label) {
 function validateArticle(file) {
     const label = path.relative(ROOT, file);
     // This article is intentionally excluded from SEO/GEO validation and mutations.
-    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\/g, "/").toLowerCase();
+    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
     if (relative === "image-to-qr-menu-guide.html") return;
     const html = fs.readFileSync(file, "utf8");
     const canonical = canonicalizeUrl(extractCanonical(html));
