@@ -26,6 +26,8 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
+          node --check scripts/generate-blog.js
+          node --check scripts/generate-blog-dates.test.js
           node --check scripts/generate-llms.js
           node --check scripts/filter-llms-external-links.js
           node --check scripts/inject-topic-cluster-links.js
@@ -41,6 +43,9 @@ jobs:
           node --check scripts/validate-sitemap-lastmod.js
           node --check scripts/validate-sitemap-lastmod.test.js
           node --check scripts/validate-sitemap-pagination.js
+
+      - name: Test article index date validation and sorting
+        run: node --test scripts/generate-blog-dates.test.js
 
       - name: Test shared article category mapping
         run: npm run test:categories
