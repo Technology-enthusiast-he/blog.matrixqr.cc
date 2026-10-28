@@ -70,6 +70,7 @@ function createFixture() {
 
   fs.writeFileSync(path.join(root, "index.html"), homepage);
   fs.mkdirSync(path.join(root, "posts"), { recursive: true });
+  fs.mkdirSync(path.join(root, "templates"), { recursive: true });
   const archiveTemplate = `<!doctype html>
 <html><head><title>Archive</title><meta name="description" content="Archive fixture"><link rel="canonical" href="https://blog.matrixqr.cc/posts/"></head>
 <body>
@@ -78,7 +79,7 @@ function createFixture() {
 <!-- AUTO-ARCHIVE-PAGINATION-START -->
 <!-- AUTO-ARCHIVE-PAGINATION-END -->
 </body></html>`;
-  fs.writeFileSync(path.join(root, "posts", "index.html"), archiveTemplate);
+  fs.writeFileSync(path.join(root, "templates", "archive-template.html"), archiveTemplate);
 
   const posts = [
     article("security-a", "QR Code Security & Privacy", 1),
