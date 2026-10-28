@@ -10,10 +10,6 @@ const TOPIC_LINKS = {
     ["Add a custom logo to a restaurant QR menu", "/posts/custom-logo-qr-code-menu-guide"],
     ["How MatrixQR secures digital menu QR codes", "/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization"],
   ],
-  "posts/image-to-qr-menu-guide.html": [
-    ["Why this digital menu approach works well for restaurants", "/posts/2026-10/traditional-menus-digital-menu-qr-code"],
-    ["Customize a restaurant QR menu with a logo", "/posts/custom-logo-qr-code-menu-guide"],
-  ],
   "posts/custom-logo-qr-code-menu-guide.html": [
     ["Convert an existing menu image into a QR code", "/posts/image-to-qr-menu-guide"],
     ["How MatrixQR secures digital menu QR codes", "/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization"],
