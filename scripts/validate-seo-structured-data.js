@@ -204,9 +204,107 @@ function isArticleSourceFile(file) {
     return true;
 }
 
+
+function isIsoDateTimeWithTimezone(value) {
+    return typeof value === "string" &&
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value) &&
+        !Number.isNaN(Date.parse(value));
+}
+
+function collectImageUrls(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) return value.flatMap(collectImageUrls);
+    if (typeof value === "string") return [decodeEntities(value)];
+    if (typeof value === "object") {
+        const url = value.url || value.contentUrl || value["@id"];
+        return typeof url === "string" ? [decodeEntities(url)] : [];
+    }
+    return [];
+}
+
+function checkSameSiteImageExists(value, label, field) {
+    let url;
+    try {
+        url = new URL(decodeEntities(value), SITE_ORIGIN);
+    } catch {
+        fail(label + ": " + field + " is not a valid URL: " + value);
+        return;
+    }
+    if (url.origin !== SITE_ORIGIN) return;
+    let pathname;
+    try {
+        pathname = decodeURIComponent(url.pathname);
+    } catch {
+        fail(label + ": " + field + " contains an invalid encoded path: " + value);
+        return;
+    }
+    const target = path.resolve(ROOT, "." + pathname);
+    if (target !== ROOT && !target.startsWith(ROOT + path.sep)) {
+        fail(label + ": " + field + " resolves outside the repository: " + value);
+        return;
+    }
+    if (!fs.existsSync(target) || !fs.statSync(target).isFile()) {
+        fail(label + ": " + field + " points to a missing local file: " + value);
+    }
+}
+
+function validateArticleMetadata(html, articleNodes, label) {
+    const publishedMeta = extractMeta(html, "property", "article:published_time");
+    const modifiedMeta = extractMeta(html, "property", "article:modified_time");
+    const ogImage = extractMeta(html, "property", "og:image");
+    const twitterImage = extractMeta(html, "name", "twitter:image");
+
+    if (!publishedMeta) fail(label + ": missing article:published_time.");
+    if (!modifiedMeta) fail(label + ": missing article:modified_time.");
+    if (!ogImage) fail(label + ": missing og:image.");
+    if (!twitterImage) fail(label + ": missing twitter:image.");
+    if (ogImage && twitterImage && ogImage !== twitterImage) {
+        fail(label + ": og:image and twitter:image do not match.");
+    }
+
+    for (const node of articleNodes) {
+        const published = node.datePublished;
+        const modified = node.dateModified;
+        if (!published) fail(label + ": Article JSON-LD is missing datePublished.");
+        else if (!isIsoDateTimeWithTimezone(published)) {
+            fail(label + ": datePublished must be a valid ISO 8601 datetime with timezone: " + published);
+        }
+        if (!modified) fail(label + ": Article JSON-LD is missing dateModified.");
+        else if (!isIsoDateTimeWithTimezone(modified)) {
+            fail(label + ": dateModified must be a valid ISO 8601 datetime with timezone: " + modified);
+        }
+
+        if (published && publishedMeta && published !== publishedMeta) {
+            fail(label + ": datePublished (" + published + ") differs from article:published_time (" + publishedMeta + ").");
+        }
+        if (modified && modifiedMeta && modified !== modifiedMeta) {
+            fail(label + ": dateModified (" + modified + ") differs from article:modified_time (" + modifiedMeta + ").");
+        }
+        if (published && modified && isIsoDateTimeWithTimezone(published) &&
+            isIsoDateTimeWithTimezone(modified) && Date.parse(modified) < Date.parse(published)) {
+            fail(label + ": dateModified is earlier than datePublished.");
+        }
+
+        const schemaImages = collectImageUrls(node.image);
+        if (!schemaImages.length) fail(label + ": Article JSON-LD is missing image.");
+        if (ogImage && schemaImages.length && !schemaImages.includes(ogImage)) {
+            fail(label + ": og:image is not included in Article JSON-LD image.");
+        }
+        schemaImages.forEach((imageUrl, index) => {
+            checkSameSiteImageExists(imageUrl, label, "Article JSON-LD image #" + (index + 1));
+        });
+    }
+
+    if (ogImage) checkSameSiteImageExists(ogImage, label, "og:image");
+    if (twitterImage) checkSameSiteImageExists(twitterImage, label, "twitter:image");
+}
+
 function validateArticle(file) {
-    const html = fs.readFileSync(file, "utf8");
     const label = path.relative(ROOT, file);
+    // This article is intentionally excluded from SEO/GEO validation and mutations.
+    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
+    if (relative === "image-to-qr-menu-guide.html") return;
+    const html = fs.readFileSync(file, "utf8");
     const canonical = canonicalizeUrl(extractCanonical(html));
     if (!canonical) {
         fail(`${label}: missing or invalid canonical URL.`);
@@ -218,6 +316,8 @@ function validateArticle(file) {
         fail(`${label}: no Article/BlogPosting JSON-LD node found.`);
         return;
     }
+
+    validateArticleMetadata(html, articleNodes, label);
 
     for (const node of articleNodes) {
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
