@@ -17,10 +17,7 @@ function walkHtmlFiles(directory) {
 }
 
 function getCanonical(html) {
-    const match = html.match(
-        /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i
-    );
-    return match ? match[1].trim() : "";
+    return getLinksByRel(html, "canonical")[0] || "";
 }
 
 function main() {
