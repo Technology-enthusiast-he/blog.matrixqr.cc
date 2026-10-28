@@ -6,37 +6,13 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
 const SITE_URL = "https://blog.matrixqr.cc";
+const { findArticleHtmlFiles } = require("./article-source-files");
 
-function walkHtmlFiles(directory, relativeDirectory = "") {
-    const files = [];
-
-    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-        const fullPath = path.join(directory, entry.name);
-        const relativePath = path.posix.join(relativeDirectory, entry.name);
-
-        if (entry.isDirectory()) {
-            files.push(...walkHtmlFiles(fullPath, relativePath));
-            continue;
-        }
-
-        if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) {
-            const normalized = relativePath.replace(/\\/g, "/").toLowerCase();
-
-            // These are non-article pages stored beneath posts/.
-            if (
-                relativePath === "index.html" ||
-                relativePath === "privacy-policy.html" ||
-                normalized === "page/index.html" ||
-                /^page\/\d+\/index\.html$/.test(normalized)
-            ) {
-                continue;
-            }
-
-            files.push({ fullPath, relativePath });
-        }
-    }
-
-    return files;
+function walkHtmlFiles(directory) {
+    return findArticleHtmlFiles(directory).map(relativePath => ({
+        fullPath: path.join(directory, relativePath),
+        relativePath
+    }));
 }
 
 function getCanonical(html) {
