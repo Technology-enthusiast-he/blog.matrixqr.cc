@@ -53,7 +53,7 @@ function extractCanonical(html) {
 function extractMeta(html, attribute, key) {
     const tags = html.match(/<meta\b[^>]*>/gi) || [];
     const tag = tags.find(item => {
-        const match = item.match(new RegExp("\b" + attribute + "\s*=\s*([\"'])(.*?)\\1", "i"));
+        const match = item.match(new RegExp("\\b" + attribute + "\\s*=\\s*([\"'])(.*?)\\1", "i"));
         return match && match[2].toLowerCase() === key.toLowerCase();
     });
     if (!tag) return "";
