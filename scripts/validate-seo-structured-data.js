@@ -382,6 +382,10 @@ function validateArticle(file) {
         return;
     }
 
+    const ogUrl = canonicalizeUrl(extractMeta(html, "property", "og:url"));
+    if (!ogUrl) fail(`${label}: missing or invalid og:url.`);
+    else if (ogUrl !== canonical) fail(`${label}: og:url is ${ogUrl}, expected canonical ${canonical}.`);
+
     const articleNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isArticleNode);
     if (articleNodes.length === 0) {
         fail(`${label}: no Article/BlogPosting JSON-LD node found.`);
@@ -392,6 +396,12 @@ function validateArticle(file) {
     validateVisibleArticleDates(html, articleNodes, label);
 
     for (const node of articleNodes) {
+        if (node.url) {
+            const schemaUrl = canonicalizeUrl(node.url);
+            if (!schemaUrl) fail(`${label}: Article JSON-LD url is invalid: ${node.url}.`);
+            else if (schemaUrl !== canonical) fail(`${label}: Article JSON-LD url is ${schemaUrl}, expected canonical ${canonical}.`);
+        }
+
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
         if (!mainEntityUrl) fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
         else if (mainEntityUrl !== canonical) fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
