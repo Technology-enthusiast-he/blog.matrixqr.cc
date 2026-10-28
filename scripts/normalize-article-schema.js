@@ -13,7 +13,7 @@ const AUTHOR = {
     ]
 };
 
-function walk(dir) {
+function walk(dir, relativeDir = "") {
     if (!fs.existsSync(dir)) return [];
 
     const entries = fs.readdirSync(dir, { withFileTypes: true });
@@ -21,10 +21,17 @@ function walk(dir) {
 
     for (const entry of entries) {
         const fullPath = path.join(dir, entry.name);
+        const relativePath = path.posix.join(relativeDir, entry.name).replace(/\\/g, "/").toLowerCase();
+
+        // Generated archive and pagination pages are owned by their generators, not article normalization.
+        if (relativeDir === "" && entry.isDirectory() && entry.name.toLowerCase() === "page") {
+            continue;
+        }
 
         if (entry.isDirectory()) {
-            files.push(...walk(fullPath));
-        } else if (entry.isFile() && entry.name.endsWith(".html")) {
+            files.push(...walk(fullPath, relativePath));
+        } else if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) {
+            if (relativePath === "index.html" || relativePath === "privacy-policy.html") continue;
             files.push(fullPath);
         }
     }
