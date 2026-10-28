@@ -17,7 +17,8 @@
     "audit:architecture": "node scripts/audit-site-architecture.js",
     "validate:images": "node scripts/validate-images.js",
     "validate:archive-seo": "node scripts/validate-archive-seo.js",
-    "test:seo-regressions": "node --test scripts/validate-seo-structured-data.test.js"
+    "test:seo-regressions": "node --test scripts/validate-seo-structured-data.test.js",
+    "test:images": "node --test scripts/validate-images.test.js"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.1"
