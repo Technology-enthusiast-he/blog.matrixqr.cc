@@ -19,6 +19,9 @@ function walk(dir) {
     }
 
     if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
+    const relativePath = path.relative(ROOT, fullPath).split(path.sep).join('/');
+    if (relativePath === 'posts/image-to-qr-menu-guide.html') continue;
+
     scanned += 1;
 
     const source = fs.readFileSync(fullPath, 'utf8');
