@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = process.env.MATRIXQR_VALIDATION_ROOT ? path.resolve(process.env.MATRIXQR_VALIDATION_ROOT) : path.join(__dirname, "..");
 const SITE_ORIGIN = "https://blog.matrixqr.cc";
 const POSTS_FILE = path.join(ROOT, "posts.json");
 const HTML_SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
