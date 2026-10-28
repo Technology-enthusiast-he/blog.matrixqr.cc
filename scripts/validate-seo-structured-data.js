@@ -198,7 +198,7 @@ function walkHtmlFiles(dir) {
 }
 
 function isArticleSourceFile(file) {
-    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\/g, "/").toLowerCase();
+    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
     if (relative === "index.html" || relative === "privacy-policy.html") return false;
     if (/^page\/\d+\/index\.html$/.test(relative)) return false;
     return true;
