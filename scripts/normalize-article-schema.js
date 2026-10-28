@@ -279,6 +279,10 @@ function main() {
     let linkedNodes = 0;
 
     for (const file of files) {
+        // This article is intentionally excluded from SEO/GEO edits.
+        const relativePath = path.relative(POSTS_DIR, file).replace(/\\/g, "/").toLowerCase();
+        if (relativePath === "image-to-qr-menu-guide.html") continue;
+
         const original = fs.readFileSync(file, "utf8");
         const authorResult = normalizeAuthors(original);
         const entityResult = linkArticleEntities(authorResult.html);
