@@ -115,6 +115,9 @@ function validateSchemas() {
         const nodes = nodesFrom(html, label);
         nodes.forEach(node => { if (types(node).includes("WebSite") && node["@id"]) websiteIds.add(node["@id"]); });
         const rel = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
+        // The user explicitly excluded this article from SEO/GEO changes; keep link auditing,
+        // but do not enforce schema/breadcrumb normalization on this file.
+        if (rel === "image-to-qr-menu-guide.html") continue;
         const isArticleFile = file.startsWith(path.join(ROOT, "posts") + path.sep) && rel !== "index.html" && rel !== "privacy-policy.html" && !/^page\/\d+\/index\.html$/.test(rel);
         if (isArticleFile) {
             const articles = nodes.filter(n => types(n).some(t => ["Article", "BlogPosting", "NewsArticle"].includes(t)));
