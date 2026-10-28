@@ -28,6 +28,7 @@ jobs:
         run: |
           node --check scripts/generate-blog.js
           node --check scripts/generate-blog-dates.test.js
+          node --check scripts/schema-normalization-idempotence.test.js
           node --check scripts/generate-llms.js
           node --check scripts/filter-llms-external-links.js
           node --check scripts/inject-topic-cluster-links.js
@@ -46,6 +47,9 @@ jobs:
 
       - name: Test article index date validation and sorting
         run: node --test scripts/generate-blog-dates.test.js
+
+      - name: Test schema normalization idempotence and protected article preservation
+        run: node --test scripts/schema-normalization-idempotence.test.js
 
       - name: Test shared article category mapping
         run: npm run test:categories
