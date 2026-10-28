@@ -308,7 +308,12 @@ posts.sort((a, b) => Date.parse(b.datePublished) - Date.parse(a.datePublished));
 // Fail the build if any source HTML article was silently omitted from posts.json.
 // A skipped article would otherwise disappear from generated archives, pagination,
 // internal indexes, and the XML sitemap without failing the deployment.
-if (process.exitCode === 1) {\n    console.error("ERROR: Invalid article date metadata prevents generating posts.json.");\n    process.exit(1);\n}\n\nif (skippedPosts.length > 0) {
+if (process.exitCode === 1) {
+    console.error("ERROR: Invalid article date metadata prevents generating posts.json.");
+    process.exit(1);
+}
+
+if (skippedPosts.length > 0) {
     console.error("ERROR: One or more HTML files under posts/ could not be indexed:");
     for (const post of skippedPosts) {
         console.error(`  - ${post.file}: ${post.reason}`);
