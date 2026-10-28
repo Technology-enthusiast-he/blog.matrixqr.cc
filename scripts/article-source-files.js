@@ -28,13 +28,13 @@ function findArticleHtmlFiles(postsDirectory) {
                 continue;
             }
 
-            const normalized = relativePath.replace(/\\\\/g, "/").toLowerCase();
+            const normalized = relativePath.replace(/\\/g, "/").toLowerCase();
             const isRootNonArticle =
                 !relativeDirectory &&
                 ["index.html", "privacy-policy.html"].includes(entry.name.toLowerCase());
             const isGeneratedPagination =
                 normalized === "page/index.html" ||
-                /^page\\/\\d+\\/index\\.html$/.test(normalized);
+                /^page\/\d+\/index\.html$/.test(normalized);
 
             if (isRootNonArticle || isGeneratedPagination) {
                 continue;
