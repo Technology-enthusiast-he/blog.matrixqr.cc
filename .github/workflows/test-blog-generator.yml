@@ -39,6 +39,7 @@ jobs:
           node --check scripts/validate-seo-structured-data.test.js
           node --check scripts/audit-site-architecture.js
           node --check scripts/validate-sitemap-lastmod.js
+          node --check scripts/validate-sitemap-lastmod.test.js
           node --check scripts/validate-sitemap-pagination.js
 
       - name: Test shared article category mapping
@@ -105,6 +106,9 @@ jobs:
           }
           console.log('PASS: committed sitemap covers all ' + new Set(expectedArticleUrls).size + ' indexed article URLs.');
           NODE
+
+      - name: Test sitemap lastmod date validation
+        run: node --test scripts/validate-sitemap-lastmod.test.js
 
       - name: Validate committed sitemap lastmod dates
         run: node scripts/validate-sitemap-lastmod.js /tmp/sitemap-before-build.xml
