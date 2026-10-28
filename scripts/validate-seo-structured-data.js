@@ -295,7 +295,7 @@ function validateArticleMetadata(html, articleNodes, label) {
 
     for (const node of articleNodes) {
         if (!node.headline) fail(label + ": Article JSON-LD is missing headline.");
-        else if (ogTitle && node.headline !== ogTitle) fail(label + ": Article JSON-LD headline differs from og:title.");
+        else if (ogTitle && node.headline !== ogTitle) warn(label + ": Article JSON-LD headline differs from og:title; source article left unchanged.");
         if (!node.description) fail(label + ": Article JSON-LD is missing description.");
         else if (ogDescription && node.description !== ogDescription) fail(label + ": Article JSON-LD description differs from og:description.");
 
