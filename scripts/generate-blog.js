@@ -141,50 +141,8 @@ if (!fs.existsSync(POSTS_DIR)) {
 }
 
 
-function findHtmlFiles(dir, relativeDir = "") {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    const results = [];
-
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        const relativePath = path.posix.join(relativeDir, entry.name);
-
-        if (entry.isDirectory()) {
-            results.push(...findHtmlFiles(fullPath, relativePath));
-            continue;
-        }
-
-        if (
-            entry.isFile() &&
-            entry.name.toLowerCase().endsWith(".html")
-        ) {
-            // Skip archive pages and other non-article pages.
-const normalizedPath = relativePath
-    .replace(/\\/g, "/")
-    .toLowerCase();
-
-if (
-    (
-        relativeDir === "" &&
-        ["index.html", "privacy-policy.html"].includes(
-            entry.name.toLowerCase()
-        )
-    ) ||
-    normalizedPath === "page/index.html" ||
-    /^page\/\d+\/index\.html$/.test(normalizedPath)
-) {
-    continue;
-}
-
-
-            results.push(relativePath);
-        }
-    }
-
-    return results;
-}
-
-const files = findHtmlFiles(POSTS_DIR);
+const { findArticleHtmlFiles } = require("./article-source-files");
+const files = findArticleHtmlFiles(POSTS_DIR);
 
 
 const posts = [];
