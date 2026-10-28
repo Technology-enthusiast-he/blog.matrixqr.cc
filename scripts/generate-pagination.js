@@ -168,15 +168,16 @@ function createPagination(pageNumber, totalPages) {
 function replacePagination(html, pageNumber, totalPages) {
     const pattern =
         /<div class="flex justify-center mt-12 mb-10(?:\s+gap-3 flex-wrap)?">[\s\S]*?<\/div>/i;
+    const pagination = createPagination(pageNumber, totalPages);
 
+    // A previous build removes the container when no pagination links are needed.
+    // Treat that already-normalized no-pagination state as valid on subsequent builds.
     if (!pattern.test(html)) {
+        if (!pagination) return html;
         throw new Error("Pagination container was not found.");
     }
 
-    return html.replace(
-        pattern,
-        createPagination(pageNumber, totalPages)
-    );
+    return html.replace(pattern, pagination);
 }
 
 function getMetaContent(html, attribute, key) {
