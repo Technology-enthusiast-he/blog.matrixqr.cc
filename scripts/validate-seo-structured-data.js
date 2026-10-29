@@ -374,16 +374,16 @@ function validateArticleMetadata(html, articleNodes, label) {
 
 
 function validateVisibleArticleDates(html, articleNodes, label) {
-    const metaInfo = (html.match(/class=["'][^"']*\\bmeta-info\\b[^"']*["'][^>]*>([\\s\\S]*?)<\\/div>/i) || [])[1] || "";
+    const metaInfo = (html.match(/class=["'][^"']*\bmeta-info\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i) || [])[1] || "";
     if (!metaInfo) {
         fail(label + ": missing visible article date metadata (meta-info).");
         return;
     }
 
-    const visibleText = metaInfo.replace(/<[^>]+>/g, " ").replace(/\\s+/g, " ").trim();
+    const visibleText = metaInfo.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
     const checks = [
-        { label: "Published", pattern: /Published(?:\\s+on)?\\s*:?\\s+([^•|]+)/i, field: "datePublished" },
-        { label: "Updated", pattern: /Updated(?:\\s+on)?\\s*:?\\s+([^•|]+)/i, field: "dateModified" }
+        { label: "Published", pattern: /Published(?:\s+on)?\s*:?\s+([^•|]+)/i, field: "datePublished" },
+        { label: "Updated", pattern: /Updated(?:\s+on)?\s*:?\s+([^•|]+)/i, field: "dateModified" }
     ];
 
     for (const check of checks) {
