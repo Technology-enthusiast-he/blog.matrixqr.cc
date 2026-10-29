@@ -36,6 +36,7 @@ function articleHtml(options) {
   const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", headline, description, ...(o.schemaUrl ? { url: o.schemaUrl } : {}), mainEntityOfPage: { "@id": url }, datePublished: published, dateModified: modified, image: schemaImage });
   const standardDescriptionTag = '<meta name="description" content="' + metaDescription + '">';
   const articleHead = '<html><head><title>' + headline + '</title><link rel="canonical" href="' + url + '">' + standardDescriptionTag + '<meta property="article:published_time" content="' + published + '"><meta property="article:modified_time" content="' + modified + '"><meta property="og:url" content="' + (o.ogUrl ?? url) + '"><meta property="og:title" content="' + (o.ogTitle ?? headline) + '"><meta name="twitter:title" content="' + (o.twitterTitle ?? headline) + '"><meta property="og:description" content="' + (o.ogDescription ?? description) + '"><meta name="twitter:description" content="' + (o.twitterDescription ?? description) + '"><meta name="twitter:card" content="' + twitterCard + '"><meta property="og:image" content="' + ogImage + '"><meta name="twitter:image" content="' + twitterImage + '"><script type="application/ld+json">' + schema + '</script></head><body><div class="meta-info">Published on ' + pubText + ' • Updated ' + modText + '</div></body></html>';
+  return articleHead;
 }
 function fixture(options) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "matrixqr-seo-test-"));
