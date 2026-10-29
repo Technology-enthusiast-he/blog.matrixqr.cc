@@ -33,9 +33,11 @@ for (const match of sitemapXml.matchAll(/<url>\s*([\s\S]*?)\s*<\/url>/g)) {
     const loc = (block.match(/<loc>([\s\S]*?)<\/loc>/) || [])[1];
     if (!loc) continue;
     const lastmod = (block.match(/<lastmod>([\s\S]*?)<\/lastmod>/) || [])[1];
-    const normalizedLastmod = lastmod ? lastmod.trim().slice(0, 10) : "";
+    const normalizedLastmod = lastmod ? lastmod.trim() : "";
+    // This generator intentionally emits date-only lastmod values. Validate the
+    // entire value so a valid YYYY-MM-DD prefix cannot hide malformed trailing text.
     if (lastmod && !isValidCalendarDate(normalizedLastmod)) {
-        console.error("Invalid <lastmod> calendar date for " + normalizeUrl(loc) + ": " + lastmod.trim());
+        console.error("Invalid <lastmod> calendar date (expected YYYY-MM-DD) for " + normalizeUrl(loc) + ": " + normalizedLastmod);
         process.exitCode = 1;
     }
     sitemapEntries.set(normalizeUrl(loc), normalizedLastmod);
