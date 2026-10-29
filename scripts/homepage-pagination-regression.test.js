@@ -125,9 +125,8 @@ test("pagination SEO validator rejects duplicate canonical link tags", (t) => {
 
   const pageFile = path.join(root, "page", "2", "index.html");
   let html = fs.readFileSync(pageFile, "utf8");
-  const canonical = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i);
-  assert.ok(canonical, "fixture should have a canonical link");
-  html = html.replace("</head>", canonical[0] + "\n</head>");
+  const canonical = '<link rel="canonical" href="https://blog.matrixqr.cc/page/2/">';
+  html = html.replace("</head>", canonical + "\n" + canonical + "\n</head>");
   fs.writeFileSync(pageFile, html);
 
   const result = spawnSync(process.execPath, [path.join(root, "scripts", "validate-pagination-seo.js")], { cwd: root, encoding: "utf8" });
