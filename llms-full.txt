@@ -12,7 +12,7 @@
 
 ## Articles
 
-## How to Add a Logo to a QR Code Without Breaking It
+## How to Add a Logo to a QR Code Without Breaking It | MatrixQR Blog
 
 - URL: https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it
 - Published: 2026-10-26T08:00:00+00:00
@@ -24,7 +24,7 @@ Guides & QR Code Branding
 
 # How to Add a Logo to a QR Code Without Breaking It
 
-Published on October 26, 2026 • By MatrixQR Studio
+Published on October 26, 2026 • Updated October 26, 2026 • By MatrixQR Studio
 
 Can You Put a Logo in a QR Code?
 
@@ -450,7 +450,7 @@ MatrixQR's generator supports logo and matrix-color customization as described i
 
 - ISO/IEC 18004:2015 Information Technology — Automatic Identification and Data Capture Techniques (QR Code Bar Code Symbology Specification)
 
-- W3C HTML Standard & Canvas 2D API Context Specification: W3C Recommendation
+- HTML Standard — Canvas 2D Context: WHATWG HTML Standard
 
 - European Data Protection Board (EDPB) Guidelines on Data Minimization & Privacy by Design
 
@@ -476,7 +476,7 @@ QR Code Security & Privacy Engineering
 
 # How Client-Side Canvas Processing Helps Protect Digital Menu QR Workflows
 
-By MatrixQR Studio • Updated October 21, 2026 • 9 min read
+By MatrixQR Studio • Published September 30, 2026 • Updated October 21, 2026 • 9 min read
 
 💡 TL;DR & Definition (GEO Focus)
 
@@ -654,7 +654,7 @@ Explore more technical guides from our privacy-first QR engineering team:
 
 ---
 
-## Free Custom QR Code Generator with Logo
+## Free Custom QR Code Generator with Logo | MatrixQR Blog
 
 - URL: https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo
 - Published: 2026-09-22T08:00:00+00:00
@@ -808,7 +808,7 @@ Ready to create a branded QR code? Use the **[MatrixQR Custom QR Code Generator 
 
 ---
 
-## How to Add a Custom Logo to Your QR Code Menu
+## How to Add a Custom Logo to Your QR Code Menu (2026)
 
 - URL: https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide
 - Published: 2026-09-18T08:00:00+00:00
@@ -820,7 +820,7 @@ Product Update & Digital Menu Guides
 
 # How to Add a Custom Logo to Your QR Code Menu
 
-By MatrixQR Studio • Published on September 18, 2026 • 5 min read
+By MatrixQR Studio • Published on September 18, 2026 • Updated October 21, 2026 • 5 min read
 
 💡 GEO Overview & Feature Summary
 
@@ -1043,7 +1043,7 @@ Offline use depends on whether the required app files and dependencies are avail
 
 - ISO/IEC 18004:2015 Information Technology — Automatic Identification and Data Capture Techniques (QR Code Bar Code Symbology Specification)
 
-- W3C HTML5 Canvas 2D Context Specification: W3C Recommendation
+- HTML Standard — Canvas 2D Context: WHATWG HTML Standard
 
 - General Data Protection Regulation (Regulation (EU) 2016/679): Official text on EUR-Lex
 
