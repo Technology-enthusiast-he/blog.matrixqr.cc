@@ -62,3 +62,28 @@ test("archive and HTML sitemap preserve source calendar dates across UTC midnigh
   assert.doesNotMatch(archive, /2026-09-30/);
   assert.doesNotMatch(sitemap, /2026-09-30/);
 });
+
+test("archive pagination uses archive URLs and omits next links on the final page", (t) => {
+  const { root, posts } = createFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+
+  // Thirteen articles require three archive pages. The last page must not link
+  // to a fourth page, and every visible pagination target must use /posts/.
+  writeJson(path.join(root, "posts.json"), posts);
+  runNode("generate-archive.js", root);
+  const archivePage2 = fs.readFileSync(path.join(root, "posts", "page", "2", "index.html"), "utf8");
+  const archivePage3 = fs.readFileSync(path.join(root, "posts", "page", "3", "index.html"), "utf8");
+  assert.match(archivePage2, /href=["']\/posts\/page\/3\//i);
+  assert.doesNotMatch(archivePage2, /href=["']\/(?:page|posts\/page)\/4\//i);
+  assert.doesNotMatch(archivePage2, /href=["']\/page\/3\//i);
+  assert.doesNotMatch(archivePage3, /href=["']\/(?:page\/\d+|posts\/page\/4)\//i);
+  assert.doesNotMatch(archivePage3, /Next\s*→/i);
+
+  // Exactly twelve articles require two pages; page 2 must not retain Next.
+  writeJson(path.join(root, "posts.json"), posts.slice(0, 12));
+  runNode("generate-archive.js", root);
+  const finalArchivePage = fs.readFileSync(path.join(root, "posts", "page", "2", "index.html"), "utf8");
+  assert.doesNotMatch(finalArchivePage, /href=["']\/(?:page\/\d+|posts\/page\/3)\//i);
+  assert.doesNotMatch(finalArchivePage, /Next\s*→/i);
+  assert.ok(!fs.existsSync(path.join(root, "posts", "page", "3", "index.html")));
+});
