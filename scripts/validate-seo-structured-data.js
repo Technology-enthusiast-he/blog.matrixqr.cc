@@ -133,6 +133,13 @@ function getGeneratedPageFiles() {
     if (fs.existsSync(archive)) pages.push({ file: archive, expectedUrl: SITE_ORIGIN + "/posts/" });
     addNumericPages(path.join(ROOT, "posts", "page"), "/posts/page/");
 
+    // The HTML sitemap is a public landing page too; keep its canonical,
+    // social metadata, and CollectionPage schema under the same checks.
+    const htmlSitemap = path.join(ROOT, "sitemap", "index.html");
+    if (fs.existsSync(htmlSitemap)) {
+        pages.push({ file: htmlSitemap, expectedUrl: SITE_ORIGIN + "/sitemap/" });
+    }
+
     return pages;
 }
 
@@ -480,7 +487,7 @@ function main() {
     console.log("======================================");
     console.log(" MatrixQR SEO & Structured Data Consistency");
     console.log("======================================");
-    console.log(`Generated archive/homepage pages checked: ${generatedPages.length}`);
+    console.log(`Generated landing/archive pages checked: ${generatedPages.length}`);
     console.log(`Article pages checked: ${articleFiles.length}`);
     console.log(`HTML sitemap articles checked: ${posts.length}`);
 
