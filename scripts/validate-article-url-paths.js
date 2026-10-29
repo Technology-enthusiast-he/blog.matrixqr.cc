@@ -6,44 +6,18 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
 const SITE_URL = "https://blog.matrixqr.cc";
+const { findArticleHtmlFiles } = require("./article-source-files");
+const { getLinksByRel } = require("./html-link-utils");
 
-function walkHtmlFiles(directory, relativeDirectory = "") {
-    const files = [];
-
-    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-        const fullPath = path.join(directory, entry.name);
-        const relativePath = path.posix.join(relativeDirectory, entry.name);
-
-        if (entry.isDirectory()) {
-            files.push(...walkHtmlFiles(fullPath, relativePath));
-            continue;
-        }
-
-        if (entry.isFile() && entry.name.toLowerCase().endsWith(".html")) {
-            const normalized = relativePath.replace(/\\/g, "/").toLowerCase();
-
-            // These are non-article pages stored beneath posts/.
-            if (
-                relativePath === "index.html" ||
-                relativePath === "privacy-policy.html" ||
-                normalized === "page/index.html" ||
-                /^page\/\d+\/index\.html$/.test(normalized)
-            ) {
-                continue;
-            }
-
-            files.push({ fullPath, relativePath });
-        }
-    }
-
-    return files;
+function walkHtmlFiles(directory) {
+    return findArticleHtmlFiles(directory).map(relativePath => ({
+        fullPath: path.join(directory, relativePath),
+        relativePath
+    }));
 }
 
 function getCanonical(html) {
-    const match = html.match(
-        /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i
-    );
-    return match ? match[1].trim() : "";
+    return getLinksByRel(html, "canonical")[0] || "";
 }
 
 function main() {
@@ -57,6 +31,11 @@ function main() {
 
     for (const file of files) {
         const html = fs.readFileSync(file.fullPath, "utf8");
+        const canonicalLinks = getLinksByRel(html, "canonical");
+        if (canonicalLinks.length > 1) {
+            errors.push(file.relativePath + ": multiple canonical link tags found.");
+            continue;
+        }
         const canonical = getCanonical(html);
         const slugPath = file.relativePath.replace(/\.html$/i, "");
         const expected = SITE_URL + "/posts/" + slugPath;

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = path.resolve(process.env.IMAGE_VALIDATION_ROOT || path.resolve(__dirname, ".."));
 const htmlFiles = [];
 const errors = [];
 const warnings = [];

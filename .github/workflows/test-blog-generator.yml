@@ -26,6 +26,13 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
+          node --check scripts/html-link-utils.js
+          node --check scripts/html-link-utils.test.js
+          node --check scripts/article-source-files.js
+          node --check scripts/article-source-files.test.js
+          node --check scripts/generate-blog.js
+          node --check scripts/generate-blog-dates.test.js
+          node --check scripts/schema-normalization-idempotence.test.js
           node --check scripts/generate-llms.js
           node --check scripts/filter-llms-external-links.js
           node --check scripts/inject-topic-cluster-links.js
@@ -36,9 +43,28 @@ jobs:
           node --check scripts/validate-pagination-seo.js
           node --check scripts/sync-generated-page-schema.js
           node --check scripts/validate-seo-structured-data.js
+          node --check scripts/validate-seo-structured-data.test.js
+          node --check scripts/validate-images.js
+          node --check scripts/validate-images.test.js
           node --check scripts/audit-site-architecture.js
           node --check scripts/validate-sitemap-lastmod.js
+          node --check scripts/validate-sitemap-lastmod.test.js
           node --check scripts/validate-sitemap-pagination.js
+          node --check scripts/validate-build-idempotence.js
+          node --check scripts/validate-llms-consistency.js
+          node --check scripts/validate-llms-consistency.test.js
+
+      - name: Test HTML link attribute parsing and canonical discovery
+        run: node --test scripts/html-link-utils.test.js
+
+      - name: Test shared article source discovery and generated-page exclusions
+        run: node --test scripts/article-source-files.test.js
+
+      - name: Test article index date validation and sorting
+        run: node --test scripts/generate-blog-dates.test.js
+
+      - name: Test schema normalization idempotence and protected article preservation
+        run: node --test scripts/schema-normalization-idempotence.test.js
 
       - name: Test shared article category mapping
         run: npm run test:categories
@@ -52,14 +78,28 @@ jobs:
       - name: Test homepage swap, pagination cleanup, and sitemap regressions
         run: node --test scripts/homepage-pagination-regression.test.js
 
+      - name: Test SEO structured-data validation regressions
+        run: npm run test:seo-regressions
+
+      - name: Test image SEO and accessibility validation regressions
+        run: npm run test:images
+
       - name: Install build dependencies
         run: npm install --no-package-lock
 
-      - name: Snapshot committed XML sitemap
-        run: cp sitemap.xml /tmp/sitemap-before-build.xml
+      - name: Snapshot committed XML sitemap and protected article
+        run: |
+          cp sitemap.xml /tmp/sitemap-before-build.xml
+          cp posts/image-to-qr-menu-guide.html /tmp/protected-image-to-qr-menu-guide.html
 
       - name: Run full site build
         run: npm run build
+
+      - name: Check second full build is idempotent
+        run: node scripts/validate-build-idempotence.js
+
+      - name: Verify protected article stayed byte-identical
+        run: cmp --silent /tmp/protected-image-to-qr-menu-guide.html posts/image-to-qr-menu-guide.html
 
       - name: Check committed sitemap pagination matches generated pages
         run: node scripts/validate-sitemap-pagination.js /tmp/sitemap-before-build.xml
@@ -102,11 +142,17 @@ jobs:
           console.log('PASS: committed sitemap covers all ' + new Set(expectedArticleUrls).size + ' indexed article URLs.');
           NODE
 
+      - name: Test sitemap lastmod date validation
+        run: node --test scripts/validate-sitemap-lastmod.test.js
+
       - name: Validate committed sitemap lastmod dates
         run: node scripts/validate-sitemap-lastmod.js /tmp/sitemap-before-build.xml
 
       - name: Validate article structured data
         run: npm run test:article-schema
+
+      - name: Validate LLM article URL coverage and consistency
+        run: node scripts/validate-llms-consistency.js
 
       - name: Check generated LLMs files
         run: |

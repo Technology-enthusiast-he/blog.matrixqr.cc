@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = process.env.MATRIXQR_GENERATOR_ROOT ? path.resolve(process.env.MATRIXQR_GENERATOR_ROOT) : path.join(__dirname, "..");
 const POSTS_DIR = path.join(ROOT, "posts");
 const OUTPUT_FILE = path.join(ROOT, "posts.json");
 
@@ -19,6 +19,31 @@ function decodeHtmlEntities(str = "") {
         .replace(/&#39;/g, "'")
         .replace(/&lt;/g, "<")
         .replace(/&gt;/g, ">");
+}
+
+function isValidIsoDateTimeWithTimezone(value) {
+    if (typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
+        return false;
+    }
+
+    const year = Number(value.slice(0, 4));
+    const month = Number(value.slice(5, 7));
+    const day = Number(value.slice(8, 10));
+    const hour = Number(value.slice(11, 13));
+    const minute = Number(value.slice(14, 16));
+    const second = Number(value.slice(17, 19));
+    const calendar = new Date(Date.UTC(year, month - 1, day));
+
+    if (calendar.getUTCFullYear() !== year ||
+        calendar.getUTCMonth() !== month - 1 ||
+        calendar.getUTCDate() !== day ||
+        hour > 23 || minute > 59 || second > 59 ||
+        Number.isNaN(Date.parse(value))) {
+        return false;
+    }
+
+    return true;
 }
 
 function getMetaContent(html, name) {
@@ -116,50 +141,8 @@ if (!fs.existsSync(POSTS_DIR)) {
 }
 
 
-function findHtmlFiles(dir, relativeDir = "") {
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
-    const results = [];
-
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        const relativePath = path.posix.join(relativeDir, entry.name);
-
-        if (entry.isDirectory()) {
-            results.push(...findHtmlFiles(fullPath, relativePath));
-            continue;
-        }
-
-        if (
-            entry.isFile() &&
-            entry.name.toLowerCase().endsWith(".html")
-        ) {
-            // Skip archive pages and other non-article pages.
-const normalizedPath = relativePath
-    .replace(/\\/g, "/")
-    .toLowerCase();
-
-if (
-    (
-        relativeDir === "" &&
-        ["index.html", "privacy-policy.html"].includes(
-            entry.name.toLowerCase()
-        )
-    ) ||
-    normalizedPath === "page/index.html" ||
-    /^page\/\d+\/index\.html$/.test(normalizedPath)
-) {
-    continue;
-}
-
-
-            results.push(relativePath);
-        }
-    }
-
-    return results;
-}
-
-const files = findHtmlFiles(POSTS_DIR);
+const { findArticleHtmlFiles } = require("./article-source-files");
+const files = findArticleHtmlFiles(POSTS_DIR);
 
 
 const posts = [];
@@ -219,10 +202,6 @@ const rawArticleSection = jsonLd && jsonLd.articleSection
         warnings.push(file + ": missing meta description and JSON-LD description.");
     }
 
-    if (datePublished && Number.isNaN(Date.parse(datePublished))) {
-        warnings.push(file + ": invalid datePublished value \"" + datePublished + "\".");
-    }
-
 
     const canonical =
         getCanonical(html) ||
@@ -235,6 +214,18 @@ const rawArticleSection = jsonLd && jsonLd.articleSection
         ].filter(Boolean).join(" and ");
         skippedPosts.push({ file, reason });
         console.warn(`SKIPPED: ${file} — ${reason}`);
+        continue;
+    }
+
+    if (!isValidIsoDateTimeWithTimezone(datePublished)) {
+        console.error(`ERROR: ${file} has invalid datePublished ISO datetime with timezone: "${datePublished}".`);
+        process.exitCode = 1;
+        continue;
+    }
+
+    if (!isValidIsoDateTimeWithTimezone(dateModified)) {
+        console.error(`ERROR: ${file} has invalid dateModified ISO datetime with timezone: "${dateModified}".`);
+        process.exitCode = 1;
         continue;
     }
 
@@ -264,11 +255,7 @@ const rawArticleSection = jsonLd && jsonLd.articleSection
 // Sort newest first
 // --------------------------------------------------
 
-posts.sort(
-    (a, b) =>
-        new Date(b.datePublished) -
-        new Date(a.datePublished)
-);
+posts.sort((a, b) => Date.parse(b.datePublished) - Date.parse(a.datePublished));
 
 // --------------------------------------------------
 // Create data directory
@@ -279,6 +266,11 @@ posts.sort(
 // Fail the build if any source HTML article was silently omitted from posts.json.
 // A skipped article would otherwise disappear from generated archives, pagination,
 // internal indexes, and the XML sitemap without failing the deployment.
+if (process.exitCode === 1) {
+    console.error("ERROR: Invalid article date metadata prevents generating posts.json.");
+    process.exit(1);
+}
+
 if (skippedPosts.length > 0) {
     console.error("ERROR: One or more HTML files under posts/ could not be indexed:");
     for (const post of skippedPosts) {

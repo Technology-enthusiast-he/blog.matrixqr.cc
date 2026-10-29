@@ -1,10 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = process.env.MATRIXQR_VALIDATION_ROOT ? path.resolve(process.env.MATRIXQR_VALIDATION_ROOT) : path.join(__dirname, "..");
 const SITE_ORIGIN = "https://blog.matrixqr.cc";
 const POSTS_FILE = path.join(ROOT, "posts.json");
 const HTML_SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
+const { getLinksByRel } = require("./html-link-utils");
 
 const errors = [];
 const warnings = [];
@@ -46,8 +47,9 @@ function canonicalizeUrl(value) {
 }
 
 function extractCanonical(html) {
-    const match = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    return match ? decodeEntities(match[1]) : "";
+    const links = getLinksByRel(html, "canonical");
+    if (links.length > 1) fail("Page contains multiple canonical link tags.");
+    return links[0] || "";
 }
 
 function extractMeta(html, attribute, key) {
@@ -131,6 +133,13 @@ function getGeneratedPageFiles() {
     if (fs.existsSync(archive)) pages.push({ file: archive, expectedUrl: SITE_ORIGIN + "/posts/" });
     addNumericPages(path.join(ROOT, "posts", "page"), "/posts/page/");
 
+    // The HTML sitemap is a public landing page too; keep its canonical,
+    // social metadata, and CollectionPage schema under the same checks.
+    const htmlSitemap = path.join(ROOT, "sitemap", "index.html");
+    if (fs.existsSync(htmlSitemap)) {
+        pages.push({ file: htmlSitemap, expectedUrl: SITE_ORIGIN + "/sitemap/" });
+    }
+
     return pages;
 }
 
@@ -150,8 +159,15 @@ function validateGeneratedPage(file, expectedUrl) {
     const title = extractTitle(html);
     const ogTitle = extractMeta(html, "property", "og:title");
     const twitterTitle = extractMeta(html, "name", "twitter:title");
+    const twitterCard = extractMeta(html, "name", "twitter:card");
     if (!ogTitle) fail(`${label}: missing og:title.`);
     if (!twitterTitle) fail(`${label}: missing twitter:title.`);
+    if (!["summary", "summary_large_image"].includes(twitterCard)) {
+        fail(`${label}: twitter:card must be summary or summary_large_image.`);
+    }
+    if (ogTitle && twitterTitle && ogTitle !== twitterTitle) {
+        fail(`${label}: og:title and twitter:title do not match.`);
+    }
     if (title && ogTitle && title !== ogTitle) warn(`${label}: title and og:title use different wording.`);
     if (title && twitterTitle && title !== twitterTitle) warn(`${label}: title and twitter:title use different wording.`);
 
@@ -163,6 +179,9 @@ function validateGeneratedPage(file, expectedUrl) {
     if (!twitterDescription) fail(`${label}: missing twitter:description.`);
     if (description && ogDescription && description !== ogDescription) warn(`${label}: meta description and og:description use different wording.`);
     if (description && twitterDescription && description !== twitterDescription) warn(`${label}: meta description and twitter:description use different wording.`);
+    if (ogDescription && twitterDescription && ogDescription !== twitterDescription) {
+        fail(`${label}: og:description and twitter:description do not match.`);
+    }
 
     const collectionNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isCollectionPageNode);
     if (collectionNodes.length === 0) fail(`${label}: no CollectionPage JSON-LD node found.`);
@@ -176,9 +195,14 @@ function validateGeneratedPage(file, expectedUrl) {
         if (title && node.name && node.name !== title) warn(`${label}: CollectionPage name uses different wording from <title>.`);
 
         if (node.description) {
-            const descriptions = [description, ogDescription, twitterDescription].filter(Boolean);
-            if (!descriptions.includes(node.description)) {
-                fail(`${label}: CollectionPage description differs from the page's meta/social descriptions.`);
+            // CollectionPage describes the public landing page, so it must
+            // agree with the social description used when that page is shared.
+            // The standard meta description may intentionally be search-focused.
+            if (ogDescription && node.description !== ogDescription) {
+                fail(`${label}: CollectionPage description differs from og:description.`);
+            }
+            if (twitterDescription && node.description !== twitterDescription) {
+                fail(`${label}: CollectionPage description differs from twitter:description.`);
             }
         } else {
             fail(`${label}: CollectionPage JSON-LD is missing description.`);
@@ -204,14 +228,206 @@ function isArticleSourceFile(file) {
     return true;
 }
 
+
+function isIsoDateTimeWithTimezone(value) {
+    if (typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
+        return false;
+    }
+
+    const year = Number(value.slice(0, 4));
+    const month = Number(value.slice(5, 7));
+    const day = Number(value.slice(8, 10));
+    const hour = Number(value.slice(11, 13));
+    const minute = Number(value.slice(14, 16));
+    const second = Number(value.slice(17, 19));
+    const calendar = new Date(0);
+    calendar.setUTCFullYear(year, month - 1, day);
+    calendar.setUTCHours(0, 0, 0, 0);
+
+    return calendar.getUTCFullYear() === year &&
+        calendar.getUTCMonth() === month - 1 &&
+        calendar.getUTCDate() === day &&
+        hour <= 23 && minute <= 59 && second <= 59 &&
+        !Number.isNaN(Date.parse(value));
+}
+
+function collectImageUrls(value) {
+    if (!value) return [];
+    if (Array.isArray(value)) return value.flatMap(collectImageUrls);
+    if (typeof value === "string") return [decodeEntities(value)];
+    if (typeof value === "object") {
+        const url = value.url || value.contentUrl || value["@id"];
+        return typeof url === "string" ? [decodeEntities(url)] : [];
+    }
+    return [];
+}
+
+function checkSameSiteImageExists(value, label, field) {
+    let url;
+    try {
+        url = new URL(decodeEntities(value), SITE_ORIGIN);
+    } catch {
+        fail(label + ": " + field + " is not a valid URL: " + value);
+        return;
+    }
+    if (url.origin !== SITE_ORIGIN) return;
+    let pathname;
+    try {
+        pathname = decodeURIComponent(url.pathname);
+    } catch {
+        fail(label + ": " + field + " contains an invalid encoded path: " + value);
+        return;
+    }
+    const target = path.resolve(ROOT, "." + pathname);
+    if (target !== ROOT && !target.startsWith(ROOT + path.sep)) {
+        fail(label + ": " + field + " resolves outside the repository: " + value);
+        return;
+    }
+    if (!fs.existsSync(target) || !fs.statSync(target).isFile()) {
+        fail(label + ": " + field + " points to a missing local file: " + value);
+    }
+}
+
+function validateArticleMetadata(html, articleNodes, label) {
+    const publishedMeta = extractMeta(html, "property", "article:published_time");
+    const modifiedMeta = extractMeta(html, "property", "article:modified_time");
+    const ogImage = extractMeta(html, "property", "og:image");
+    const twitterImage = extractMeta(html, "name", "twitter:image");
+    const ogTitle = extractMeta(html, "property", "og:title");
+    const twitterTitle = extractMeta(html, "name", "twitter:title");
+    const metaDescription = extractMeta(html, "name", "description");
+    const ogDescription = extractMeta(html, "property", "og:description");
+    const twitterDescription = extractMeta(html, "name", "twitter:description");
+    const twitterCard = extractMeta(html, "name", "twitter:card");
+
+    if (!ogTitle) fail(label + ": missing og:title.");
+    if (!twitterTitle) fail(label + ": missing twitter:title.");
+    if (!metaDescription) fail(label + ": missing meta description.");
+    if (!ogDescription) fail(label + ": missing og:description.");
+    if (!twitterDescription) fail(label + ": missing twitter:description.");
+    if (!["summary", "summary_large_image"].includes(twitterCard)) {
+        fail(label + ": twitter:card must be summary or summary_large_image.");
+    }
+    if (ogTitle && twitterTitle && ogTitle !== twitterTitle) {
+        fail(label + ": og:title and twitter:title do not match.");
+    }
+    if (metaDescription && ogDescription && metaDescription !== ogDescription) {
+        warn(label + ": meta description and og:description use different wording; review for intentional variation.");
+    }
+    if (metaDescription && twitterDescription && metaDescription !== twitterDescription) {
+        warn(label + ": meta description and twitter:description use different wording; review for intentional variation.");
+    }
+    if (ogDescription && twitterDescription && ogDescription !== twitterDescription) {
+        fail(label + ": og:description and twitter:description do not match.");
+    }
+
+    if (!publishedMeta) fail(label + ": missing article:published_time.");
+    if (!modifiedMeta) fail(label + ": missing article:modified_time.");
+    if (!ogImage) fail(label + ": missing og:image.");
+    if (!twitterImage) fail(label + ": missing twitter:image.");
+    if (ogImage && twitterImage && ogImage !== twitterImage) {
+        fail(label + ": og:image and twitter:image do not match.");
+    }
+
+    for (const node of articleNodes) {
+        if (!node.headline) fail(label + ": Article JSON-LD is missing headline.");
+        else if (ogTitle && node.headline !== ogTitle) warn(label + ": Article JSON-LD headline differs from og:title; source article left unchanged.");
+        if (!node.description) fail(label + ": Article JSON-LD is missing description.");
+        else if (ogDescription && node.description !== ogDescription) fail(label + ": Article JSON-LD description differs from og:description.");
+
+        const published = node.datePublished;
+        const modified = node.dateModified;
+        if (!published) fail(label + ": Article JSON-LD is missing datePublished.");
+        else if (!isIsoDateTimeWithTimezone(published)) {
+            fail(label + ": datePublished must be a valid ISO 8601 datetime with timezone: " + published);
+        }
+        if (!modified) fail(label + ": Article JSON-LD is missing dateModified.");
+        else if (!isIsoDateTimeWithTimezone(modified)) {
+            fail(label + ": dateModified must be a valid ISO 8601 datetime with timezone: " + modified);
+        }
+
+        if (published && publishedMeta && published !== publishedMeta) {
+            fail(label + ": datePublished (" + published + ") differs from article:published_time (" + publishedMeta + ").");
+        }
+        if (modified && modifiedMeta && modified !== modifiedMeta) {
+            fail(label + ": dateModified (" + modified + ") differs from article:modified_time (" + modifiedMeta + ").");
+        }
+        if (published && modified && isIsoDateTimeWithTimezone(published) &&
+            isIsoDateTimeWithTimezone(modified) && Date.parse(modified) < Date.parse(published)) {
+            fail(label + ": dateModified is earlier than datePublished.");
+        }
+
+        const schemaImages = collectImageUrls(node.image);
+        if (!schemaImages.length) fail(label + ": Article JSON-LD is missing image.");
+        if (ogImage && schemaImages.length && !schemaImages.includes(ogImage)) {
+            fail(label + ": og:image is not included in Article JSON-LD image.");
+        }
+        schemaImages.forEach((imageUrl, index) => {
+            checkSameSiteImageExists(imageUrl, label, "Article JSON-LD image #" + (index + 1));
+        });
+    }
+
+    if (ogImage) checkSameSiteImageExists(ogImage, label, "og:image");
+    if (twitterImage) checkSameSiteImageExists(twitterImage, label, "twitter:image");
+}
+
+
+function validateVisibleArticleDates(html, articleNodes, label) {
+    const metaInfo = (html.match(/class=["'][^"']*\bmeta-info\b[^"']*["'][^>]*>([\s\S]*?)<\/div>/i) || [])[1] || "";
+    if (!metaInfo) {
+        fail(label + ": missing visible article date metadata (meta-info).");
+        return;
+    }
+
+    const visibleText = metaInfo.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    const checks = [
+        { label: "Published", pattern: /Published(?:\s+on)?\s*:?\s+([^•|]+)/i, field: "datePublished" },
+        { label: "Updated", pattern: /Updated(?:\s+on)?\s*:?\s+([^•|]+)/i, field: "dateModified" }
+    ];
+
+    for (const check of checks) {
+        const match = visibleText.match(check.pattern);
+        if (!match) {
+            fail(label + ": visible " + check.label.toLowerCase() + " date is missing from meta-info.");
+            continue;
+        }
+        const visibleDate = match[1].trim();
+        const parsedVisibleDate = Date.parse(visibleDate);
+        if (Number.isNaN(parsedVisibleDate)) {
+            fail(label + ": visible " + check.label.toLowerCase() + " date is not parseable: " + visibleDate);
+            continue;
+        }
+
+        for (const node of articleNodes) {
+            const schemaDate = node[check.field];
+            if (!isIsoDateTimeWithTimezone(schemaDate)) continue;
+            // The visible date represents the timestamp's stated calendar date, not its UTC-converted day.
+            // Converting schemaDate to UTC can shift timestamps near midnight into the previous/next day.
+            const schemaDay = schemaDate.slice(0, 10);
+            const visibleDay = new Date(parsedVisibleDate).toISOString().slice(0, 10);
+            if (visibleDay !== schemaDay) {
+                fail(label + ": visible " + check.label.toLowerCase() + " date (" + visibleDate + ") differs from Article JSON-LD " + check.field + " (" + schemaDate + ").");
+            }
+        }
+    }
+}
+
 function validateArticle(file) {
-    const html = fs.readFileSync(file, "utf8");
     const label = path.relative(ROOT, file);
+    // This article is intentionally excluded from SEO/GEO validation and mutations.
+    const relative = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
+    if (relative === "image-to-qr-menu-guide.html") return;
+    const html = fs.readFileSync(file, "utf8");
     const canonical = canonicalizeUrl(extractCanonical(html));
     if (!canonical) {
         fail(`${label}: missing or invalid canonical URL.`);
         return;
     }
+
+    const ogUrl = canonicalizeUrl(extractMeta(html, "property", "og:url"));
+    if (!ogUrl) fail(`${label}: missing or invalid og:url.`);
+    else if (ogUrl !== canonical) fail(`${label}: og:url is ${ogUrl}, expected canonical ${canonical}.`);
 
     const articleNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isArticleNode);
     if (articleNodes.length === 0) {
@@ -219,7 +435,16 @@ function validateArticle(file) {
         return;
     }
 
+    validateArticleMetadata(html, articleNodes, label);
+    validateVisibleArticleDates(html, articleNodes, label);
+
     for (const node of articleNodes) {
+        if (node.url) {
+            const schemaUrl = canonicalizeUrl(node.url);
+            if (!schemaUrl) fail(`${label}: Article JSON-LD url is invalid: ${node.url}.`);
+            else if (schemaUrl !== canonical) fail(`${label}: Article JSON-LD url is ${schemaUrl}, expected canonical ${canonical}.`);
+        }
+
         const mainEntityUrl = canonicalizeUrl(getMainEntityUrl(node));
         if (!mainEntityUrl) fail(`${label}: Article JSON-LD is missing mainEntityOfPage.`);
         else if (mainEntityUrl !== canonical) fail(`${label}: mainEntityOfPage is ${mainEntityUrl}, expected ${canonical}.`);
@@ -290,7 +515,7 @@ function main() {
     console.log("======================================");
     console.log(" MatrixQR SEO & Structured Data Consistency");
     console.log("======================================");
-    console.log(`Generated archive/homepage pages checked: ${generatedPages.length}`);
+    console.log(`Generated landing/archive pages checked: ${generatedPages.length}`);
     console.log(`Article pages checked: ${articleFiles.length}`);
     console.log(`HTML sitemap articles checked: ${posts.length}`);
 

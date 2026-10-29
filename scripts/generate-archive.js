@@ -71,15 +71,27 @@ function getPostPath(post) {
 }
 
 function formatDate(value) {
-    if (!value) return "";
+    if (typeof value !== "string") return "";
 
-    const date = new Date(value);
+    // Preserve the calendar date written in the source ISO timestamp. Converting
+    // to UTC can shift the displayed day when the timezone offset crosses midnight.
+    const match = value.match(/^(\d{4})-(\d{2})-(\d{2})T/);
+    if (!match || Number.isNaN(Date.parse(value))) return "";
 
-    if (Number.isNaN(date.getTime())) {
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const calendarDate = new Date(Date.UTC(year, month - 1, day));
+
+    if (
+        calendarDate.getUTCFullYear() !== year ||
+        calendarDate.getUTCMonth() !== month - 1 ||
+        calendarDate.getUTCDate() !== day
+    ) {
         return "";
     }
 
-    return date.toISOString().slice(0, 10);
+    return match[1] + "-" + match[2] + "-" + match[3];
 }
 
 function createCard(post) {
@@ -355,10 +367,10 @@ function main() {
         throw new Error("posts.json not found. Run generate-blog.js first.");
     }
 
-    const templatePath = path.join(POSTS_DIR, "index.html");
+    const templatePath = path.join(ROOT, "templates", "archive-template.html.template");
 
     if (!fs.existsSync(templatePath)) {
-        throw new Error("Archive template not found: posts/index.html");
+        throw new Error("Archive template not found: templates/archive-template.html.template");
     }
 
     const posts = JSON.parse(fs.readFileSync(POSTS_FILE, "utf8"));
@@ -443,17 +455,36 @@ function main() {
 
             const obsoleteFile = path.join(pageRoot, entry.name, "index.html");
 
-            if (
-                fs.existsSync(obsoleteFile) &&
-                fs.readFileSync(obsoleteFile, "utf8")
-                    .includes("AUTO-GENERATED-ARCHIVE-PAGE")
-            ) {
-                fs.rmSync(path.join(pageRoot, entry.name), {
-                    recursive: true,
-                    force: true
-                });
+            if (fs.existsSync(obsoleteFile)) {
+                const obsoleteHtml = fs.readFileSync(obsoleteFile, "utf8");
+                const hasGeneratedMarker = obsoleteHtml.includes("AUTO-GENERATED-ARCHIVE-PAGE");
+                const canonicalTag = obsoleteHtml.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i);
+                const canonicalHref = canonicalTag && canonicalTag[0].match(/\bhref=["']([^"']+)["']/i);
+                let isLegacyArchivePage = false;
 
-                console.log(`Removed obsolete archive page ${pageNumber}`);
+                // Older committed archive pages may not have the generated marker.
+                // Only classify them as legacy archive output when both the title and
+                // canonical URL identify the expected numbered archive route.
+                if (canonicalHref && /<title>\s*Article Archive(?:\s|<)/i.test(obsoleteHtml)) {
+                    try {
+                        const canonicalUrl = new URL(canonicalHref[1]);
+                        const expectedPath = `/posts/page/${pageNumber}/`;
+                        isLegacyArchivePage =
+                            canonicalUrl.origin === SITE_URL &&
+                            canonicalUrl.pathname.replace(/\/+$/, "") === expectedPath.replace(/\/+$/, "");
+                    } catch {}
+                }
+
+                if (hasGeneratedMarker || isLegacyArchivePage) {
+                    // Remove only the obsolete index. Preserve unrelated files that may
+                    // exist in the same numeric directory.
+                    fs.unlinkSync(obsoleteFile);
+                    try {
+                        fs.rmdirSync(path.join(pageRoot, entry.name));
+                    } catch {}
+
+                    console.log(`Removed obsolete archive page ${pageNumber}`);
+                }
             }
         }
     }

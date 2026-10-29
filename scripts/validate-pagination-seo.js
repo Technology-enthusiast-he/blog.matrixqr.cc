@@ -38,9 +38,13 @@ function getMeta(html, attribute, key) {
     return getAttr(tag, "content");
 }
 
+function getLinks(html, rel) {
+    const tags = html.match(/<link\b[^>]*>/gi) || [];
+    return tags.filter(tag => getAttr(tag, "rel").toLowerCase().split(/\s+/).includes(rel.toLowerCase()));
+}
+
 function getLink(html, rel) {
-    const tag = getTag(html, "link", tag => getAttr(tag, "rel").toLowerCase().split(/\s+/).includes(rel.toLowerCase()));
-    return getAttr(tag, "href");
+    return getAttr(getLinks(html, rel)[0] || "", "href");
 }
 
 function normalizeAbsoluteUrl(value) {
@@ -84,6 +88,10 @@ function checkPage(file, expectedPath, label, options = {}) {
     if (!twitterDescription) fail(label + ": missing twitter:description.");
     if (options.expectedTitle && title !== options.expectedTitle) {
         fail(label + ': title should be "' + options.expectedTitle + '" but is "' + title + '".');
+    }
+    for (const rel of ["canonical", "prev", "next"]) {
+        const tags = getLinks(html, rel);
+        if (tags.length > 1) fail(label + ": contains " + tags.length + " rel=" + rel + " link tags; expected at most one.");
     }
     if (options.previous !== undefined) {
         const actual = getLink(html, "prev");

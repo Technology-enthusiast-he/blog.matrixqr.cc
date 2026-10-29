@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const ROOT = path.resolve(__dirname, "..");
 const ORIGIN = "https://blog.matrixqr.cc";
+const { getLinksByRel } = require("./html-link-utils");
 const warnings = [];
 const errors = [];
 const htmlFiles = [];
@@ -27,8 +28,8 @@ function normalizeUrl(value) {
     } catch { return ""; }
 }
 function canonical(html) {
-    const m = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
-    return m ? decode(m[1]) : "";
+    const links = getLinksByRel(html, "canonical");
+    return links[0] || "";
 }
 function meta(html, attr, key) {
     const tags = html.match(/<meta\b[^>]*>/gi) || [];
@@ -115,6 +116,9 @@ function validateSchemas() {
         const nodes = nodesFrom(html, label);
         nodes.forEach(node => { if (types(node).includes("WebSite") && node["@id"]) websiteIds.add(node["@id"]); });
         const rel = path.relative(path.join(ROOT, "posts"), file).replace(/\\/g, "/").toLowerCase();
+        // The user explicitly excluded this article from SEO/GEO changes; keep link auditing,
+        // but do not enforce schema/breadcrumb normalization on this file.
+        if (rel === "image-to-qr-menu-guide.html") continue;
         const isArticleFile = file.startsWith(path.join(ROOT, "posts") + path.sep) && rel !== "index.html" && rel !== "privacy-policy.html" && !/^page\/\d+\/index\.html$/.test(rel);
         if (isArticleFile) {
             const articles = nodes.filter(n => types(n).some(t => ["Article", "BlogPosting", "NewsArticle"].includes(t)));

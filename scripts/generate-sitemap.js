@@ -52,13 +52,27 @@ function escapeHtml(value) {
 }
 
 function formatDate(value) {
-    const date = new Date(value);
+    if (typeof value !== "string") return "";
 
-    if (Number.isNaN(date.getTime())) {
+    // Preserve the calendar date written in the source ISO timestamp. Converting
+    // to UTC can shift the displayed day when the timezone offset crosses midnight.
+    const match = value.match(/^(\d{4})-(\d{2})-(\d{2})T/);
+    if (!match || Number.isNaN(Date.parse(value))) return "";
+
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    const calendarDate = new Date(Date.UTC(year, month - 1, day));
+
+    if (
+        calendarDate.getUTCFullYear() !== year ||
+        calendarDate.getUTCMonth() !== month - 1 ||
+        calendarDate.getUTCDate() !== day
+    ) {
         return "";
     }
 
-    return date.toISOString().slice(0, 10);
+    return match[1] + "-" + match[2] + "-" + match[3];
 }
 
 function renderArticle(post, color) {

@@ -18,13 +18,29 @@ function normalizeUrl(value) {
     }
 }
 
+function isValidCalendarDate(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const [year, month, day] = value.split("-").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.getUTCFullYear() === year &&
+        date.getUTCMonth() === month - 1 &&
+        date.getUTCDate() === day;
+}
+
 const sitemapEntries = new Map();
 for (const match of sitemapXml.matchAll(/<url>\s*([\s\S]*?)\s*<\/url>/g)) {
     const block = match[1];
     const loc = (block.match(/<loc>([\s\S]*?)<\/loc>/) || [])[1];
     if (!loc) continue;
     const lastmod = (block.match(/<lastmod>([\s\S]*?)<\/lastmod>/) || [])[1];
-    sitemapEntries.set(normalizeUrl(loc), lastmod ? lastmod.trim().slice(0, 10) : "");
+    const normalizedLastmod = lastmod ? lastmod.trim() : "";
+    // This generator intentionally emits date-only lastmod values. Validate the
+    // entire value so a valid YYYY-MM-DD prefix cannot hide malformed trailing text.
+    if (lastmod && !isValidCalendarDate(normalizedLastmod)) {
+        console.error("Invalid <lastmod> calendar date (expected YYYY-MM-DD) for " + normalizeUrl(loc) + ": " + normalizedLastmod);
+        process.exitCode = 1;
+    }
+    sitemapEntries.set(normalizeUrl(loc), normalizedLastmod);
 }
 
 const errors = [];
@@ -58,8 +74,8 @@ for (const post of posts) {
 
     const url = normalizeUrl(post.url);
     const expectedDate = String(post.dateModified || post.datePublished || "").slice(0, 10);
-    if (!expectedDate || Number.isNaN(Date.parse(expectedDate))) {
-        errors.push("Article has no valid dateModified/datePublished: " + post.url);
+    if (!isValidCalendarDate(expectedDate)) {
+        errors.push("Article has no valid calendar date in dateModified/datePublished: " + post.url + " (" + expectedDate + ")");
         continue;
     }
 
@@ -73,6 +89,10 @@ for (const post of posts) {
         errors.push(url + " has lastmod " + (actualDate || "(missing)") + "; expected " + expectedDate);
     }
     checked++;
+}
+
+if (process.exitCode === 1) {
+    errors.push("One or more sitemap <lastmod> values are not valid YYYY-MM-DD calendar dates.");
 }
 
 if (errors.length) {

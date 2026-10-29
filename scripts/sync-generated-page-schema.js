@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const ROOT = path.join(__dirname, "..");
+const ROOT = process.env.MATRIXQR_SCHEMA_ROOT ? path.resolve(process.env.MATRIXQR_SCHEMA_ROOT) : path.join(__dirname, "..");
 const SITE_ORIGIN = "https://blog.matrixqr.cc";
 
 function escapeHtml(value = "") {
