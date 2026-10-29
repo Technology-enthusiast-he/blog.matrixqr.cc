@@ -342,7 +342,7 @@ Actually, most of the time I still prefer flipping through a paper menu—but I�
 - Published: 2026-10-08T00:00:00+00:00
 - Updated: 2026-10-21T00:00:00+00:00
 - Category: General
-- Description: Create static website-link QR codes in your browser with custom colors and logo options. MatrixQR processes the QR payload client-side; hosting providers may still process technical request data.
+- Description: Create website-link QR codes in your browser with custom colors and logos. QR payloads stay client-side, though hosting providers may process technical request data.
 
 Product Release & Privacy Updates
 
@@ -470,7 +470,7 @@ Ready to create your private link barcode? Launch [MatrixQR](https://www.matrixq
 - Published: 2026-09-30T08:00:00+00:00
 - Updated: 2026-10-21T00:00:00+00:00
 - Category: QR Code Security & Privacy
-- Description: Learn how client-side Canvas processing can resize, composite, and export images for digital menu QR codes without requiring server-side image processing. Explore CORS limitations and practical security considerations.
+- Description: Learn how browser-side Canvas resizes and exports images for digital menu QR codes, including CORS limits and security trade-offs without server-side processing.
 
 QR Code Security & Privacy Engineering
 
@@ -922,7 +922,7 @@ Adding a logo can support tabletop branding, but it does not prove a QR destinat
 
 **Ready to design your menu?** Access the free [MatrixQR Digital Menu Generator](https://menu.matrixqr.cc/) and build your print-ready custom QR code today.
 
-[Brand Design Principles →](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo)
+[Custom QR Code Generator with Logo Guide →](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo)
 
 ---
 
