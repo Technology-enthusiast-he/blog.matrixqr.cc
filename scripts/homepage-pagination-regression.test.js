@@ -98,7 +98,7 @@ test("legacy unmarked archive pagination is removed when the article set shrinks
   const legacyDir = path.join(root, "posts", "page", "3");
   const legacyFile = path.join(legacyDir, "index.html");
   let legacyHtml = fs.readFileSync(legacyFile, "utf8");
-  legacyHtml = legacyHtml.replace(/\\s*<!-- AUTO-GENERATED-ARCHIVE-PAGE -->\\s*/g, "\\n");
+  legacyHtml = legacyHtml.replace("<!-- AUTO-GENERATED-ARCHIVE-PAGE -->", "");
   fs.writeFileSync(legacyFile, legacyHtml);
   fs.writeFileSync(path.join(legacyDir, "keep.txt"), "unrelated file");
 
@@ -110,6 +110,6 @@ test("legacy unmarked archive pagination is removed when the article set shrinks
   assert.equal(fs.readFileSync(path.join(legacyDir, "keep.txt"), "utf8"), "unrelated file",
     "cleanup must preserve unrelated files in the numbered directory");
   const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
-  assert.doesNotMatch(sitemap, /https:\\/\\/blog\\.matrixqr\\.cc\\/posts\\/page\\/3\\//,
+  assert.equal(sitemap.includes("https://blog.matrixqr.cc/posts/page/3/"), false,
     "XML sitemap must not list the obsolete archive URL");
 });
