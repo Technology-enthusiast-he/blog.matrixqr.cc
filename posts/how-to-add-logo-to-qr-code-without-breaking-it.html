@@ -252,6 +252,10 @@
                 </a>
             </nav>
         </div>
+        <nav aria-label="Mobile navigation" class="md:hidden flex items-center justify-center gap-3 px-4 pb-4 text-sm font-medium">
+            <a href="/posts/" class="rounded-lg border border-slate-700 px-4 py-2 text-slate-200 hover:border-cyan-400 hover:text-cyan-400 transition-colors">All Articles</a>
+            <a href="https://www.matrixqr.cc/" class="rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 font-bold text-slate-950 hover:from-cyan-400 hover:to-blue-500 transition-colors">Launch App ↗</a>
+        </nav>
     </header>
 
     <main class="flex-1 w-full max-w-4xl mx-auto px-6 py-12">
@@ -261,7 +265,7 @@
                 <li><span>/</span></li>
                 <li><a href="https://blog.matrixqr.cc/posts/" class="hover:text-cyan-400 transition-colors">Posts</a></li>
                 <li><span>/</span></li>
-                <li class="text-slate-200 font-medium" aria-current="page">How-to-Add-Logo-to-QR-Code-Without-Breaking-It</li>
+                <li class="text-slate-200 font-medium" aria-current="page">How to Add a Logo to a QR Code Without Breaking It</li>
             </ol>
         </nav>
 
@@ -282,6 +286,15 @@
             <p class="intro-text">
                 Adding a logo is one of the simplest ways to turn a plain QR code into a branded QR code. The difficult part is not placing the image; it is making sure the finished symbol still scans reliably after customization, compression, resizing, printing, or display on a phone.
             </p>
+
+            <figure class="my-8">
+                <img src="/posts/images/Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo.webp"
+                     alt="Example of a branded QR code with a centered logo"
+                     width="1200" height="630"
+                     loading="eager" decoding="async"
+                     class="w-full h-auto object-cover block rounded-xl border border-slate-700" />
+                <figcaption class="mt-3 text-sm text-slate-400 text-center">A branded QR code should preserve clear module patterns and remain easy to scan after export.</figcaption>
+            </figure>
 
             <p class="text-slate-300 leading-relaxed mb-6">
                 This guide explains how to add a logo without relying on a misleading “safe logo percentage.” Instead, it focuses on the factors that actually affect scanning: logo coverage, error correction, contrast, quiet-zone protection, output quality, and real-world testing.
@@ -354,7 +367,7 @@
 
             <h2>Step 4: Protect Contrast and the Quiet Zone</h2>
             <p class="text-slate-300 leading-relaxed mb-4">
-                The quiet zone is the blank area surrounding the QR symbol. It helps a scanner distinguish the code from nearby content. Keep this margin clear even when you add a frame, headline, decorative border, or call to action.
+                The quiet zone is the blank area surrounding the QR symbol. For standard QR Code symbols, preserve a clear margin at least four modules wide on every side; this helps scanners distinguish the symbol from nearby content. Keep frames, headlines, decorative borders, and calls to action outside that margin rather than placing them in it.
             </p>
             <p class="text-slate-300 leading-relaxed mb-4">
                 Contrast matters just as much. A dark QR code on a light, uncluttered background is easier to decode than a low-contrast color combination. If you use brand colors, check the actual exported image rather than judging the colors only from a design editor.

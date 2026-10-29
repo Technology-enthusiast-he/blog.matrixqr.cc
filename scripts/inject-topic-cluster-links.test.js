@@ -49,6 +49,8 @@ test("defines both directions for the two primary P1 clusters", () => {
   assert.ok(urls.has("/posts/the-pros-and-cons-of-static-qr-codes"));
   assert.ok(urls.has("/posts/2026-10/introducing-matrixqr-url-generator"));
   assert.ok(urls.has("/posts/vcard-qr-setup"));
+  assert.ok(urls.has("/posts/custom-qr-code-generator-logo"));
+  assert.ok(urls.has("/posts/how-to-add-logo-to-qr-code-without-breaking-it"));
 });
 
 
