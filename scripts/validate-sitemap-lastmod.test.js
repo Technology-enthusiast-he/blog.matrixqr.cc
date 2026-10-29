@@ -41,3 +41,11 @@ test("rejects impossible sitemap lastmod calendar day", t => {
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /not valid YYYY-MM-DD calendar dates/);
 });
+
+test("rejects malformed trailing text after an otherwise valid lastmod date", t => {
+  const f = fixture("2026-01-02T08:00:00+08:00", "2026-01-02not-a-date");
+  t.after(() => fs.rmSync(f.root, { recursive: true, force: true }));
+  const result = run(f.root, f.sitemap);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /expected YYYY-MM-DD/);
+});
