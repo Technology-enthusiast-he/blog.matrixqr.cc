@@ -230,8 +230,25 @@ function isArticleSourceFile(file) {
 
 
 function isIsoDateTimeWithTimezone(value) {
-    return typeof value === "string" &&
-        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value) &&
+    if (typeof value !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value)) {
+        return false;
+    }
+
+    const year = Number(value.slice(0, 4));
+    const month = Number(value.slice(5, 7));
+    const day = Number(value.slice(8, 10));
+    const hour = Number(value.slice(11, 13));
+    const minute = Number(value.slice(14, 16));
+    const second = Number(value.slice(17, 19));
+    const calendar = new Date(0);
+    calendar.setUTCFullYear(year, month - 1, day);
+    calendar.setUTCHours(0, 0, 0, 0);
+
+    return calendar.getUTCFullYear() === year &&
+        calendar.getUTCMonth() === month - 1 &&
+        calendar.getUTCDate() === day &&
+        hour <= 23 && minute <= 59 && second <= 59 &&
         !Number.isNaN(Date.parse(value));
 }
 
