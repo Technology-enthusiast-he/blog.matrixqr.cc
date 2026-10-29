@@ -125,12 +125,12 @@ test("pagination SEO validator rejects duplicate canonical link tags", (t) => {
 
   const pageFile = path.join(root, "page", "2", "index.html");
   let html = fs.readFileSync(pageFile, "utf8");
-  const canonical = html.match(/<link\\b[^>]*\\brel=["']canonical["'][^>]*>/i);
+  const canonical = html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i);
   assert.ok(canonical, "fixture should have a canonical link");
-  html = html.replace("</head>", canonical[0] + "\\n</head>");
+  html = html.replace("</head>", canonical[0] + "\n</head>");
   fs.writeFileSync(pageFile, html);
 
   const result = spawnSync(process.execPath, [path.join(root, "scripts", "validate-pagination-seo.js")], { cwd: root, encoding: "utf8" });
-  assert.notEqual(result.status, 0, "validator should reject duplicate rel=next");
+  assert.notEqual(result.status, 0, "validator should reject duplicate canonical");
   assert.match(result.stderr, /contains 2 rel=canonical link tags/i);
 });
