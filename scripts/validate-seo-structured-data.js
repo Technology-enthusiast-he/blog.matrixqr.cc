@@ -351,7 +351,7 @@ function validateVisibleArticleDates(html, articleNodes, label) {
     const visibleText = metaInfo.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
     const checks = [
         { label: "Published", pattern: /Published(?:\s+on)?\s*:?\s+([^•|]+)/i, field: "datePublished" },
-        { label: "Updated", pattern: /Updated\s+(?:on\s+)?([^•|]+)/i, field: "dateModified" }
+        { label: "Updated", pattern: /Updated(?:\s+on)?\s*:?\s+([^•|]+)/i, field: "dateModified" }
     ];
 
     for (const check of checks) {
