@@ -32,6 +32,10 @@ Yes. A logo can be placed inside a QR code when the final design preserves enoug
 
 Adding a logo is one of the simplest ways to turn a plain QR code into a branded QR code. The difficult part is not placing the image; it is making sure the finished symbol still scans reliably after customization, compression, resizing, printing, or display on a phone.
 
+![Example of a branded QR code with a centered logo](https://blog.matrixqr.cc/posts/images/Boost-Your-Brand-with-Custom-QR-Codes-Featuring-Your-Logo.webp)
+
+A branded QR code should preserve clear module patterns and remain easy to scan after export.
+
 This guide explains how to add a logo without relying on a misleading “safe logo percentage.” Instead, it focuses on the factors that actually affect scanning: logo coverage, error correction, contrast, quiet-zone protection, output quality, and real-world testing.
 
 ![Illustration showing how to add a modest logo to a QR code while preserving contrast and quiet zone](https://blog.matrixqr.cc/posts/images/qr-logo-guide-cover.svg)
@@ -88,7 +92,7 @@ Error correction is only one part of the equation. A QR code can still fail beca
 
 ## Step 4: Protect Contrast and the Quiet Zone
 
-The quiet zone is the blank area surrounding the QR symbol. It helps a scanner distinguish the code from nearby content. Keep this margin clear even when you add a frame, headline, decorative border, or call to action.
+The quiet zone is the blank area surrounding the QR symbol. For standard QR Code symbols, preserve a clear margin at least four modules wide on every side; this helps scanners distinguish the symbol from nearby content. Keep frames, headlines, decorative borders, and calls to action outside that margin rather than placing them in it.
 
 Contrast matters just as much. A dark QR code on a light, uncluttered background is easier to decode than a low-contrast color combination. If you use brand colors, check the actual exported image rather than judging the colors only from a design editor.
 
@@ -774,7 +778,7 @@ If building QR codes for food and hospitality, consult our step-by-step guide on
 -
 **Test and export:**
 
-Test the exported file with more than one phone or scanning app, including at the intended display or print size. Choose an available format that suits the use case, and inspect the exported file rather than assuming every format behaves identically.
+Test the exported file with more than one phone or scanning app, including at the intended display or print size. For a step-by-step checklist covering logo size, quiet zones, export quality, and real-world scanning, see our [guide to adding a logo without breaking QR code reliability](https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it). Choose an available format that suits the use case, and inspect the exported file rather than assuming every format behaves identically.
 
 ## Frequently Asked Questions (FAQ)
 
@@ -895,6 +899,8 @@ Before printing at scale, test the exported QR code with common iOS and Android 
 ## Related Digital Menu Resources
 
 Explore our technical tutorials to optimize your contactless dining workflow:
+
+- For practical advice on logo sizing, quiet zones, export quality, and scan testing, read [How to Add a Logo to a QR Code Without Breaking It](https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it).
 
 - If you only have a menu photo, learn our [Image to Menu QR Code Conversion Guide](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide).
 
