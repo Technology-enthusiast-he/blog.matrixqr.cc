@@ -87,3 +87,29 @@ test("archive pagination uses archive URLs and omits next links on the final pag
   assert.doesNotMatch(finalArchivePage, /Next\s*→/i);
   assert.ok(!fs.existsSync(path.join(root, "posts", "page", "3", "index.html")));
 });
+
+
+test("legacy unmarked archive pagination is removed when the article set shrinks", (t) => {
+  const { root, posts } = createFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+
+  writeJson(path.join(root, "posts.json"), posts);
+  runNode("generate-archive.js", root);
+  const legacyDir = path.join(root, "posts", "page", "3");
+  const legacyFile = path.join(legacyDir, "index.html");
+  let legacyHtml = fs.readFileSync(legacyFile, "utf8");
+  legacyHtml = legacyHtml.replace(/\\s*<!-- AUTO-GENERATED-ARCHIVE-PAGE -->\\s*/g, "\\n");
+  fs.writeFileSync(legacyFile, legacyHtml);
+  fs.writeFileSync(path.join(legacyDir, "keep.txt"), "unrelated file");
+
+  writeJson(path.join(root, "posts.json"), posts.slice(0, 6));
+  runNode("generate-archive.js", root);
+  runNode("generate-xml-sitemap.js", root);
+
+  assert.ok(!fs.existsSync(legacyFile), "obsolete unmarked archive index should be removed");
+  assert.equal(fs.readFileSync(path.join(legacyDir, "keep.txt"), "utf8"), "unrelated file",
+    "cleanup must preserve unrelated files in the numbered directory");
+  const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
+  assert.doesNotMatch(sitemap, /https:\\/\\/blog\\.matrixqr\\.cc\\/posts\\/page\\/3\\//,
+    "XML sitemap must not list the obsolete archive URL");
+});
