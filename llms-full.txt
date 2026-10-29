@@ -796,7 +796,7 @@ A familiar logo may help people recognize a brand, but it does not authenticate 
 
 ### Which export format should I use?
 
-Use a raster format such as PNG for many digital placements, and consider SVG when you need scalable artwork for layout or print workflows. Inspect the actual exported file and test it at its final size; available formats and how they are produced can vary by tool.
+PNG is suitable for many digital placements. MatrixQR's SVG export is an SVG wrapper containing an embedded PNG image, not a fully vector QR symbol, so the QR artwork itself does not gain true vector scalability from that wrapper. Inspect the exported file and test it at its final display or print size.
 
 ## Start Creating Branded QR Codes Today
 
