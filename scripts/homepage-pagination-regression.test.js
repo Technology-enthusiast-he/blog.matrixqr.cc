@@ -6,7 +6,7 @@ const { spawnSync } = require("node:child_process");
 const test = require("node:test");
 
 const REPO_ROOT = path.join(__dirname, "..");
-const SCRIPT_NAMES = ["article-categories.js", "update-homepage.js", "generate-pagination.js", "generate-archive.js", "generate-sitemap.js", "generate-xml-sitemap.js"];
+const SCRIPT_NAMES = ["article-categories.js", "update-homepage.js", "generate-pagination.js", "generate-archive.js", "generate-sitemap.js", "generate-xml-sitemap.js", "validate-pagination-seo.js"];
 function runNode(script, cwd) { const result = spawnSync(process.execPath, [path.join(cwd, "scripts", script)], { cwd, encoding: "utf8" }); assert.equal(result.status, 0, `${script} failed.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`); return result.stdout; }
 function article(id, category, day) { return { title: `Article ${id}`, description: `Description for article ${id}`, datePublished: `2026-10-${String(day).padStart(2, "0")}T08:00:00Z`, dateModified: `2026-10-${String(day).padStart(2, "0")}T08:00:00Z`, category, url: `https://blog.matrixqr.cc/posts/${id}` }; }
 function writeJson(file, value) { fs.writeFileSync(file, JSON.stringify(value, null, 2) + "\n"); }
@@ -112,4 +112,25 @@ test("legacy unmarked archive pagination is removed when the article set shrinks
   const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
   assert.equal(sitemap.includes("https://blog.matrixqr.cc/posts/page/3/"), false,
     "XML sitemap must not list the obsolete archive URL");
+});
+
+
+test("pagination SEO validator rejects duplicate canonical and prev/next link tags", (t) => {
+  const { root, posts } = createFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  writeJson(path.join(root, "posts.json"), posts);
+  runNode("update-homepage.js", root);
+  runNode("generate-pagination.js", root);
+  runNode("generate-archive.js", root);
+
+  const pageFile = path.join(root, "page", "2", "index.html");
+  let html = fs.readFileSync(pageFile, "utf8");
+  const next = html.match(/<link\\b[^>]*\\brel=["']next["'][^>]*>/i);
+  assert.ok(next, "fixture should have a next link on homepage page 2");
+  html = html.replace("</head>", next[0] + "\\n</head>");
+  fs.writeFileSync(pageFile, html);
+
+  const result = spawnSync(process.execPath, [path.join(root, "scripts", "validate-pagination-seo.js")], { cwd: root, encoding: "utf8" });
+  assert.notEqual(result.status, 0, "validator should reject duplicate rel=next");
+  assert.match(result.stderr, /contains 2 rel=next link tags/i);
 });
