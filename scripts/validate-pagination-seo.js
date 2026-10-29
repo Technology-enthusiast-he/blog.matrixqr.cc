@@ -39,8 +39,8 @@ function getMeta(html, attribute, key) {
 }
 
 function getLinks(html, rel) {
-    const tags = html.match(/<link\\b[^>]*>/gi) || [];
-    return tags.filter(tag => getAttr(tag, "rel").toLowerCase().split(/\\s+/).includes(rel.toLowerCase()));
+    const tags = html.match(/<link\b[^>]*>/gi) || [];
+    return tags.filter(tag => getAttr(tag, "rel").toLowerCase().split(/\s+/).includes(rel.toLowerCase()));
 }
 
 function getLink(html, rel) {
