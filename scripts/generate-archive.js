@@ -455,17 +455,36 @@ function main() {
 
             const obsoleteFile = path.join(pageRoot, entry.name, "index.html");
 
-            if (
-                fs.existsSync(obsoleteFile) &&
-                fs.readFileSync(obsoleteFile, "utf8")
-                    .includes("AUTO-GENERATED-ARCHIVE-PAGE")
-            ) {
-                fs.rmSync(path.join(pageRoot, entry.name), {
-                    recursive: true,
-                    force: true
-                });
+            if (fs.existsSync(obsoleteFile)) {
+                const obsoleteHtml = fs.readFileSync(obsoleteFile, "utf8");
+                const hasGeneratedMarker = obsoleteHtml.includes("AUTO-GENERATED-ARCHIVE-PAGE");
+                const canonicalTag = obsoleteHtml.match(/<link\\b[^>]*\\brel=["']canonical["'][^>]*>/i);
+                const canonicalHref = canonicalTag && canonicalTag[0].match(/\\bhref=["']([^"']+)["']/i);
+                let isLegacyArchivePage = false;
 
-                console.log(`Removed obsolete archive page ${pageNumber}`);
+                // Older committed archive pages may not have the generated marker.
+                // Only classify them as legacy archive output when both the title and
+                // canonical URL identify the expected numbered archive route.
+                if (canonicalHref && /<title>\\s*Article Archive(?:\\s|<)/i.test(obsoleteHtml)) {
+                    try {
+                        const canonicalUrl = new URL(canonicalHref[1]);
+                        const expectedPath = `/posts/page/${pageNumber}/`;
+                        isLegacyArchivePage =
+                            canonicalUrl.origin === SITE_URL &&
+                            canonicalUrl.pathname.replace(/\\/+$/, "") === expectedPath.replace(/\\/+$/, "");
+                    } catch {}
+                }
+
+                if (hasGeneratedMarker || isLegacyArchivePage) {
+                    // Remove only the obsolete index. Preserve unrelated files that may
+                    // exist in the same numeric directory.
+                    fs.unlinkSync(obsoleteFile);
+                    try {
+                        fs.rmdirSync(path.join(pageRoot, entry.name));
+                    } catch {}
+
+                    console.log(`Removed obsolete archive page ${pageNumber}`);
+                }
             }
         }
     }
