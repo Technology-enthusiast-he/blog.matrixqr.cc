@@ -115,7 +115,7 @@ test("legacy unmarked archive pagination is removed when the article set shrinks
 });
 
 
-test("pagination SEO validator rejects duplicate canonical and prev/next link tags", (t) => {
+test("pagination SEO validator rejects duplicate canonical link tags", (t) => {
   const { root, posts } = createFixture();
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   writeJson(path.join(root, "posts.json"), posts);
@@ -125,12 +125,12 @@ test("pagination SEO validator rejects duplicate canonical and prev/next link ta
 
   const pageFile = path.join(root, "page", "2", "index.html");
   let html = fs.readFileSync(pageFile, "utf8");
-  const next = html.match(/<link\\b[^>]*\\brel=["']next["'][^>]*>/i);
-  assert.ok(next, "fixture should have a next link on homepage page 2");
-  html = html.replace("</head>", next[0] + "\\n</head>");
+  const canonical = html.match(/<link\\b[^>]*\\brel=["']canonical["'][^>]*>/i);
+  assert.ok(canonical, "fixture should have a canonical link");
+  html = html.replace("</head>", canonical[0] + "\\n</head>");
   fs.writeFileSync(pageFile, html);
 
   const result = spawnSync(process.execPath, [path.join(root, "scripts", "validate-pagination-seo.js")], { cwd: root, encoding: "utf8" });
   assert.notEqual(result.status, 0, "validator should reject duplicate rel=next");
-  assert.match(result.stderr, /contains 2 rel=next link tags/i);
+  assert.match(result.stderr, /contains 2 rel=canonical link tags/i);
 });
