@@ -195,9 +195,14 @@ function validateGeneratedPage(file, expectedUrl) {
         if (title && node.name && node.name !== title) warn(`${label}: CollectionPage name uses different wording from <title>.`);
 
         if (node.description) {
-            const descriptions = [description, ogDescription, twitterDescription].filter(Boolean);
-            if (!descriptions.includes(node.description)) {
-                fail(`${label}: CollectionPage description differs from the page's meta/social descriptions.`);
+            // CollectionPage describes the public landing page, so it must
+            // agree with the social description used when that page is shared.
+            // The standard meta description may intentionally be search-focused.
+            if (ogDescription && node.description !== ogDescription) {
+                fail(`${label}: CollectionPage description differs from og:description.`);
+            }
+            if (twitterDescription && node.description !== twitterDescription) {
+                fail(`${label}: CollectionPage description differs from twitter:description.`);
             }
         } else {
             fail(`${label}: CollectionPage JSON-LD is missing description.`);
