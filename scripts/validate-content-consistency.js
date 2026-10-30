@@ -7,6 +7,13 @@ const POSTS_FILE = path.join(ROOT, "posts.json");
 const HOME_FILE = path.join(ROOT, "index.html");
 const HTML_SITEMAP_FILE = path.join(ROOT, "sitemap", "index.html");
 const XML_SITEMAP_FILE = path.join(ROOT, "sitemap.xml");
+const { CATEGORY_NAMES } = require("./article-categories");
+const CATEGORY_SLUGS = {
+    "QR Code Security & Privacy": "qr-code-security-privacy",
+    "Digital Menu & Branding": "digital-menu-branding",
+    "vCard & Contact Management": "vcard-contact-management",
+    "General": "general"
+};
 
 const errors = [];
 
@@ -213,6 +220,16 @@ function main() {
     if (fs.existsSync(path.join(ROOT, "posts", "index.html"))) expectedXmlPaths.add("/posts");
     for (const page of archivePageNumbers) expectedXmlPaths.add("/posts/page/" + page);
     for (const page of homepagePaginationPages) expectedXmlPaths.add("/page/" + page);
+    const activeCategories = new Set(posts.map(post => post.category));
+    for (const category of CATEGORY_NAMES) {
+        if (!activeCategories.has(category)) continue;
+        const slug = CATEGORY_SLUGS[category];
+        if (!slug) {
+            fail("XML sitemap validation is missing a slug for category: " + category);
+            continue;
+        }
+        expectedXmlPaths.add("/category/" + slug);
+    }
 
     const actualXmlPaths = new Set(xmlPaths.filter(Boolean));
     const missingXml = [...expectedXmlPaths].filter(url => !actualXmlPaths.has(url));
