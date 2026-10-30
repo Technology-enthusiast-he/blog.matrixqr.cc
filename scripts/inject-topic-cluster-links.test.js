@@ -4,6 +4,7 @@ const assert = require("node:assert/strict");
 const {
   MARKER,
   TOPIC_LINKS,
+  ARTICLE_CATEGORY_URLS,
   buildRelatedLinks,
   injectTopicClusterLinks,
 } = require("./inject-topic-cluster-links");
@@ -132,3 +133,14 @@ test("generated article HTML contains every configured topic link and reciprocal
   }
 });
 
+
+ 
+test("every configured article links to its canonical category hub", () => {
+  assert.deepEqual(Object.keys(ARTICLE_CATEGORY_URLS).sort(), Object.keys(TOPIC_LINKS).sort());
+  for (const [source, category] of Object.entries(ARTICLE_CATEGORY_URLS)) {
+    assert.ok(category[0].startsWith("/category/") && category[0].endsWith("/"), source + " category URL must be canonical");
+    const output = injectTopicClusterLinks("<article><p>Article</p></article>", TOPIC_LINKS[source], category);
+    assert.ok(output.includes('href="' + category[0] + '"'), source + " missing category hub link");
+    assert.ok(output.includes(">Explore " + category[1] + "</a>"), source + " missing descriptive category anchor");
+  }
+});
