@@ -7,6 +7,7 @@
     "build": "node scripts/generate-blog.js && node scripts/validate-article-url-paths.js && node scripts/normalize-article-schema.js && node scripts/inject-topic-cluster-links.js && node scripts/generate-llms.js && node scripts/filter-llms-external-links.js && node scripts/generate-sitemap.js && node scripts/generate-archive.js && node scripts/update-homepage.js && node scripts/validate-homepage.js && node scripts/generate-pagination.js && node scripts/generate-xml-sitemap.js && node scripts/generate-category-pages.js && node scripts/normalize-footer-sitemap-label.js && node scripts/sync-generated-page-schema.js && node scripts/validate-content-consistency.js && node scripts/validate-pagination-seo.js && node scripts/validate-archive-seo.js && node scripts/validate-seo-structured-data.js && node scripts/audit-site-architecture.js && node scripts/validate-images.js && tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "test:llms": "node --test scripts/generate-llms.test.js scripts/filter-llms-external-links.test.js",
     "test:categories": "node --test scripts/article-categories.test.js",
+    "test:sitemap": "node --test scripts/generate-xml-sitemap.test.js",
     "test:topic-links": "node --test scripts/inject-topic-cluster-links.test.js",
     "test:article-schema": "node scripts/validate-article-schema.js",
     "validate:homepage": "node scripts/validate-homepage.js",
