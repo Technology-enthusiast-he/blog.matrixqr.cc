@@ -6,7 +6,7 @@ const POSTS_FILE = path.join(ROOT, 'posts.json');
 const TEMPLATE_FILE = path.join(ROOT, 'templates', 'archive-template.html.template');
 const CATEGORY_ROOT = path.join(ROOT, 'category');
 const SITE_URL = 'https://blog.matrixqr.cc';
-const { CATEGORIES } = require('./article-categories');
+const { CATEGORY_NAMES } = require('./article-categories');
 
 const CATEGORY_INFO = {
   'QR Code Security & Privacy': {
@@ -106,7 +106,7 @@ function patchHtmlSitemap(posts) {
   const start = html.indexOf('<!-- AUTO-SITEMAP-START -->');
   const end = html.indexOf('<!-- AUTO-SITEMAP-END -->');
   if (start === -1 || end === -1 || end < start) return;
-  const active = CATEGORIES
+  const active = CATEGORY_NAMES
     .filter(category => posts.some(post => post.category === category))
     .map(category => CATEGORY_INFO[category]);
   const nav = `\n        <nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">\n            ${active.map(info => `<a href="/category/${info.slug}/" class="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300">${escapeHtml(info.title)}</a>`).join('\n            ')}\n        </nav>`;
@@ -118,7 +118,7 @@ function patchXmlSitemap() {
   const file = path.join(ROOT, 'sitemap.xml');
   if (!fs.existsSync(file)) return;
   let xml = fs.readFileSync(file, 'utf8');
-  const urls = CATEGORIES.map(category => CATEGORY_INFO[category])
+  const urls = CATEGORY_NAMES.map(category => CATEGORY_INFO[category])
     .filter(Boolean)
     .map(info => `${SITE_URL}/category/${info.slug}/`)
     .filter(url => fs.existsSync(path.join(CATEGORY_ROOT, url.split('/').slice(-2, -1)[0], 'index.html')));
@@ -136,7 +136,7 @@ function main() {
   const template = fs.readFileSync(TEMPLATE_FILE, 'utf8');
   fs.mkdirSync(CATEGORY_ROOT, { recursive: true });
   const active = new Set();
-  for (const category of CATEGORIES) {
+  for (const category of CATEGORY_NAMES) {
     const info = CATEGORY_INFO[category];
     if (!info) throw new Error(`Missing category metadata for canonical category: ${category}`);
     const categoryPosts = posts.filter(post => post.category === category).sort((a,b) => Date.parse(b.datePublished)-Date.parse(a.datePublished));
