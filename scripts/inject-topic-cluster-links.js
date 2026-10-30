@@ -51,8 +51,22 @@ const TOPIC_LINKS = {
   ],
 };
 
-function buildRelatedLinks(links) {
-  const items = links.map(([label, url]) =>
+
+const ARTICLE_CATEGORY_URLS = {
+  "posts/2026-10/traditional-menus-digital-menu-qr-code.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
+  "posts/custom-logo-qr-code-menu-guide.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
+  "posts/custom-qr-code-generator-logo.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
+  "posts/how-to-add-logo-to-qr-code-without-breaking-it.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
+  "posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization.html": ["/category/qr-code-security-privacy/", "QR Code Security & Privacy"],
+  "posts/static-vs-dynamic-qr.html": ["/category/general/", "General QR Code Guides"],
+  "posts/the-pros-and-cons-of-static-qr-codes.html": ["/category/qr-code-security-privacy/", "QR Code Security & Privacy"],
+  "posts/2026-10/introducing-matrixqr-url-generator.html": ["/category/general/", "General QR Code Guides"],
+  "posts/vcard-qr-setup.html": ["/category/vcard-contact-management/", "vCard & Contact Management"],
+};
+
+function buildRelatedLinks(links, categoryUrl) {
+  const category = categoryUrl ? [[`Explore ${categoryUrl[1]}`, categoryUrl[0]]] : [];
+  const items = [...links, ...category].map(([label, url]) =>
     `                <li><a href="${url}">${label}</a></li>`
   ).join("\n");
 
@@ -66,7 +80,7 @@ function injectTopicClusterLinks(html, links) {
   const index = html.lastIndexOf(closingTag);
   if (index === -1) throw new Error("Could not find closing </article> tag.");
 
-  const block = buildRelatedLinks(links);
+  const block = buildRelatedLinks(links, ARTICLE_CATEGORY_URLS[relativePath]);
   return `${html.slice(0, index)}\n${block}\n${html.slice(index)}`;
 }
 
@@ -87,4 +101,4 @@ if (require.main === module) {
   console.log(`[topic-links] Updated ${updatedCount}/${Object.keys(TOPIC_LINKS).length} article(s).`);
 }
 
-module.exports = { MARKER, TOPIC_LINKS, buildRelatedLinks, injectTopicClusterLinks };
+module.exports = { MARKER, TOPIC_LINKS, ARTICLE_CATEGORY_URLS, buildRelatedLinks, injectTopicClusterLinks };
