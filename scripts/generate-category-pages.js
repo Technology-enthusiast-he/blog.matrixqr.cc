@@ -110,17 +110,48 @@ function buildPage(template, category, posts) {
     return html;
 }
 
-function patchHtmlSitemap(posts) {
-    if (!fs.existsSync(HTML_SITEMAP_FILE)) return;
-    let html = fs.readFileSync(HTML_SITEMAP_FILE, "utf8");
-    const marker = "<!-- AUTO-SITEMAP-START -->";
-    if (!html.includes(marker)) return;
+const CATEGORY_NAV_START = "<!-- AUTO-CATEGORY-NAV-START -->";
+const CATEGORY_NAV_END = "<!-- AUTO-CATEGORY-NAV-END -->";
+
+function buildCategoryNav(posts) {
     const active = CATEGORY_NAMES
         .filter(category => posts.some(post => post.category === category))
         .map(category => CATEGORY_INFO[category]);
-    const nav = `\n<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">${active.map(info => `<a href="/category/${info.slug}/" class="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300">${escapeHtml(info.title)}</a>`).join(" ")}</nav>\n`;
-    html = html.replace(marker, nav + marker);
-    fs.writeFileSync(HTML_SITEMAP_FILE, html, "utf8");
+    const links = active.map(info =>
+        `<a href="/category/${info.slug}/" class="rounded-full border border-slate-700 px-4 py-2 text-sm text-slate-300 hover:border-cyan-500/50 hover:text-cyan-300">${escapeHtml(info.title)}</a>`
+    ).join(" ");
+    return `${CATEGORY_NAV_START}\n<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">${links}</nav>\n${CATEGORY_NAV_END}`;
+}
+
+function patchHtmlSitemapContent(html, posts) {
+    const sitemapMarker = "<!-- AUTO-SITEMAP-START -->";
+    if (!html.includes(sitemapMarker)) return html;
+
+    const nav = buildCategoryNav(posts);
+    const start = html.indexOf(CATEGORY_NAV_START);
+    const end = html.indexOf(CATEGORY_NAV_END);
+    if (start !== -1 && end > start) {
+        return html.slice(0, start) + nav + html.slice(end + CATEGORY_NAV_END.length);
+    }
+
+    // Migrate the unmarked navigation inserted by earlier builds instead of
+    // appending a duplicate on every subsequent build.
+    const legacyStart = html.indexOf('<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">');
+    if (legacyStart !== -1) {
+        const legacyEnd = html.indexOf("</nav>", legacyStart);
+        if (legacyEnd !== -1) {
+            return html.slice(0, legacyStart) + nav + html.slice(legacyEnd + "</nav>".length);
+        }
+    }
+
+    return html.replace(sitemapMarker, nav + "\n" + sitemapMarker);
+}
+
+function patchHtmlSitemap(posts) {
+    if (!fs.existsSync(HTML_SITEMAP_FILE)) return;
+    const html = fs.readFileSync(HTML_SITEMAP_FILE, "utf8");
+    const updated = patchHtmlSitemapContent(html, posts);
+    if (updated !== html) fs.writeFileSync(HTML_SITEMAP_FILE, updated, "utf8");
 }
 
 function main() {
@@ -156,4 +187,6 @@ function main() {
     }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { buildCategoryNav, patchHtmlSitemapContent };
