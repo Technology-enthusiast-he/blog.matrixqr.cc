@@ -85,6 +85,14 @@ function buildPage(template, category, posts) {
         name: info.title,
         url: canonical,
         description,
+        breadcrumb: {
+            "@type": "BreadcrumbList",
+            itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+                { "@type": "ListItem", position: 2, name: "All Articles", item: `${SITE_URL}/posts/` },
+                { "@type": "ListItem", position: 3, name: info.title, item: canonical }
+            ]
+        },
         isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website`, url: `${SITE_URL}/`, name: "MatrixQR Blog" },
         publisher: { "@type": "Organization", "@id": "https://www.matrixqr.cc/#organization", name: "MatrixQR", url: "https://www.matrixqr.cc/" },
         mainEntity: { "@type": "ItemList", numberOfItems: posts.length, itemListElement: posts.map((post, index) => ({ "@type": "ListItem", position: index + 1, url: new URL(post.url, SITE_URL).href, name: post.title })) }
@@ -92,7 +100,8 @@ function buildPage(template, category, posts) {
     const schemaScript = `<script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n</script>`;
     html = html.replace(/<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/i, schemaScript);
 
-    html = replaceRequired(html, /<h1[\s\S]*?<\/h1>/i, `<h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">MatrixQR <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">${escapeHtml(info.title)}</span></h1>`, "H1");
+    const breadcrumbMarkup = `<nav aria-label="Breadcrumb" class="mb-3 text-xs text-slate-400"><ol class="flex flex-wrap items-center gap-2"><li><a href="/" class="hover:text-cyan-300">Home</a></li><li aria-hidden="true" class="text-slate-600">/</li><li><a href="/posts/" class="hover:text-cyan-300">All Articles</a></li><li aria-hidden="true" class="text-slate-600">/</li><li><span aria-current="page" class="text-slate-300">${escapeHtml(info.title)}</span></li></ol></nav>`;
+    html = replaceRequired(html, /<h1[\s\S]*?<\/h1>/i, `${breadcrumbMarkup}<h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">MatrixQR <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">${escapeHtml(info.title)}</span></h1>`, "H1");
     html = replaceRequired(html, /<p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">[\s\S]*?<\/p>/i, `<p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">${escapeHtml(info.intro)}</p>`, "intro");
     html = replaceRequired(html, /<!-- AUTO-ARCHIVE-START -->[\s\S]*?<!-- AUTO-ARCHIVE-END -->/i, `<!-- AUTO-ARCHIVE-START -->\n<section class="space-y-5"><div class="border-b border-slate-800 pb-3"><p class="text-sm text-slate-400">${posts.length} ${posts.length === 1 ? "article" : "articles"} in this topic.</p></div><div class="space-y-4">${cards}\n</div></section>\n<!-- AUTO-ARCHIVE-END -->`, "article marker");
     html = html.replace(/<!-- AUTO-ARCHIVE-PAGINATION-START -->[\s\S]*?<!-- AUTO-ARCHIVE-PAGINATION-END -->/i, "<!-- AUTO-ARCHIVE-PAGINATION-START --><!-- AUTO-ARCHIVE-PAGINATION-END -->");
