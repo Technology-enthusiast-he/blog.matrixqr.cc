@@ -4,6 +4,18 @@
     <loc>https://blog.matrixqr.cc/</loc>
   </url>
   <url>
+    <loc>https://blog.matrixqr.cc/category/digital-menu-branding/</loc>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/category/general/</loc>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/category/qr-code-security-privacy/</loc>
+  </url>
+  <url>
+    <loc>https://blog.matrixqr.cc/category/vcard-contact-management/</loc>
+  </url>
+  <url>
     <loc>https://blog.matrixqr.cc/posts/</loc>
   </url>
   <url>
@@ -16,7 +28,7 @@
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-30</lastmod>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/custom-logo-qr-code-menu-guide</loc>
@@ -24,7 +36,7 @@
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-30</lastmod>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it</loc>
@@ -33,10 +45,6 @@
   <url>
     <loc>https://blog.matrixqr.cc/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization</loc>
     <lastmod>2026-10-21</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.matrixqr.cc/posts/how-to-add-logo-to-qr-code-without-breaking-it</loc>
-    <lastmod>2026-10-26</lastmod>
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/image-to-qr-menu-guide</loc>
@@ -55,6 +63,6 @@
   </url>
   <url>
     <loc>https://blog.matrixqr.cc/posts/vcard-qr-setup</loc>
-    <lastmod>2026-10-21</lastmod>
+    <lastmod>2026-10-30</lastmod>
   </url>
 </urlset>
