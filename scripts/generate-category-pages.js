@@ -136,8 +136,13 @@ function patchHtmlSitemapContent(html, posts) {
 
     // Migrate the unmarked navigation inserted by earlier builds instead of
     // appending a duplicate on every subsequent build.
-    const legacyNav = /<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">[\s\S]*?</nav>/;
-    if (legacyNav.test(html)) return html.replace(legacyNav, nav);
+    const legacyStart = html.indexOf('<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">');
+    if (legacyStart !== -1) {
+        const legacyEnd = html.indexOf("</nav>", legacyStart);
+        if (legacyEnd !== -1) {
+            return html.slice(0, legacyStart) + nav + html.slice(legacyEnd + "</nav>".length);
+        }
+    }
 
     return html.replace(sitemapMarker, nav + "\n" + sitemapMarker);
 }
