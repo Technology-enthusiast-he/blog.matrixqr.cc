@@ -105,7 +105,7 @@
             "name": "Does MatrixQR generate vCard 3.0 or vCard 4.0?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "MatrixQR currently generates vCard 3.0 contact data. Its QR payload includes the required N and FN properties, plus the optional company, mobile phone, and email fields that you enter."
+              "text": "MatrixQR currently generates vCard 3.0. Its contact payload includes the required N and FN properties, plus the optional company, mobile phone, and email fields you enter."
             }
           },
           {
@@ -113,7 +113,7 @@
             "name": "Which contact fields can I add to a MatrixQR vCard?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "The current form includes a required full name and optional family name, given name, company, mobile phone, and email address. The family and given name fields populate the structured N property."
+              "text": "The current form includes a required Full Name and optional Family Name, Given Name, Company, Mobile Phone, and Email Address fields. Family Name and Given Name populate the structured N property."
             }
           },
           {
@@ -121,7 +121,7 @@
             "name": "Will scanning a vCard QR code automatically save a contact?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Not always. A compatible camera or QR scanner may display a contact preview or offer an import action, but the exact behavior depends on the device, operating-system version, and scanning app. Review the fields before saving."
+              "text": "Not always. A compatible camera or QR scanner may show a contact preview or offer an import action, but the behavior depends on the device, operating-system version, and scanning app. Review the fields before saving."
             }
           },
           {
@@ -129,7 +129,7 @@
             "name": "Is a vCard QR code private if it is generated in my browser?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Browser-side generation keeps the entered vCard payload on the device during MatrixQR generation, but the contact details are still encoded in the QR image. Anyone who can scan or photograph a shared code may be able to read those details."
+              "text": "Browser-side generation keeps the entered payload on your device during MatrixQR generation, but the contact details are still encoded in the QR image. Anyone who can scan or photograph a shared code may be able to read them."
             }
           },
           {
@@ -137,7 +137,7 @@
             "name": "Can a vCard QR code be added to Apple Wallet as a pass?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "A vCard QR code is not an Apple Wallet pass. Wallet passes use a separate pass package that must be built and cryptographically signed according to Apple's pass requirements."
+              "text": "No. A vCard QR code and an Apple Wallet pass are separate formats. Wallet passes require their own pass package and cryptographic signing process."
             }
           }
         ]
@@ -442,7 +442,7 @@ END:VCARD</code></pre>
                     <p class="text-slate-300 leading-relaxed">MatrixQR currently generates vCard 3.0. Its contact payload includes the required <code>N</code> and <code>FN</code> properties, plus the optional company, mobile phone, and email fields you enter.</p>
                 </div>
                 <div class="faq-item">
-                    <div class="faq-question">Q: Which contact fields can I add?</div>
+                    <div class="faq-question">Q: Which contact fields can I add to a MatrixQR vCard?</div>
                     <p class="text-slate-300 leading-relaxed">The current form includes a required Full Name and optional Family Name, Given Name, Company, Mobile Phone, and Email Address fields. Family Name and Given Name populate the structured <code>N</code> property.</p>
                 </div>
                 <div class="faq-item">
