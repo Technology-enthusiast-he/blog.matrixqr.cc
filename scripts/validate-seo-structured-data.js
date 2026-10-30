@@ -186,6 +186,38 @@ function validateGeneratedPage(file, expectedUrl) {
     const collectionNodes = extractJsonLd(html, label).flatMap(flattenJsonLd).filter(isCollectionPageNode);
     if (collectionNodes.length === 0) fail(`${label}: no CollectionPage JSON-LD node found.`);
 
+    if (expectedUrl.startsWith(SITE_ORIGIN + "/category/")) {
+        const breadcrumbNav = (html.match(/<nav\b[^>]*aria-label="Breadcrumb"[^>]*>[\s\S]*?<\/nav>/i) || [])[0] || "";
+        if (!breadcrumbNav) {
+            fail(label + ": visible Breadcrumb navigation is missing.");
+        } else {
+            if (!/<a\b[^>]*href="\/"[^>]*>\s*Home\s*<\/a>/i.test(breadcrumbNav)) fail(label + ": Breadcrumb navigation must link to Home (/).");
+            if (!/<a\b[^>]*href="\/posts\/"[^>]*>\s*All Articles\s*<\/a>/i.test(breadcrumbNav)) fail(label + ": Breadcrumb navigation must link to All Articles (/posts/).");
+            if (!/<span\b[^>]*aria-current="page"[^>]*>/i.test(breadcrumbNav)) fail(label + ": current Breadcrumb item must use aria-current=page.");
+        }
+
+        for (const node of collectionNodes) {
+            const breadcrumb = node.breadcrumb;
+            const items = breadcrumb && breadcrumb.itemListElement;
+            if (!breadcrumb || breadcrumb["@type"] !== "BreadcrumbList" || !Array.isArray(items) || items.length !== 3) {
+                fail(label + ": CollectionPage must include a three-item BreadcrumbList.");
+                continue;
+            }
+            const expectedCrumbs = [
+                { position: 1, name: "Home", url: SITE_ORIGIN + "/" },
+                { position: 2, name: "All Articles", url: SITE_ORIGIN + "/posts/" },
+                { position: 3, name: node.name, url: expectedCanonical }
+            ];
+            expectedCrumbs.forEach((expected, index) => {
+                const actual = items[index] || {};
+                const actualUrl = canonicalizeUrl(actual.item || actual.url || "");
+                if (actual["@type"] !== "ListItem" || actual.position !== expected.position || actual.name !== expected.name || actualUrl !== canonicalizeUrl(expected.url)) {
+                    fail(label + ": BreadcrumbList item " + expected.position + " must be " + expected.name + " (" + expected.url + ").");
+                }
+            });
+        }
+    }
+
     for (const node of collectionNodes) {
         const nodeUrl = canonicalizeUrl(node.url || node["@id"] || "");
         if (!nodeUrl || nodeUrl !== expectedCanonical) {
