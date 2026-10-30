@@ -1264,104 +1264,149 @@ Selecting between **Static and Dynamic QR codes** ultimately depends on your str
 
 ---
 
-## vCard QR Codes and Apple Wallet Passes: Compatibility Guide
+## How to Create a vCard QR Code: Contact Sharing & Compatibility
 
 - URL: https://blog.matrixqr.cc/posts/vcard-qr-setup
 - Published: 2026-08-13T08:00:00+00:00
-- Updated: 2026-10-21T08:00:00+00:00
+- Updated: 2026-10-30T08:00:00+00:00
 - Category: vCard & Contact Management
-- Description: Learn how vCard QR codes share contact details, how to format international phone numbers, and how Apple Wallet passes differ from standard contact QR codes.
+- Description: Learn how to create a vCard 3.0 QR code with MatrixQR, format contact fields and international phone numbers, protect shared details, and test device compatibility.
 
 vCard & Contact Management
 
-# vCard QR Codes and Apple Wallet Passes: Compatibility Guide
+# How to Create a vCard QR Code: Contact Sharing & Compatibility
 
-By **MatrixQR Studio** • Published Aug 13, 2026 • Updated Oct 21, 2026 • 7 min read
+By **MatrixQR Studio** • Published Aug 13, 2026 • Updated Oct 30, 2026 • 8 min read
 
 DEFINITION: What is a vCard QR code?
 
-A **vCard QR code** stores contact information in a QR code so a compatible phone or contact app can read it. An Apple Wallet pass is a separate format: adding a pass generally requires a properly signed `.pkpass` package. A vCard QR code does not automatically become a Wallet pass, and neither format guarantees that saved details will remain current.
+A **vCard QR code** encodes structured contact details in a QR symbol. When someone scans it, a compatible camera or QR-scanning app may display a contact preview or offer an import action. The exact behavior depends on the device and app. MatrixQR currently creates vCard 3.0 payloads; an Apple Wallet pass is a separate, cryptographically signed format.
 
-Exchanging contact details during international trade shows, cross-border corporate events, or global business conferences requires a solution that transcends paper cards. A standard vCard QR code can make contact details easier to share, while an Apple Wallet pass follows a different technical workflow. This guide explains phone-number formatting, common vCard fields, and key compatibility considerations; implementation requirements depend on the format and platform.
+A digital business card QR code can make it easier to share your name, company, phone number, and email without retyping each detail. This guide shows how to create one with MatrixQR, explains the vCard 3.0 fields it generates, and covers phone-number formatting, privacy, and practical compatibility checks. It also explains why a vCard QR code is not the same thing as an Apple Wallet pass.
 
-![Step-by-step interface for creating a vCard QR code with contact details](https://blog.matrixqr.cc/posts/images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp)
+![MatrixQR vCard QR generator with contact fields and a QR code preview](https://blog.matrixqr.cc/posts/images/Generate-a-vCard-QR-Code-for-Your-Business-Contact-Details.webp)
 
-## 1. Standardize Country Codes for Global Compatibility
+## 1. Format International Phone Numbers Clearly
 
-When sharing contact details across international borders, localized phone numbers (such as `010-1234-5678` or `(02) 8765-4321`) can be ambiguous for people in other regions and may not dial as intended without the correct country code and numbering-plan rules. According to the ITU-T E.164 International Telecommunication standard, phone numbers must follow strict global formatting:
+If people in different countries will scan your contact QR code, include the country calling code rather than relying on a local dialing format. The ITU-T E.164 international numbering plan defines international public telephone numbers with a maximum of 15 digits, excluding the leading plus sign used in common written notation.
 
-- **Always prefix dialing codes with E.164 formatting:** Structure numbers starting with a plus sign (`+`) followed by country code, area code, and subscriber number (e.g., `+1-415-555-0199` for the US or `+44-20-7123-4567` for the UK).
+- **Use the international form:** For example, write a US number as `+14155550199` rather than a local-only form such as `415-555-0199`.
 
-- **Strip localized trunk prefixes:** Use the destination country's numbering plan to format the complete international number. Do not remove a leading zero by rule alone; trunk-prefix handling varies by country.
+- **Follow the country's numbering plan:** Do not remove a leading national trunk prefix by applying a universal rule. Whether a zero is omitted depends on the country and the number type.
 
-## 2. Use vCard 3.0 or 4.0 for Contact Data
+- **Do not assume formatting validates the number:** MatrixQR encodes the phone value you enter; it does not verify that the number is assigned, reachable, or correctly formatted for every numbering plan.
 
-For contact cards, IETF RFC 6350 specifies vCard 4.0. iOS Contacts can import supported vCard data, but field handling varies by OS version and app. Apple Wallet passes use a separate signed `.pkpass` format; a vCard payload alone is not a Wallet pass. Check the target platform's current requirements and test the fields you plan to share.
+## 2. Understand the vCard 3.0 Contact Fields
 
-Ensure your payload incorporates essential standardized keys:
+vCard is a standard for representing and exchanging contact information. RFC 2426 defines vCard 3.0, while RFC 6350 defines vCard 4.0 and obsoletes the earlier 3.0 specification. These versions are related but not interchangeable in every implementation.
 
-- `FN`: Formatted Full Name.
+MatrixQR currently generates **vCard 3.0**. The payload includes the required `VERSION`, `N`, and `FN` properties:
 
-- `ORG`: Business Organization / Company Name.
+- `N`: Structured name components in this order: family name, given name, additional names, honorific prefixes, and honorific suffixes.
 
-- `TEL;TYPE=CELL`: Mobile cell phone number formatted in E.164.
+- `FN`: The formatted name shown to people, such as `Alex Mercer`.
 
-- `URL;TYPE=WORK`: Direct link to portfolio or company domain.
+- `ORG`: The company or organization, when supplied.
 
-## 3. Key Differences: Standard vCard QR Code vs. Apple Wallet Pass
+- `TEL;TYPE=CELL`: The mobile number, when supplied.
 
-A vCard QR code and an Apple Wallet pass serve different purposes, so they should not be treated as direct substitutes. A QR code can share contact details; a Wallet pass may support pass-specific features when configured and signed correctly. No comparative user-retention result is claimed here.
+- `EMAIL`: The email address, when supplied.
 
-| Feature | Standard Static vCard QR | Apple Wallet Pass (.pkpass) |
+Here is an example of the vCard 3.0 structure produced when the corresponding MatrixQR fields are filled:
+
+```
+BEGIN:VCARD
+VERSION:3.0
+N:Mercer;Alex;;;
+FN:Alex Mercer
+ORG:MatrixQR Studio
+TEL;TYPE=CELL:+14155550199
+EMAIL:alex@example.com
+END:VCARD
+```
+
+The family and given name fields are optional in the MatrixQR form. If you leave them blank, the structured `N` property is still present, with empty components; the full name remains in `FN`. Text values also need correct escaping for characters such as backslashes, commas, semicolons, and embedded line breaks. Long content lines may need folding under the vCard rules.
+
+## 3. Create and Export a vCard QR Code with MatrixQR
+
+You can create a contact QR code directly in the [MatrixQR Studio generator](https://www.matrixqr.cc/). The current vCard form supports a full name, family name, given name, company, mobile phone, and email address.
+
+- **Open MatrixQR Studio:** Visit [www.matrixqr.cc](https://www.matrixqr.cc/) and select the **vCard QR** tab.
+
+- **Enter the formatted name:** Fill in **Full Name**. This is used for the vCard `FN` property and is required to generate the contact QR code.
+
+- **Add structured name details:** Optionally enter **Family Name** and **Given Name**. These fields populate the corresponding parts of the vCard `N` property. Enter them according to the contact's name structure; do not rely on automatic parsing of a full name.
+
+- **Add the contact details you want to share:** Company, mobile phone, and email are optional. Use an international phone number when recipients may be outside your country.
+
+- **Generate the QR code:** Select **RUN MATRIX CORE**. MatrixQR builds the vCard payload and renders the QR code in the browser.
+
+- **Export the image:** Choose an available export format and select **Export** to save the QR image. The SVG option is an SVG wrapper containing an embedded PNG image, rather than a fully vectorized QR symbol.
+
+## 4. Scan and Test Before Sharing
+
+A QR code can be readable while a recipient's contact app still interprets one or more fields differently. Test the actual exported image on the devices and apps your audience is likely to use before printing it or adding it to a website.
+
+- **Test on more than one platform:** Scan with an iPhone and an Android device, preferably using their built-in camera apps as well as the QR scanner your audience commonly uses.
+
+- **Review the contact preview:** Confirm the formatted name, family and given names, company, phone number, and email appear in the intended fields.
+
+- **Check special characters:** Test names or company names containing accented letters, commas, semicolons, apostrophes, or non-Latin characters if those occur in your real contact data.
+
+- **Check the phone number:** Verify the country code and number are intact. A correctly encoded number does not guarantee that every device will dial or label it identically.
+
+- **Test the final artwork:** Scan the downloaded image and, if it will be printed, scan a physical proof at the intended size and viewing distance.
+
+A static vCard QR code contains the contact details encoded when it was created. If a phone number, email address, or company name changes later, generate a new code and replace old printed or published copies.
+
+## 5. Protect Contact Details and Understand Apple Wallet
+
+MatrixQR constructs the vCard payload and renders the QR code in your browser; the contact fields are not uploaded to a MatrixQR generation server for QR creation. Browser-side generation can reduce the amount of personal data sent to the generator, but it does not make the resulting QR code confidential or imply that a website makes no other network requests.
+
+The QR image itself contains the contact data. Anyone who can photograph or scan a code displayed on a public sign, event badge, website, or social profile may be able to read the information. Share only details you intend to make available, and consider using a business phone number or role-based email address instead of a private home address or personal contact channel.
+
+A vCard QR code is also different from an Apple Wallet pass. Apple Wallet passes are separate packages that include pass data and assets and must be cryptographically signed before distribution, as described in Apple's pass-building documentation. A vCard QR code does not automatically install or update a Wallet pass.
+
+| Feature | Static vCard QR code | Apple Wallet pass |
 | --- | --- | --- |
-| How It Is Used | A compatible scanner or contact app may offer to import the contact; behavior varies by app | A valid, compatible pass must be added to Wallet |
-| Updating Contact Info | The encoded contact details are fixed; changes require generating a new QR code and replacing printed copies | May support updates when configured by the pass issuer; not automatic for every pass |
-| Geofenced Lock Screen | Not supported | Location-based suggestions depend on pass configuration, device settings, and platform behavior |
-| Cross-Platform Compatibility | Widely supported, but import behavior varies by device and contact app | Apple Wallet only; pass creation, signing, and distribution requirements apply |
+| Purpose | Encodes contact details for a compatible scanner or contact app | Displays a pass, such as a ticket, membership card, or other supported pass type |
+| Creation | Generate a vCard payload and render it as a QR code | Build a pass package and sign it with the appropriate certificate |
+| Updating details | Changes require generating and distributing a replacement QR code | Updates may be supported by the pass issuer when the pass is configured for updates |
+| Platform behavior | Scanning and contact-import behavior varies by device and app | Designed for Apple Wallet and its pass requirements |
 
-## 4. Step-by-Step: Sharing vCard Details and Adding a Separate Wallet Pass
+## 6. Frequently Asked Questions
 
-If you need both formats, use these steps to prepare contact sharing and a separate Wallet pass:
+Q: Does MatrixQR generate vCard 3.0 or vCard 4.0?
 
-- **Create the Wallet pass separately:** If you need an Apple Wallet pass, follow Apple's current pass format, signing, and distribution requirements. A vCard QR payload alone is not a signed `.pkpass` package.
+MatrixQR currently generates vCard 3.0. Its contact payload includes the required `N` and `FN` properties, plus the optional company, mobile phone, and email fields you enter.
 
-- **Optionally include a contact QR code:** A pass design may include a QR code, but the encoded content and scanning behavior depend on how the pass is configured.
+Q: Which contact fields can I add to a MatrixQR vCard?
 
-- **Test Cross-Border Formatting:** Test scanning across different region settings on iOS to verify that country dialing codes and postal codes render seamlessly.
+The current form includes a required Full Name and optional Family Name, Given Name, Company, Mobile Phone, and Email Address fields. Family Name and Given Name populate the structured `N` property.
 
-- **Provide a cross-platform option:** Consider a standard vCard QR code or downloadable contact file for recipients who do not use Apple Wallet. Check the compatibility of the chosen format on target devices.
+Q: Will scanning a vCard QR code automatically save a contact?
 
-💡 Pro Tip: Privacy-First Digital Business Cards
+Not always. A compatible camera or QR scanner may show a contact preview or offer an import action, but the behavior depends on the device, operating-system version, and scanning app. Review the fields before saving.
 
-When sharing contact details, check whether the generator processes the vCard in your browser or sends it to a remote service. Browser-side generation can reduce payload transfers to the generator, but it does not rule out page analytics, hosting logs, or processing by linked services.
+Q: Is a vCard QR code private if it is generated in my browser?
 
-## 5. Frequently Asked Questions (FAQ)
+Browser-side generation keeps the entered payload on your device during MatrixQR generation, but the contact details are still encoded in the QR image. Anyone who can scan or photograph a shared code may be able to read them.
 
-Q: How does an Apple Wallet pass differ from a vCard QR code?
+Q: Can a vCard QR code be added to Apple Wallet as a pass?
 
-A vCard QR code encodes contact details for a compatible scanner or contact app. An Apple Wallet pass is a separate signed `.pkpass` package; one does not automatically become the other.
-
-Q: Why is E.164 format necessary for international vCard QR codes?
-
-E.164 is an international numbering plan and commonly represents numbers with a leading plus sign and country code. Correct formatting improves consistency, but it cannot guarantee that every recipient's device or app will import or dial the number identically.
-
-Q: Should I use vCard 3.0 or 4.0 for Apple iOS compatibility?
-
-Apple platforms support common vCard formats, but field handling can vary by OS version, app, and vCard version. Test the fields you plan to share on the devices your recipients use.
+No. A vCard QR code and an Apple Wallet pass are separate formats. Wallet passes require their own pass package and cryptographic signing process.
 
 ## Related Resources & Technical Guides
 
-Explore our technical guides on QR code architecture and privacy-first implementation:
+Explore related guides on static QR codes and QR generator customization:
 
 - [Understanding Static QR Codes: Pros, Cons & Privacy Limits](https://blog.matrixqr.cc/posts/the-pros-and-cons-of-static-qr-codes)
 
 - [How to Choose a Customizable QR Code Generator for Business](https://blog.matrixqr.cc/posts/can-you-recommend-a-qr-code-generator-that-allows-customization)
 
-- [Step-by-Step Guide: Client-Side Image to Digital Menu QR Codes](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide)
-
 ## Conclusion
 
-Creating an **international vCard QR code for sharing contact details** bridges the gap between physical networking and contactless storage. Using internationally formatted phone numbers and standard vCard fields can improve consistency, but compatibility depends on the receiving app and device. Treat a vCard QR code and a signed Apple Wallet pass as separate formats, and test both on your target devices.
+To create a useful **vCard QR code**, enter a clear formatted name, add structured name components and only the contact details you want to share, then test the exported code on the devices your recipients use. MatrixQR currently creates vCard 3.0 payloads in the browser. Correct formatting improves consistency, while real-device testing helps catch differences in scanning and contact-import behavior. Keep public contact information separate from details you want to keep private.
 
 ---
 

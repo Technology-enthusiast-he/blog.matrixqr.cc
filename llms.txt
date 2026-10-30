@@ -28,7 +28,7 @@ MatrixQR publishes implementation guides and product updates. Privacy and data-h
 - [Convert Menu Image to QR Code: A Practical Privacy Guide for Restaurants](https://blog.matrixqr.cc/posts/image-to-qr-menu-guide): Convert menu image URLs into static QR codes with MatrixQR. Learn how browser-side generation works, what it means for privacy, and why destination availability still matters.
 
 ## vCard & Contact Management
-- [vCard QR Codes and Apple Wallet Passes: Compatibility Guide](https://blog.matrixqr.cc/posts/vcard-qr-setup): Learn how vCard QR codes share contact details, how to format international phone numbers, and how Apple Wallet passes differ from standard contact QR codes.
+- [How to Create a vCard QR Code: Contact Sharing & Compatibility](https://blog.matrixqr.cc/posts/vcard-qr-setup): Learn how to create a vCard 3.0 QR code with MatrixQR, format contact fields and international phone numbers, protect shared details, and test device compatibility.
 
 ## General
 - [Introducing MatrixQR URL Generator: Free Client-Side Link QR Codes](https://blog.matrixqr.cc/posts/2026-10/introducing-matrixqr-url-generator): Create website-link QR codes in your browser with custom colors and logos. QR payloads stay client-side, though hosting providers may process technical request data.
