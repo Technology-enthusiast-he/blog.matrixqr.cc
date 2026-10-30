@@ -41,6 +41,8 @@ function main() {
         .update(fs.readFileSync(protectedPath))
         .digest("hex");
     const before = snapshot();
+    const sitemapPath = path.join(ROOT, "sitemap", "index.html");
+    const sitemapBefore = fs.readFileSync(sitemapPath, "utf8");
 
     console.log("Running the full build a second time to check output stability...");
     const build = spawnSync("npm", ["run", "build"], {
@@ -63,6 +65,15 @@ function main() {
     if (protectedBefore !== protectedAfter) {
         throw new Error("Protected article changed during the second build: " + PROTECTED_RELATIVE_PATH);
     }
+    if (changed.includes("sitemap/index.html")) {
+        const sitemapAfter = fs.readFileSync(sitemapPath, "utf8");
+        let offset = 0;
+        while (offset < sitemapBefore.length && offset < sitemapAfter.length && sitemapBefore[offset] === sitemapAfter[offset]) offset += 1;
+        console.error("SITEMAP FIRST DIFFERENCE AT:", offset);
+        console.error("SITEMAP BEFORE:", JSON.stringify(sitemapBefore.slice(Math.max(0, offset - 160), offset + 360)));
+        console.error("SITEMAP AFTER:", JSON.stringify(sitemapAfter.slice(Math.max(0, offset - 160), offset + 360)));
+    }
+
     if (changed.length) {
         const preview = changed.slice(0, 40).map(file => " - " + file).join("\n");
         throw new Error(
