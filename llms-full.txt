@@ -998,34 +998,34 @@ This is a practical comparison checklist, not a controlled benchmark of every pr
 
 - **Open-source auditability:** The public source repository is published under the MIT license. An open-source license permits reuse under its terms but does not certify security or privacy.
 
-## How to Generate a Custom QR Code Client-Side (Step-by-Step)
+## How to Evaluate a QR Code Generator Before Choosing
 
-Follow this procedure to generate and then verify a branded QR code. These checks help evaluate the app’s behavior but do not prove that no network traffic of any kind occurs:
-
--
-**Access the Web Application:**
-
-Open [MatrixQR Studio](https://www.matrixqr.cc/) in any modern browser.
+Compare shortlisted tools against the same real-world use case instead of relying on feature lists alone. These checks help you decide whether a generator fits your needs; they are not a certification of security, privacy, or print quality.
 
 -
-**Select Payload Category:**
+**Define the required code type:**
 
-Choose your target format (URL, encrypted WiFi credentials, vCard v3.0 contact details, or Plain Text).
-
--
-**Configure Visual Customization:**
-
-Adjust foreground/background hex colors, upload a custom brand logo image, and set module dot patterns.
+Decide whether a permanent static code is sufficient or whether you need a managed dynamic destination, scan analytics, or campaign controls. Check what happens if a subscription ends or a service changes.
 
 -
-**Verify Network Activity:**
+**Test the customization and export you will actually use:**
 
-Open your browser DevTools Network tab (`F12`). Inspect all request types during typing, image selection, generation, and export. The absence of `XHR`/`fetch` requests alone does not rule out requests made through scripts, images, beacons, or other browser APIs.
+Try your intended colors, logo, and output size. If SVG matters, inspect the file to determine whether the QR artwork uses vector paths or embeds a raster image. For a practical logo-placement workflow, see our [guide to creating a QR code with a logo](https://blog.matrixqr.cc/posts/custom-qr-code-generator-logo).
 
 -
-**Export Vector or Raster Output:**
+**Check data handling separately from marketing claims:**
 
-Export the available SVG or PNG, then inspect the SVG source to confirm whether it contains vector paths or an embedded raster image. Test the exported code at the intended print size before production.
+Review the provider's privacy documentation and inspect browser network activity while entering payloads, selecting images, generating codes, and exporting files. Client-side generation can reduce payload uploads, but does not prove that the entire page has no network activity or that a service meets a legal compliance standard.
+
+-
+**Verify scan reliability in the intended setting:**
+
+Test the exported code on multiple phones and scanning apps, at the actual display or print size, under realistic lighting. Recheck contrast and quiet zones after adding a logo or decorative styling.
+
+-
+**Confirm total cost and exit options:**
+
+Read current plan terms for export limits, branding restrictions, analytics, renewal, cancellation, and data retention. Verify these details on the provider's own pages because features and prices can change.
 
 ## Common Questions (FAQ)
 
