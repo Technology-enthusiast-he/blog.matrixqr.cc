@@ -5,6 +5,7 @@ const ROOT = path.resolve(__dirname, "..");
 const MARKER = "<!-- SEO/GEO Topic Cluster Links -->";
 
 const TOPIC_LINKS = {
+  "posts/can-you-recommend-a-qr-code-generator-that-allows-customization.html": [],
   "posts/2026-10/traditional-menus-digital-menu-qr-code.html": [
     ["Convert a menu image into a QR code", "/posts/image-to-qr-menu-guide"],
     ["Add a custom logo to a restaurant QR menu", "/posts/custom-logo-qr-code-menu-guide"],
@@ -53,6 +54,7 @@ const TOPIC_LINKS = {
 
 
 const ARTICLE_CATEGORY_URLS = {
+  "posts/can-you-recommend-a-qr-code-generator-that-allows-customization.html": ["/category/general/", "General QR Code Guides"],
   "posts/2026-10/traditional-menus-digital-menu-qr-code.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
   "posts/custom-logo-qr-code-menu-guide.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
   "posts/custom-qr-code-generator-logo.html": ["/category/digital-menu-branding/", "Digital Menu & Branding"],
