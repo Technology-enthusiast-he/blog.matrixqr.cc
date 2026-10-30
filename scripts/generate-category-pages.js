@@ -13,22 +13,26 @@ const CATEGORY_INFO = {
     "QR Code Security & Privacy": {
         slug: "qr-code-security-privacy",
         title: "QR Code Security & Privacy",
-        description: "Explore QR code security, client-side generation, privacy protection, and practical guidance for safer QR workflows."
+        description: "Explore QR code privacy, client-side generation, data protection, and practical security guidance for safer QR workflows.",
+        intro: "Understand how QR code workflows handle data, what client-side generation changes, and where privacy and security boundaries still apply. These guides cover practical safeguards, trade-offs, and ways to make informed QR code decisions."
     },
     "Digital Menu & Branding": {
         slug: "digital-menu-branding",
         title: "Digital Menu & Branding",
-        description: "Guides covering digital menu QR codes, custom QR branding, logos, scan reliability, and practical restaurant use cases."
+        description: "Explore restaurant QR menus, custom QR branding, logo placement, scan reliability, and practical digital menu workflows.",
+        intro: "Explore how restaurants can use QR codes for digital menus while keeping usability, accessibility, and diner choice in mind. These articles also explain logo placement, scan reliability, image handling, and practical branding decisions."
     },
     "vCard & Contact Management": {
         slug: "vcard-contact-management",
         title: "vCard & Contact Management",
-        description: "Learn about vCard QR codes, digital contact sharing, and practical contact-management workflows."
+        description: "Learn how vCard QR codes share contact details, support digital networking, and differ from wallet-based contact passes.",
+        intro: "Learn how vCard QR codes encode and share contact information, how phone-number formatting affects compatibility, and how contact QR codes differ from Apple Wallet passes. The guides focus on practical sharing workflows and the limits of each format."
     },
     "General": {
         slug: "general",
         title: "General QR Code Guides",
-        description: "Practical QR code tutorials, tool comparisons, product updates, and broadly useful implementation guidance."
+        description: "Browse practical QR code tutorials, generator comparisons, MatrixQR product updates, and general implementation guidance.",
+        intro: "Find broadly useful QR code guidance, including generator comparisons, implementation tutorials, and MatrixQR product updates. This section brings together articles that support common QR code tasks but do not belong to a narrower specialist topic."
     }
 };
 
@@ -89,7 +93,7 @@ function buildPage(template, category, posts) {
     html = html.replace(/<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/i, schemaScript);
 
     html = replaceRequired(html, /<h1[\s\S]*?<\/h1>/i, `<h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">MatrixQR <span class="bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">${escapeHtml(info.title)}</span></h1>`, "H1");
-    html = replaceRequired(html, /<p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">[\s\S]*?<\/p>/i, `<p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">${escapeHtml(description)}</p>`, "intro");
+    html = replaceRequired(html, /<p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">[\s\S]*?<\/p>/i, `<p class="text-slate-400 text-xs md:text-sm max-w-xl leading-relaxed">${escapeHtml(info.intro)}</p>`, "intro");
     html = replaceRequired(html, /<!-- AUTO-ARCHIVE-START -->[\s\S]*?<!-- AUTO-ARCHIVE-END -->/i, `<!-- AUTO-ARCHIVE-START -->\n<section class="space-y-5"><div class="border-b border-slate-800 pb-3"><p class="text-sm text-slate-400">${posts.length} ${posts.length === 1 ? "article" : "articles"} in this topic.</p></div><div class="space-y-4">${cards}\n</div></section>\n<!-- AUTO-ARCHIVE-END -->`, "article marker");
     html = html.replace(/<!-- AUTO-ARCHIVE-PAGINATION-START -->[\s\S]*?<!-- AUTO-ARCHIVE-PAGINATION-END -->/i, "<!-- AUTO-ARCHIVE-PAGINATION-START --><!-- AUTO-ARCHIVE-PAGINATION-END -->");
     html = html.replace(/<body /i, '<body data-generated-page="category" ');
