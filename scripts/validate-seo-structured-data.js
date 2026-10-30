@@ -140,6 +140,20 @@ function getGeneratedPageFiles() {
         pages.push({ file: htmlSitemap, expectedUrl: SITE_ORIGIN + "/sitemap/" });
     }
 
+    // Validate generated category hubs with the same canonical, social
+    // metadata, breadcrumb, and CollectionPage checks as other landing pages.
+    const categoryRoot = path.join(ROOT, "category");
+    if (fs.existsSync(categoryRoot)) {
+        for (const entry of fs.readdirSync(categoryRoot, { withFileTypes: true })) {
+            if (!entry.isDirectory() || !/^[-a-z0-9]+$/.test(entry.name)) continue;
+            const file = path.join(categoryRoot, entry.name, "index.html");
+            if (!fs.existsSync(file)) continue;
+            const html = fs.readFileSync(file, "utf8");
+            if (!html.includes("AUTO-GENERATED-CATEGORY-PAGE")) continue;
+            pages.push({ file, expectedUrl: `${SITE_ORIGIN}/category/${entry.name}/` });
+        }
+    }
+
     return pages;
 }
 
