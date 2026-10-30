@@ -136,10 +136,10 @@ function patchHtmlSitemapContent(html, posts) {
 
     // Migrate the unmarked navigation inserted by earlier builds instead of
     // appending a duplicate on every subsequent build.
-    const legacyNav = /<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">[\\s\\S]*?<\\/nav>/;
+    const legacyNav = /<nav aria-label="Article categories" class="flex flex-wrap gap-2 mb-8">[\s\S]*?</nav>/;
     if (legacyNav.test(html)) return html.replace(legacyNav, nav);
 
-    return html.replace(sitemapMarker, nav + "\\n" + sitemapMarker);
+    return html.replace(sitemapMarker, nav + "\n" + sitemapMarker);
 }
 
 function patchHtmlSitemap(posts) {
@@ -182,4 +182,6 @@ function main() {
     }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { buildCategoryNav, patchHtmlSitemapContent };
