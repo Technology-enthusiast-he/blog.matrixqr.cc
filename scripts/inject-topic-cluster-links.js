@@ -73,20 +73,21 @@ function buildRelatedLinks(links, categoryUrl) {
   return `${MARKER}\n<section aria-labelledby="topic-cluster-links" class="mt-10 border-t border-slate-800 pt-8">\n    <h2 id="topic-cluster-links">Related QR Code Guides</h2>\n    <ul>\n${items}\n    </ul>\n</section>`;
 }
 
-function injectTopicClusterLinks(html, links) {
+function injectTopicClusterLinks(html, links, categoryUrl) {
   if (html.includes(MARKER)) return html;
 
   const closingTag = "</article>";
   const index = html.lastIndexOf(closingTag);
   if (index === -1) throw new Error("Could not find closing </article> tag.");
 
-  const block = buildRelatedLinks(links, ARTICLE_CATEGORY_URLS[relativePath]);
+  const block = buildRelatedLinks(links, categoryUrl);
   return `${html.slice(0, index)}\n${block}\n${html.slice(index)}`;
 }
 
 function updateArticle(filePath, links) {
   const html = fs.readFileSync(filePath, "utf8");
-  const updated = injectTopicClusterLinks(html, links);
+  const relativePath = path.relative(ROOT, filePath).split(path.sep).join('/');
+  const updated = injectTopicClusterLinks(html, links, ARTICLE_CATEGORY_URLS[relativePath]);
   if (updated !== html) fs.writeFileSync(filePath, updated, "utf8");
   return updated !== html;
 }
