@@ -75,17 +75,45 @@ function buildRelatedLinks(links, categoryUrl) {
   return `${MARKER}\n<section aria-labelledby="topic-cluster-links" class="mt-10 border-t border-slate-800 pt-8">\n    <h2 id="topic-cluster-links">Related QR Code Guides</h2>\n    <ul>\n${items}\n    </ul>\n</section>`;
 }
 
+function normalizeArticleUrl(url) {
+  let value = String(url || "").trim().replace(/^https?:\\/\\/blog\\.matrixqr\\.cc/i, "");
+  value = value.split(/[?#]/, 1)[0];
+  if (!value.startsWith("/posts/")) return null;
+  value = value.replace(/\\/+$/, "").replace(/\\.html$/i, "");
+  try { return decodeURIComponent(value); } catch { return value; }
+}
+
+function getExistingArticleTargets(html) {
+  const match = html.match(/<article\\b[^>]*>([\\s\\S]*?)<\\/article>/i);
+  if (!match) throw new Error("Could not find article content for related-link filtering.");
+  let content = match[1];
+  const markerIndex = content.indexOf(MARKER);
+  if (markerIndex !== -1) content = content.slice(0, markerIndex);
+  const targets = new Set();
+  for (const link of content.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)) {
+    const target = normalizeArticleUrl(link[1]);
+    if (target) targets.add(target);
+  }
+  return targets;
+}
+
+function filterAlreadyLinkedTargets(html, links) {
+  const existing = getExistingArticleTargets(html);
+  return links.filter(([, url]) => !existing.has(normalizeArticleUrl(url)));
+}
+
 function injectTopicClusterLinks(html, links, categoryUrl) {
   if (html.includes(MARKER)) return html;
-
   const closingTag = "</article>";
   const index = html.lastIndexOf(closingTag);
   if (index === -1) throw new Error("Could not find closing </article> tag.");
-
-  const block = buildRelatedLinks(links, categoryUrl);
-  return `${html.slice(0, index)}\n${block}\n${html.slice(index)}`;
+  const filteredLinks = filterAlreadyLinkedTargets(html, links);
+  if (filteredLinks.length === 0 && !categoryUrl) return html;
+  const block = buildRelatedLinks(filteredLinks, categoryUrl);
+  return `${html.slice(0, index)}\\n${block}\\n${html.slice(index)}`;
 }
 
+module.exports = { MARKER, TOPIC_LINKS, ARTICLE_CATEGORY_URLS, buildRelatedLinks, normalizeArticleUrl, getExistingArticleTargets, filterAlreadyLinkedTargets, injectTopicClusterLinks };
 function updateArticle(filePath, links) {
   const html = fs.readFileSync(filePath, "utf8");
   const relativePath = path.relative(ROOT, filePath).split(path.sep).join('/');
