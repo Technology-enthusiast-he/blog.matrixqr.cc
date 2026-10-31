@@ -12,7 +12,8 @@ test("inserts a single Sponsor link immediately before the footer", () => {
     assert.ok(result.indexOf('aria-label="Sponsor"') < result.indexOf("<footer>"));
     assert.doesNotMatch(result, /<h[1-6][^>]*>Sponsor<\/h[1-6]>/);
     assert.match(result, /href="https:\/\/replikasaatblog\.com\/"[^>]*rel="sponsored noopener noreferrer"/);
-    assert.match(result, /<a[^>]*>\s*Sponsor\s*<span aria-hidden="true">↗<\/span>\s*<\/a>/);
+    assert.match(result, /<a[^>]*>\s*<span aria-hidden="true" class="h-7 w-1 rounded-full bg-cyan-300"><\/span>\s*Sponsor\s*<\/a>/);
+    assert.doesNotMatch(result, /↗/);
     assert.doesNotMatch(result, /replikasaatblog\.com<\/a>/);
 });
 

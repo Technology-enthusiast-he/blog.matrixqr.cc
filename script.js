@@ -16,13 +16,12 @@ function injectSiteSponsor() {
     link.href = "https://replikasaatblog.com/";
     link.target = "_blank";
     link.rel = "sponsored noopener noreferrer";
-    link.className = "inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition-colors";
-    link.append(document.createTextNode("Sponsor "));
+    link.className = "inline-flex items-center gap-3 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition-colors";
 
-    const arrow = document.createElement("span");
-    arrow.setAttribute("aria-hidden", "true");
-    arrow.textContent = "↗";
-    link.append(arrow);
+    const accent = document.createElement("span");
+    accent.setAttribute("aria-hidden", "true");
+    accent.className = "h-7 w-1 rounded-full bg-cyan-300";
+    link.append(accent, document.createTextNode("Sponsor"));
 
     container.append(link);
     section.append(container);
