@@ -11,8 +11,8 @@ test("inserts the Sponsor block immediately before the footer", () => {
 
     assert.ok(result.indexOf("<h2 id=\"site-sponsor-heading\">Sponsor</h2>") < result.indexOf("<footer>"));
     assert.match(result, /href="https:\/\/replikasaatblog\.com\/"[^>]*rel="sponsored noopener noreferrer"/);
-    assert.match(result, /<a[^>]*>\\s*Sponsor\\s*<span aria-hidden="true">↗<\\/span>\\s*<\\/a>/);
-    assert.doesNotMatch(result, /replikasaatblog\.com<\\/a>/);
+    assert.match(result, /<a[^>]*>\s*Sponsor\s*<span aria-hidden="true">↗<\/span>\s*<\/a>/);
+    assert.doesNotMatch(result, /replikasaatblog\.com<\/a>/);
 });
 
 test("is idempotent and does not duplicate the Sponsor block", () => {
