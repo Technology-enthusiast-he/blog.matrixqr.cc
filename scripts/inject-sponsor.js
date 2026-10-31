@@ -10,15 +10,12 @@ const END_MARKER = "<!-- SITE-SPONSOR-END -->";
 function buildSponsorMarkup() {
     return [
         START_MARKER,
-        '<section class="w-full px-6 pb-6" data-site-sponsor="true" aria-labelledby="site-sponsor-heading">',
-        '    <div class="max-w-7xl mx-auto rounded-2xl border border-slate-800/80 bg-[#080d1a]/70 px-5 py-4 sm:px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">',
-        '        <div class="space-y-1">',
-        '            <h2 id="site-sponsor-heading" class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Sponsor</h2>',
-        '            <a href="https://replikasaatblog.com/" target="_blank" rel="sponsored noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition-colors">',
-        '                Sponsor',
-        '                <span aria-hidden="true">↗</span>',
-        '            </a>',
-        '        </div>',
+        '<section class="w-full px-6 pb-6" data-site-sponsor="true" aria-label="Sponsor">',
+        '    <div class="max-w-7xl mx-auto rounded-2xl border border-slate-800/80 bg-[#080d1a]/70 px-5 py-4 sm:px-6">',
+        '        <a href="https://replikasaatblog.com/" target="_blank" rel="sponsored noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition-colors">',
+        '            Sponsor',
+        '            <span aria-hidden="true">↗</span>',
+        '        </a>',
         '    </div>',
         '</section>',
         END_MARKER

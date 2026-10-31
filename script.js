@@ -7,18 +7,10 @@ function injectSiteSponsor() {
     const section = document.createElement("section");
     section.className = "w-full px-6 pb-6";
     section.setAttribute("data-site-sponsor", "true");
-    section.setAttribute("aria-labelledby", "site-sponsor-heading");
+    section.setAttribute("aria-label", "Sponsor");
 
     const container = document.createElement("div");
-    container.className = "max-w-7xl mx-auto rounded-2xl border border-slate-800/80 bg-[#080d1a]/70 px-5 py-4 sm:px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3";
-
-    const content = document.createElement("div");
-    content.className = "space-y-1";
-
-    const heading = document.createElement("h2");
-    heading.id = "site-sponsor-heading";
-    heading.className = "text-xs font-semibold uppercase tracking-[0.2em] text-slate-400";
-    heading.textContent = "Sponsor";
+    container.className = "max-w-7xl mx-auto rounded-2xl border border-slate-800/80 bg-[#080d1a]/70 px-5 py-4 sm:px-6";
 
     const link = document.createElement("a");
     link.href = "https://replikasaatblog.com/";
@@ -32,8 +24,7 @@ function injectSiteSponsor() {
     arrow.textContent = "↗";
     link.append(arrow);
 
-    content.append(heading, link);
-    container.append(content);
+    container.append(link);
     section.append(container);
     footer.parentNode.insertBefore(section, footer);
 }
