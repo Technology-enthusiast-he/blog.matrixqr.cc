@@ -110,11 +110,16 @@ test("generated article HTML contains every configured topic link and reciprocal
     const sectionEnd = output.indexOf("</section>", sectionStart);
     assert.notEqual(sectionEnd, -1, `Unclosed generated topic section in ${source}`);
     const section = output.slice(sectionStart, sectionEnd);
-    const hrefs = new Set(
-      [...section.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)].map(match => match[1])
-    );
+    const bodyHtml = output.slice(output.indexOf("<article"), sectionStart);
+    const bodyMatches = [...bodyHtml.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)];
+    const sectionMatches = [...section.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)];
+    const allArticleHrefs = new Set([...bodyMatches, ...sectionMatches].map(match => match[1]));
+    const sectionHrefs = new Set(sectionMatches.map(match => match[1]));
     for (const [, targetUrl] of links) {
-      assert.ok(hrefs.has(targetUrl), `${source} output is missing configured link to ${targetUrl}`);
+      const normalized = targetUrl.replace(/^https?:\\/\\/blog\\.matrixqr\\.cc/i, "").replace(/\\/$/, "");
+      const alreadyInBody = bodyMatches.some(match => match[1].replace(/^https?:\\/\\/blog\\.matrixqr\\.cc/i, "").replace(/\\/$/, "") === normalized);
+      assert.ok(allArticleHrefs.has(targetUrl) || alreadyInBody, `${source} output is missing configured link to ${targetUrl}`);
+      if (alreadyInBody) assert.ok(!sectionHrefs.has(targetUrl), `${source} repeats a body link in generated Related Guides: ${targetUrl}`);
     }
     const sourceUrl = "/" + source.replace(/\.html$/, "");
     rendered.set(sourceUrl, hrefs);
@@ -143,4 +148,28 @@ test("every configured article links to its canonical category hub", () => {
     assert.ok(output.includes('href="' + category[0] + '"'), source + " missing category hub link");
     assert.ok(output.includes(">Explore " + category[1] + "</a>"), source + " missing descriptive category anchor");
   }
+});
+
+test("does not repeat article targets already linked in article body", () => {
+  const source = '<article><p><a href="/posts/static-vs-dynamic-qr">Static and dynamic QR codes</a></p></article>';
+  const updated = injectTopicClusterLinks(source, [["Static vs dynamic QR codes", "/posts/static-vs-dynamic-qr"], ["vCard QR setup", "/posts/vcard-qr-setup"]]);
+  const section = updated.slice(updated.indexOf(MARKER));
+  assert.doesNotMatch(section, /href="\\/posts\\/static-vs-dynamic-qr"/);
+  assert.match(section, /href="\\/posts\\/vcard-qr-setup"/);
+});
+
+test("recognizes absolute same-site URLs and ignores navigation outside article content", () => {
+  const source = '<nav><a href="/posts/static-vs-dynamic-qr">Navigation</a></nav><article><p><a href="https://blog.matrixqr.cc/posts/static-vs-dynamic-qr/">Contextual link</a></p></article>';
+  const updated = injectTopicClusterLinks(source, [["Static vs dynamic QR codes", "/posts/static-vs-dynamic-qr"], ["vCard QR setup", "/posts/vcard-qr-setup"]]);
+  const section = updated.slice(updated.indexOf(MARKER));
+  assert.doesNotMatch(section, /href="\\/posts\\/static-vs-dynamic-qr"/);
+  assert.match(section, /href="\\/posts\\/vcard-qr-setup"/);
+});
+
+test("keeps the category hub link when every article recommendation is already linked", () => {
+  const source = '<article><p><a href="/posts/static-vs-dynamic-qr">Static and dynamic QR codes</a></p></article>';
+  const updated = injectTopicClusterLinks(source, [["Static vs dynamic QR codes", "/posts/static-vs-dynamic-qr"]], ["/category/general/", "General QR Code Guides"]);
+  const section = updated.slice(updated.indexOf(MARKER));
+  assert.match(section, /href="\\/category\\/general\\/"/);
+  assert.doesNotMatch(section, /href="\\/posts\\/static-vs-dynamic-qr"/);
 });
