@@ -122,7 +122,7 @@ test("generated article HTML contains every configured topic link and reciprocal
       if (alreadyInBody) assert.ok(!sectionHrefs.has(targetUrl), `${source} repeats a body link in generated Related Guides: ${targetUrl}`);
     }
     const sourceUrl = "/" + source.replace(/\.html$/, "");
-    rendered.set(sourceUrl, hrefs);
+    rendered.set(sourceUrl, allArticleHrefs);
   }
 
   for (const [source, links] of Object.entries(TOPIC_LINKS)) {
