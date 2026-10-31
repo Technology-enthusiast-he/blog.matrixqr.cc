@@ -154,22 +154,22 @@ test("does not repeat article targets already linked in article body", () => {
   const source = '<article><p><a href="/posts/static-vs-dynamic-qr">Static and dynamic QR codes</a></p></article>';
   const updated = injectTopicClusterLinks(source, [["Static vs dynamic QR codes", "/posts/static-vs-dynamic-qr"], ["vCard QR setup", "/posts/vcard-qr-setup"]]);
   const section = updated.slice(updated.indexOf(MARKER));
-  assert.doesNotMatch(section, /href="\\/posts\\/static-vs-dynamic-qr"/);
-  assert.match(section, /href="\\/posts\\/vcard-qr-setup"/);
+  assert.doesNotMatch(section, /href="\/posts\/static-vs-dynamic-qr"/);
+  assert.match(section, /href="\/posts\/vcard-qr-setup"/);
 });
 
 test("recognizes absolute same-site URLs and ignores navigation outside article content", () => {
   const source = '<nav><a href="/posts/static-vs-dynamic-qr">Navigation</a></nav><article><p><a href="https://blog.matrixqr.cc/posts/static-vs-dynamic-qr/">Contextual link</a></p></article>';
   const updated = injectTopicClusterLinks(source, [["Static vs dynamic QR codes", "/posts/static-vs-dynamic-qr"], ["vCard QR setup", "/posts/vcard-qr-setup"]]);
   const section = updated.slice(updated.indexOf(MARKER));
-  assert.doesNotMatch(section, /href="\\/posts\\/static-vs-dynamic-qr"/);
-  assert.match(section, /href="\\/posts\\/vcard-qr-setup"/);
+  assert.doesNotMatch(section, /href="\/posts\/static-vs-dynamic-qr"/);
+  assert.match(section, /href="\/posts\/vcard-qr-setup"/);
 });
 
 test("keeps the category hub link when every article recommendation is already linked", () => {
   const source = '<article><p><a href="/posts/static-vs-dynamic-qr">Static and dynamic QR codes</a></p></article>';
   const updated = injectTopicClusterLinks(source, [["Static vs dynamic QR codes", "/posts/static-vs-dynamic-qr"]], ["/category/general/", "General QR Code Guides"]);
   const section = updated.slice(updated.indexOf(MARKER));
-  assert.match(section, /href="\\/category\\/general\\/"/);
-  assert.doesNotMatch(section, /href="\\/posts\\/static-vs-dynamic-qr"/);
+  assert.match(section, /href="\/category\/general\/"/);
+  assert.doesNotMatch(section, /href="\/posts\/static-vs-dynamic-qr"/);
 });
