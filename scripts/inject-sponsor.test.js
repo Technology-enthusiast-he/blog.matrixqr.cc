@@ -5,11 +5,12 @@ const os = require("os");
 const path = require("path");
 const { injectSponsor, walk } = require("./inject-sponsor");
 
-test("inserts the Sponsor block immediately before the footer", () => {
+test("inserts a single Sponsor link immediately before the footer", () => {
     const source = "<html><body><main>Content</main><footer>Footer</footer></body></html>";
     const result = injectSponsor(source);
 
-    assert.ok(result.indexOf("<h2 id=\"site-sponsor-heading\">Sponsor</h2>") < result.indexOf("<footer>"));
+    assert.ok(result.indexOf('aria-label="Sponsor"') < result.indexOf("<footer>"));
+    assert.doesNotMatch(result, /<h[1-6][^>]*>Sponsor<\/h[1-6]>/);
     assert.match(result, /href="https:\/\/replikasaatblog\.com\/"[^>]*rel="sponsored noopener noreferrer"/);
     assert.match(result, /<a[^>]*>\s*Sponsor\s*<span aria-hidden="true">↗<\/span>\s*<\/a>/);
     assert.doesNotMatch(result, /replikasaatblog\.com<\/a>/);
