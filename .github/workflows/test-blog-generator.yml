@@ -47,6 +47,8 @@ jobs:
           node --check scripts/validate-images.js
           node --check scripts/validate-images.test.js
           node --check scripts/audit-site-architecture.js
+          node --check scripts/validate-internal-links.js
+          node --check scripts/validate-internal-links.test.js
           node --check scripts/validate-sitemap-lastmod.js
           node --check scripts/validate-sitemap-lastmod.test.js
           node --check scripts/validate-sitemap-pagination.js
@@ -80,6 +82,9 @@ jobs:
 
       - name: Test SEO structured-data validation regressions
         run: npm run test:seo-regressions
+
+      - name: Test internal link quality audit regressions
+        run: npm run test:internal-links
 
       - name: Test image SEO and accessibility validation regressions
         run: npm run test:images
