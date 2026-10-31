@@ -25,7 +25,7 @@ function injectSiteSponsor() {
     link.target = "_blank";
     link.rel = "sponsored noopener noreferrer";
     link.className = "inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 hover:text-cyan-200 transition-colors";
-    link.append(document.createTextNode("replikasaatblog.com "));
+    link.append(document.createTextNode("Sponsor "));
 
     const arrow = document.createElement("span");
     arrow.setAttribute("aria-hidden", "true");
