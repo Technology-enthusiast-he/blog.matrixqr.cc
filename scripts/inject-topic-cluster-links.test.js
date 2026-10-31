@@ -111,13 +111,13 @@ test("generated article HTML contains every configured topic link and reciprocal
     assert.notEqual(sectionEnd, -1, `Unclosed generated topic section in ${source}`);
     const section = output.slice(sectionStart, sectionEnd);
     const bodyHtml = output.slice(output.indexOf("<article"), sectionStart);
-    const bodyMatches = [...bodyHtml.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)];
-    const sectionMatches = [...section.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)];
+    const bodyMatches = [...bodyHtml.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)];
+    const sectionMatches = [...section.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)];
     const allArticleHrefs = new Set([...bodyMatches, ...sectionMatches].map(match => match[1]));
     const sectionHrefs = new Set(sectionMatches.map(match => match[1]));
     for (const [, targetUrl] of links) {
-      const normalized = targetUrl.replace(/^https?:\\/\\/blog\\.matrixqr\\.cc/i, "").replace(/\\/$/, "");
-      const alreadyInBody = bodyMatches.some(match => match[1].replace(/^https?:\\/\\/blog\\.matrixqr\\.cc/i, "").replace(/\\/$/, "") === normalized);
+      const normalized = targetUrl.replace(/^https?:\/\/blog\.matrixqr\.cc/i, "").replace(/\/$/, "");
+      const alreadyInBody = bodyMatches.some(match => match[1].replace(/^https?:\/\/blog\.matrixqr\.cc/i, "").replace(/\/$/, "") === normalized);
       assert.ok(allArticleHrefs.has(targetUrl) || alreadyInBody, `${source} output is missing configured link to ${targetUrl}`);
       if (alreadyInBody) assert.ok(!sectionHrefs.has(targetUrl), `${source} repeats a body link in generated Related Guides: ${targetUrl}`);
     }
