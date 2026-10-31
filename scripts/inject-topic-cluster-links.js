@@ -76,21 +76,21 @@ function buildRelatedLinks(links, categoryUrl) {
 }
 
 function normalizeArticleUrl(url) {
-  let value = String(url || "").trim().replace(/^https?:\\/\\/blog\\.matrixqr\\.cc/i, "");
+  let value = String(url || "").trim().replace(/^https?:\/\/blog\.matrixqr\.cc/i, "");
   value = value.split(/[?#]/, 1)[0];
   if (!value.startsWith("/posts/")) return null;
-  value = value.replace(/\\/+$/, "").replace(/\\.html$/i, "");
+  value = value.replace(/\/+$/, "").replace(/\.html$/i, "");
   try { return decodeURIComponent(value); } catch { return value; }
 }
 
 function getExistingArticleTargets(html) {
-  const match = html.match(/<article\\b[^>]*>([\\s\\S]*?)<\\/article>/i);
+  const match = html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i);
   if (!match) throw new Error("Could not find article content for related-link filtering.");
   let content = match[1];
   const markerIndex = content.indexOf(MARKER);
   if (markerIndex !== -1) content = content.slice(0, markerIndex);
   const targets = new Set();
-  for (const link of content.matchAll(/<a\\b[^>]*\\bhref=["']([^"']+)["']/gi)) {
+  for (const link of content.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["']/gi)) {
     const target = normalizeArticleUrl(link[1]);
     if (target) targets.add(target);
   }
@@ -110,10 +110,9 @@ function injectTopicClusterLinks(html, links, categoryUrl) {
   const filteredLinks = filterAlreadyLinkedTargets(html, links);
   if (filteredLinks.length === 0 && !categoryUrl) return html;
   const block = buildRelatedLinks(filteredLinks, categoryUrl);
-  return `${html.slice(0, index)}\\n${block}\\n${html.slice(index)}`;
+  return `${html.slice(0, index)}\n${block}\n${html.slice(index)}`;
 }
 
-module.exports = { MARKER, TOPIC_LINKS, ARTICLE_CATEGORY_URLS, buildRelatedLinks, normalizeArticleUrl, getExistingArticleTargets, filterAlreadyLinkedTargets, injectTopicClusterLinks };
 function updateArticle(filePath, links) {
   const html = fs.readFileSync(filePath, "utf8");
   const relativePath = path.relative(ROOT, filePath).split(path.sep).join('/');
@@ -132,4 +131,4 @@ if (require.main === module) {
   console.log(`[topic-links] Updated ${updatedCount}/${Object.keys(TOPIC_LINKS).length} article(s).`);
 }
 
-module.exports = { MARKER, TOPIC_LINKS, ARTICLE_CATEGORY_URLS, buildRelatedLinks, injectTopicClusterLinks };
+module.exports = { MARKER, TOPIC_LINKS, ARTICLE_CATEGORY_URLS, buildRelatedLinks, normalizeArticleUrl, getExistingArticleTargets, filterAlreadyLinkedTargets, injectTopicClusterLinks };
