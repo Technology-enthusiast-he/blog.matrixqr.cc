@@ -44,7 +44,7 @@ test("separates article body links from generated Related Guides links", () => {
     assert.match(getRelatedContent(html), /Third guide/);
 });
 
-test("counts independent source pages, not repeated links from one source", (t) => {
+test("counts independent source pages without flagging distinct editorial contexts", (t) => {
     const root = fixture(t);
     article(root, "one",
         '<p><a href="/posts/two">Two guide</a><a href="/posts/two">Another Two link</a></p>' +
@@ -53,7 +53,21 @@ test("counts independent source pages, not repeated links from one source", (t) 
     const report = runAudit(root);
     assert.equal(report.inboundSourceCounts["posts/two.html"], 1);
     assert.equal(report.inboundSourceCounts["posts/one.html"], 1);
-    assert.ok(report.findings.some(item => item.includes("posts/one.html links to posts/two.html 3 times")));
+    assert.equal(report.findings.some(item => item.includes("repeats") && item.includes("posts/two.html")), false);
+});
+
+test("warns when the same accessible anchor is repeated for the same target in one zone", (t) => {
+    const root = fixture(t);
+    article(root, "one",
+        '<p><a href="/posts/two">Read the vCard guide</a>' +
+        '<a href="/posts/two">Read the vCard guide</a></p>');
+    article(root, "two", '<p>Target article.</p>');
+    const report = runAudit(root);
+    assert.ok(report.findings.some(item =>
+        item.includes('repeats "read the vcard guide"') &&
+        item.includes("posts/two.html") &&
+        item.includes("2 times in the body zone")
+    ));
 });
 
 test("reports missing targets, empty anchors, and generic anchors", (t) => {

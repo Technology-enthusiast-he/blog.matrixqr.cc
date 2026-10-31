@@ -165,7 +165,10 @@ function runAudit(root = path.resolve(__dirname, "..")) {
                 }
 
                 if (!seenTargets.has(targetLabel)) seenTargets.set(targetLabel, []);
-                seenTargets.get(targetLabel).push(zone);
+                seenTargets.get(targetLabel).push({
+                    zone,
+                    accessibleName: String(anchor.accessibleName || "").trim().toLowerCase()
+                });
 
                 if (!inboundSources.has(targetLabel)) inboundSources.set(targetLabel, new Set());
                 inboundSources.get(targetLabel).add(label);
@@ -175,9 +178,26 @@ function runAudit(root = path.resolve(__dirname, "..")) {
         collectArticleLinks(bodyAnchors, "body");
         collectArticleLinks(relatedAnchors, "related");
 
-        for (const [target, zones] of seenTargets) {
-            if (zones.length > 1) {
-                repeatedTargets.push(label + " links to " + target + " " + zones.length + " times (" + zones.join(", ") + ").");
+        for (const [target, occurrences] of seenTargets) {
+            // Different anchor labels or different page zones may serve distinct
+            // editorial purposes. Warn only when the same accessible label points
+            // to the same target more than once within the same zone.
+            const groups = new Map();
+            for (const occurrence of occurrences) {
+                const key = occurrence.zone + "\\0" + occurrence.accessibleName;
+                if (!groups.has(key)) groups.set(key, []);
+                groups.get(key).push(occurrence);
+            }
+            for (const [key, matches] of groups) {
+                if (matches.length < 2) continue;
+                const [zone, accessibleName] = key.split("\\0");
+                const labelDescription = accessibleName
+                    ? '"' + accessibleName + '"'
+                    : "(empty accessible name)";
+                repeatedTargets.push(
+                    label + " repeats " + labelDescription + " to " + target +
+                    " " + matches.length + " times in the " + zone + " zone."
+                );
             }
         }
 
