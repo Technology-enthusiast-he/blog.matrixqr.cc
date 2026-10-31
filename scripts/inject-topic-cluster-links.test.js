@@ -104,7 +104,7 @@ test("generated article HTML contains every configured topic link and reciprocal
   const rendered = new Map();
   for (const [source, links] of Object.entries(TOPIC_LINKS)) {
     const sourceHtml = fs.readFileSync(path.join(root, source), "utf8");
-    const output = injectTopicClusterLinks(sourceHtml, links);
+    const output = injectTopicClusterLinks(sourceHtml, links, ARTICLE_CATEGORY_URLS[source]);
     const sectionStart = output.indexOf(MARKER);
     assert.notEqual(sectionStart, -1, `Missing generated topic section in ${source}`);
     const sectionEnd = output.indexOf("</section>", sectionStart);
