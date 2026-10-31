@@ -28,12 +28,12 @@ function buildSponsorMarkup() {
 function injectSponsor(html) {
     if (html.includes(START_MARKER) || html.includes(END_MARKER)) return html;
 
-    const footerMatch = /<footer\\b/i.exec(html);
+    const footerMatch = /<footer\b/i.exec(html);
     if (footerMatch) {
         return html.slice(0, footerMatch.index) + buildSponsorMarkup() + "\n\n    " + html.slice(footerMatch.index);
     }
 
-    const bodyClose = /<\\/body\\s*>/i.exec(html);
+    const bodyClose = /<\/body\s*>/i.exec(html);
     if (bodyClose) {
         return html.slice(0, bodyClose.index) + buildSponsorMarkup() + "\n" + html.slice(bodyClose.index);
     }
