@@ -31,6 +31,7 @@ const TOPIC_LINKS = {
     ["Why digital menus are useful alongside traditional menus", "/posts/2026-10/traditional-menus-digital-menu-qr-code"],
     ["Compare static and dynamic QR codes", "/posts/static-vs-dynamic-qr"],
     ["Review the pros and cons of static QR codes", "/posts/the-pros-and-cons-of-static-qr-codes"],
+    ["Learn how to share WiFi access safely with a QR code", "/posts/is-it-safe-to-put-wifi-password-in-qr-code"],
   ],
   "posts/static-vs-dynamic-qr.html": [
     ["Understand the pros and cons of static QR codes", "/posts/the-pros-and-cons-of-static-qr-codes"],
