@@ -41,6 +41,7 @@ const TOPIC_LINKS = {
   "posts/the-pros-and-cons-of-static-qr-codes.html": [
     ["Compare static and dynamic QR codes", "/posts/static-vs-dynamic-qr"],
     ["See how digital menu QR codes are secured", "/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization"],
+    ["Learn how to share WiFi access safely with a QR code", "/posts/is-it-safe-to-put-wifi-password-in-qr-code"],
   ],
   "posts/2026-10/introducing-matrixqr-url-generator.html": [
     ["Compare static and dynamic QR codes", "/posts/static-vs-dynamic-qr"],
@@ -49,6 +50,10 @@ const TOPIC_LINKS = {
   "posts/vcard-qr-setup.html": [
     ["Generate a privacy-first URL QR code", "/posts/2026-10/introducing-matrixqr-url-generator"],
     ["Compare static and dynamic QR codes", "/posts/static-vs-dynamic-qr"],
+  ],
+  "posts/is-it-safe-to-put-wifi-password-in-qr-code.html": [
+    ["Review the pros and cons of static QR codes", "/posts/the-pros-and-cons-of-static-qr-codes"],
+    ["Understand client-side processing and QR privacy boundaries", "/posts/how-we-secured-digital-menu-qr-codes-canvas-sanitization"],
   ],
 };
 
@@ -64,6 +69,7 @@ const ARTICLE_CATEGORY_URLS = {
   "posts/the-pros-and-cons-of-static-qr-codes.html": ["/category/qr-code-security-privacy/", "QR Code Security & Privacy"],
   "posts/2026-10/introducing-matrixqr-url-generator.html": ["/category/general/", "General QR Code Guides"],
   "posts/vcard-qr-setup.html": ["/category/vcard-contact-management/", "vCard & Contact Management"],
+  "posts/is-it-safe-to-put-wifi-password-in-qr-code.html": ["/category/qr-code-security-privacy/", "QR Code Security & Privacy"],
 };
 
 function buildRelatedLinks(links, categoryUrl) {
