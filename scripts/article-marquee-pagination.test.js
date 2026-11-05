@@ -58,3 +58,44 @@ test("homepage pagination renders clickable article images from the matching pag
     });
     assert.equal(fs.existsSync(path.join(root, "page", "5", "index.html")), false);
 });
+
+
+test("homepage generation ignores article links inside the generated marquee and remains idempotent", (t) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "matrixqr-marquee-homepage-"));
+    t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+    const scripts = path.join(root, "scripts");
+    fs.mkdirSync(scripts, { recursive: true });
+    for (const file of ["update-homepage.js", "article-categories.js"]) {
+        fs.copyFileSync(path.join(REPO_ROOT, "scripts", file), path.join(scripts, file));
+    }
+
+    const posts = [
+        { title: "Manual", description: "Manual", datePublished: "2026-10-01T08:00:00Z", category: "General", url: "https://blog.matrixqr.cc/posts/manual" },
+        { title: "Security", description: "Security", datePublished: "2026-10-04T08:00:00Z", category: "QR Code Security & Privacy", url: "https://blog.matrixqr.cc/posts/security" },
+        { title: "Menu", description: "Menu", datePublished: "2026-10-03T08:00:00Z", category: "Digital Menu & Branding", url: "https://blog.matrixqr.cc/posts/menu" },
+        { title: "General", description: "General", datePublished: "2026-10-02T08:00:00Z", category: "General", url: "https://blog.matrixqr.cc/posts/general" }
+    ];
+    fs.writeFileSync(path.join(root, "posts.json"), JSON.stringify(posts, null, 2));
+    const homepage = '<!doctype html><html><body>' +
+        '<!-- Section 1: Featured & Recommendation --><section><a href="/posts/manual">Manual</a></section>' +
+        '<!-- AUTO-SECURITY-START --><a href="/posts/security">Old security card</a><!-- AUTO-SECURITY-END -->' +
+        '<!-- AUTO-MENU-START --><a href="/posts/menu">Old menu card</a><!-- AUTO-MENU-END -->' +
+        '<!-- Section 4: Latest Articles --><!-- AUTO-POSTS-START --><a href="/posts/general">Old latest card</a><!-- AUTO-POSTS-END -->' +
+        '<section><!-- AUTO-ARTICLE-MARQUEE-START -->' +
+        '<a href="/posts/security">Marquee security</a><a href="/posts/menu">Marquee menu</a><a href="/posts/general">Marquee general</a>' +
+        '<!-- AUTO-ARTICLE-MARQUEE-END --></section></body></html>';
+    fs.writeFileSync(path.join(root, "index.html"), homepage);
+
+    runNode("update-homepage.js", root);
+    const firstBuild = fs.readFileSync(path.join(root, "index.html"), "utf8");
+    runNode("update-homepage.js", root);
+    const secondBuild = fs.readFileSync(path.join(root, "index.html"), "utf8");
+
+    assert.equal(secondBuild, firstBuild, "repeated homepage generation must be byte-identical");
+    const security = firstBuild.split("<!-- AUTO-SECURITY-START -->")[1].split("<!-- AUTO-SECURITY-END -->")[0];
+    const menu = firstBuild.split("<!-- AUTO-MENU-START -->")[1].split("<!-- AUTO-MENU-END -->")[0];
+    const latest = firstBuild.split("<!-- AUTO-POSTS-START -->")[1].split("<!-- AUTO-POSTS-END -->")[0];
+    assert.match(security, /href="\/posts\/security"/);
+    assert.match(menu, /href="\/posts\/menu"/);
+    assert.match(latest, /href="\/posts\/general"/);
+});
