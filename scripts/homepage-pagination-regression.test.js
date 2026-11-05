@@ -135,8 +135,10 @@ test("pagination SEO validator rejects duplicate canonical link tags", (t) => {
 });
 
 test("homepage and pagination pages use clickable images from their own article batch", (t) => {
-  const { root } = createFixture();
-  t.after(() => fs.rmSync(root, "recursive", { force: true }));
+  const { root, posts } = createFixture();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const expandedPosts = posts.concat(Array.from({ length: 6 }, (_, index) => article(`general-extra-${index + 1}`, "General", index + 20)));
+  writeJson(path.join(root, "posts.json"), expandedPosts);
   runNode("update-homepage.js", root);
   runNode("generate-pagination.js", root);
   const pages = ["index.html", "page/2/index.html", "page/3/index.html"].map(file => fs.readFileSync(path.join(root, file), "utf8"));
