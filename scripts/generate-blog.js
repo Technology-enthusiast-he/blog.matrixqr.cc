@@ -59,6 +59,42 @@ function getMetaContent(html, name) {
     }
     return "";
 }
+function getMetaPropertyContent(html, property) {
+    for (const match of html.matchAll(/<meta\b[^>]*>/gi)) {
+        const attrs = {};
+        for (const attr of match[0].matchAll(/([\w:-]+)\s*=\s*(["'])([\s\S]*?)\2/g)) attrs[attr[1].toLowerCase()] = attr[3];
+        if ((attrs.property || "").toLowerCase() === property.toLowerCase() && attrs.content !== undefined) return decodeHtmlEntities(attrs.content);
+    }
+    return "";
+}
+
+function normalizeArticleImage(value, canonical) {
+    if (!value || typeof value !== "string") return "";
+    try {
+        const url = new URL(decodeHtmlEntities(value.trim()), canonical || SITE_URL);
+        return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+    } catch { return ""; }
+}
+
+function getArticleImage(html, jsonLd, canonical, title) {
+    const value = jsonLd && jsonLd.image;
+    const jsonLdImage = typeof value === "string" ? value
+        : Array.isArray(value) ? (typeof value[0] === "string" ? value[0] : value[0] && value[0].url)
+        : value && typeof value === "object" ? value.url : "";
+    const bodyImages = [...html.matchAll(/<img\b[^>]*>/gi)].map(match => {
+        const src = match[0].match(/\bsrc\s*=\s*(["'])([\s\S]*?)\1/i);
+        return src ? src[2] : "";
+    });
+    const image = [
+        getMetaPropertyContent(html, "og:image"),
+        getMetaContent(html, "twitter:image"),
+        jsonLdImage,
+        ...bodyImages
+    ].map(item => normalizeArticleImage(item, canonical)).find(Boolean) || "";
+    const imageAlt = getMetaPropertyContent(html, "og:image:alt") || getMetaContent(html, "twitter:image:alt") || title || "Article image";
+    return { image, imageAlt: image ? imageAlt.trim() : "" };
+}
+
 function getCanonical(html) {
     const match = html.match(
         /<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["'][^>]*>/i
@@ -236,13 +272,17 @@ const rawArticleSection = jsonLd && jsonLd.articleSection
         canonicalUrlFiles.set(normalizedCanonical, file);
     }
 
+    const articleImage = getArticleImage(html, jsonLd, canonical, title);
+
     posts.push({
         title: title.trim(),
         description: description.trim(),
         datePublished,
         dateModified,
         category,
-        url: canonical
+        url: canonical,
+        image: articleImage.image,
+        imageAlt: articleImage.imageAlt
     });
 
     outputCategoryCounts.set(
