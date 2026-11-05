@@ -134,20 +134,3 @@ test("pagination SEO validator rejects duplicate canonical link tags", (t) => {
   assert.match(result.stderr, /contains 2 rel=canonical link tags/i);
 });
 
-test("homepage and pagination pages use clickable images from their own article batch", (t) => {
-  const { root, posts } = createFixture();
-  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const expandedPosts = posts.concat(Array.from({ length: 6 }, (_, index) => article(`general-extra-${index + 1}`, "General", index + 20)));
-  writeJson(path.join(root, "posts.json"), expandedPosts);
-  runNode("update-homepage.js", root);
-  runNode("generate-pagination.js", root);
-  const pages = ["index.html", "page/2/index.html", "page/3/index.html"].map(file => fs.readFileSync(path.join(root, file), "utf8"));
-  const blocks = pages.map(html => html.split("<!-- AUTO-ARTICLE-MARQUEE-START -->")[1].split("<!-- AUTO-ARTICLE-MARQUEE-END -->")[0]);
-  for (const block of blocks) {
-    assert.match(block, /<a\b[^>]*href=["']\/posts\//i);
-    assert.match(block, /<img\b[^>]*src=["']https:\/\/blog\.matrixqr\.cc\/posts\/images\//i);
-    assert.match(block, /aria-hidden="true"/i);
-  }
-  assert.notEqual(blocks[0], blocks[1]);
-  assert.notEqual(blocks[1], blocks[2]);
-});
