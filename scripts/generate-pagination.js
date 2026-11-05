@@ -17,6 +17,7 @@ const SECTION_1 = "<!-- Section 1: Featured & Recommendation -->";
 const SECTION_4 = "<!-- Section 4: Latest Articles -->";
 
 const GENERATED_MARKER = "<!-- AUTO-GENERATED-PAGINATION-PAGE -->";
+const { renderArticleMarquee } = require("./article-marquee");
 
 function normalizeUrl(value) {
     if (!value) return "";
@@ -134,6 +135,16 @@ function replaceLatestArticles(html, posts) {
         "\n" +
         html.slice(range.endIndex)
     );
+}
+
+function replaceArticleMarquee(html, posts) {
+    const startMarker = "<!-- AUTO-ARTICLE-MARQUEE-START -->";
+    const endMarker = "<!-- AUTO-ARTICLE-MARQUEE-END -->";
+    const range = findMarkerRange(html, startMarker, endMarker);
+    if (!range) throw new Error("Article marquee markers are missing.");
+    return html.slice(0, range.startIndex + startMarker.length)
+        + "\n" + renderArticleMarquee(posts) + "\n        "
+        + html.slice(range.endIndex);
 }
 
 function createPagination(pageNumber, totalPages) {
@@ -340,10 +351,9 @@ for (const post of posts) {
         Math.ceil(latestPosts.length / PAGE_SIZE)
     );
 
-    let updatedHomepage = replaceLatestArticles(
-        homepage,
-        latestPosts.slice(0, PAGE_SIZE)
-    );
+    const homepagePosts = latestPosts.slice(0, PAGE_SIZE);
+    let updatedHomepage = replaceLatestArticles(homepage, homepagePosts);
+    updatedHomepage = replaceArticleMarquee(updatedHomepage, homepagePosts);
 
     updatedHomepage = replacePagination(
         updatedHomepage,
@@ -361,6 +371,7 @@ for (const post of posts) {
         const pagePosts = latestPosts.slice(start, start + PAGE_SIZE);
 
         let pageHtml = replaceLatestArticles(homepage, pagePosts);
+        pageHtml = replaceArticleMarquee(pageHtml, pagePosts);
 
         pageHtml = setPageMeta(pageHtml, pageNumber, totalPages);
 
