@@ -351,9 +351,10 @@ for (const post of posts) {
         Math.ceil(latestPosts.length / PAGE_SIZE)
     );
 
-    const homepagePosts = posts.slice(0, PAGE_SIZE);
-    let updatedHomepage = replaceLatestArticles(homepage, homepagePosts);
-    updatedHomepage = replaceArticleMarquee(updatedHomepage, homepagePosts);
+    const homepagePaginationPosts = latestPosts.slice(0, PAGE_SIZE);
+    const homepageMarqueePosts = posts.slice(0, PAGE_SIZE);
+    let updatedHomepage = replaceLatestArticles(homepage, homepagePaginationPosts);
+    updatedHomepage = replaceArticleMarquee(updatedHomepage, homepageMarqueePosts);
 
     updatedHomepage = replacePagination(
         updatedHomepage,
