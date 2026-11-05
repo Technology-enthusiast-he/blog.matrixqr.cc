@@ -15,6 +15,9 @@ const MENU_END = "<!-- AUTO-MENU-END -->";
 const LATEST_START = "<!-- AUTO-POSTS-START -->";
 const LATEST_END = "<!-- AUTO-POSTS-END -->";
 
+const MARQUEE_START = "<!-- AUTO-ARTICLE-MARQUEE-START -->";
+const MARQUEE_END = "<!-- AUTO-ARTICLE-MARQUEE-END -->";
+
 const MAX_POSTS_PER_SECTION = 6;
 const SITE_ORIGIN = "https://blog.matrixqr.cc";
 
@@ -248,7 +251,9 @@ let html = fs.readFileSync(INDEX_FILE, "utf8");
 for (const [startMarker, endMarker] of [
     [SECURITY_START, SECURITY_END],
     [MENU_START, MENU_END],
-    [LATEST_START, LATEST_END]
+    [LATEST_START, LATEST_END],
+    [MARQUEE_START, MARQUEE_END],
+    [MARQUEE_START, MARQUEE_END]
 ]) {
     if (!findMarkerRange(html, startMarker, endMarker)) {
         console.error(
