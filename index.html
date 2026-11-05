@@ -75,11 +75,17 @@
         }
         .animate-marquee {
             display: flex;
-            width: 200%;
-            animation: marquee 25s linear infinite;
+            width: max-content;
+            animation: marquee 35s linear infinite;
         }
         .animate-marquee:hover {
             animation-play-state: paused;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .animate-marquee {
+                animation: none;
+                transform: none;
+            }
         }
     </style>
 </head>
