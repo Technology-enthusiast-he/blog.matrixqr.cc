@@ -252,7 +252,6 @@ for (const [startMarker, endMarker] of [
     [SECURITY_START, SECURITY_END],
     [MENU_START, MENU_END],
     [LATEST_START, LATEST_END],
-    [MARQUEE_START, MARQUEE_END],
     [MARQUEE_START, MARQUEE_END]
 ]) {
     if (!findMarkerRange(html, startMarker, endMarker)) {
@@ -275,7 +274,8 @@ let manualHomepageHtml = html;
 for (const [startMarker, endMarker] of [
     [SECURITY_START, SECURITY_END],
     [MENU_START, MENU_END],
-    [LATEST_START, LATEST_END]
+    [LATEST_START, LATEST_END],
+    [MARQUEE_START, MARQUEE_END]
 ]) {
     const range = findMarkerRange(
         manualHomepageHtml,
