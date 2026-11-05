@@ -5,6 +5,7 @@ function escapeHtml(value = "") {
 }
 
 function getArticlePath(value) {
+    if (typeof value !== "string" || !value.trim()) return "";
     try {
         const url = new URL(value, SITE_ORIGIN);
         return url.hostname.toLowerCase() === new URL(SITE_ORIGIN).hostname.toLowerCase() ? url.pathname : "";
@@ -12,6 +13,7 @@ function getArticlePath(value) {
 }
 
 function getSafeImageUrl(value) {
+    if (typeof value !== "string" || !value.trim()) return "";
     try {
         const url = new URL(value, SITE_ORIGIN);
         return ["http:", "https:"].includes(url.protocol) ? url.href : "";
