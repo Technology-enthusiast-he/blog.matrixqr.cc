@@ -6,14 +6,14 @@ const { spawnSync } = require("node:child_process");
 const test = require("node:test");
 
 const REPO_ROOT = path.join(__dirname, "..");
-const SCRIPT_NAMES = ["article-categories.js", "update-homepage.js", "generate-pagination.js", "generate-archive.js", "generate-sitemap.js", "generate-xml-sitemap.js", "validate-pagination-seo.js"];
+const SCRIPT_NAMES = ["article-categories.js", "update-homepage.js", "generate-pagination.js", "generate-archive.js", "generate-sitemap.js", "generate-xml-sitemap.js", "validate-pagination-seo.js", "article-marquee.js"];
 function runNode(script, cwd) { const result = spawnSync(process.execPath, [path.join(cwd, "scripts", script)], { cwd, encoding: "utf8" }); assert.equal(result.status, 0, `${script} failed.\nSTDOUT:\n${result.stdout}\nSTDERR:\n${result.stderr}`); return result.stdout; }
-function article(id, category, day) { return { title: `Article ${id}`, description: `Description for article ${id}`, datePublished: `2026-10-${String(day).padStart(2, "0")}T08:00:00Z`, dateModified: `2026-10-${String(day).padStart(2, "0")}T08:00:00Z`, category, url: `https://blog.matrixqr.cc/posts/${id}` }; }
+function article(id, category, day) { return { title: `Article ${id}`, description: `Description for article ${id}`, datePublished: `2026-10-${String(day).padStart(2, "0")}T08:00:00Z`, dateModified: `2026-10-${String(day).padStart(2, "0")}T08:00:00Z`, category, url: `https://blog.matrixqr.cc/posts/${id}`, image: `https://blog.matrixqr.cc/posts/images/${id}.webp`, imageAlt: `Image for ${id}` }; }
 function writeJson(file, value) { fs.writeFileSync(file, JSON.stringify(value, null, 2) + "\n"); }
 function createFixture() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "matrixqr-regression-")); const scriptsDir = path.join(root, "scripts"); fs.mkdirSync(scriptsDir, { recursive: true });
   for (const name of SCRIPT_NAMES) fs.copyFileSync(path.join(REPO_ROOT, "scripts", name), path.join(scriptsDir, name));
-  const homepage = `<!doctype html>\n<html><head><title>Fixture</title><meta name="description" content="Fixture description"><link rel="canonical" href="https://blog.matrixqr.cc/"></head>\n<body>\n<!-- Section 1: Featured & Recommendation -->\n<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article></section>\n<!-- AUTO-SECURITY-START -->\n<!-- AUTO-SECURITY-END -->\n<!-- AUTO-MENU-START -->\n<!-- AUTO-MENU-END -->\n<!-- Section 4: Latest Articles -->\n<section id="latest">\n<!-- AUTO-POSTS-START -->\n<!-- AUTO-POSTS-END -->\n</section>\n<div class="flex justify-center mt-12 mb-10 gap-3 flex-wrap"></div>\n<div id="external-links"><a href="https://partner.example/posts/security-a">External link with a colliding pathname</a></div>\n</body></html>`;
+  const homepage = `<!doctype html>\n<html><head><title>Fixture</title><meta name="description" content="Fixture description"><link rel="canonical" href="https://blog.matrixqr.cc/"></head>\n<body>\n<!-- Section 1: Featured & Recommendation -->\n<section id="manual-featured"><article><a href="/posts/general-11">Article general-11</a></article></section>\n<!-- AUTO-SECURITY-START -->\n<!-- AUTO-SECURITY-END -->\n<!-- AUTO-MENU-START -->\n<!-- AUTO-MENU-END -->\n<!-- Section 4: Latest Articles -->\n<section aria-label="Featured article images"><!-- AUTO-ARTICLE-MARQUEE-START --><!-- AUTO-ARTICLE-MARQUEE-END --></section>\n<section id="latest">\n<!-- AUTO-POSTS-START -->\n<!-- AUTO-POSTS-END -->\n</section>\n<div class="flex justify-center mt-12 mb-10 gap-3 flex-wrap"></div>\n<div id="external-links"><a href="https://partner.example/posts/security-a">External link with a colliding pathname</a></div>\n</body></html>`;
   fs.writeFileSync(path.join(root, "index.html"), homepage); fs.mkdirSync(path.join(root, "posts"), { recursive: true }); fs.mkdirSync(path.join(root, "templates"), { recursive: true }); fs.mkdirSync(path.join(root, "sitemap"), { recursive: true }); fs.writeFileSync(path.join(root, "sitemap", "index.html"), `<!doctype html><html><head><title>Sitemap</title></head><body><!-- AUTO-SITEMAP-START --><!-- AUTO-SITEMAP-END --></body></html>`);
   fs.writeFileSync(path.join(root, "templates", "archive-template.html.template"), `<!doctype html>\n<html><head><title>Archive</title><meta name="description" content="Archive fixture"><link rel="canonical" href="https://blog.matrixqr.cc/posts/"></head>\n<body>\n<!-- AUTO-ARCHIVE-START -->\n<!-- AUTO-ARCHIVE-END -->\n<!-- AUTO-ARCHIVE-PAGINATION-START -->\n<!-- AUTO-ARCHIVE-PAGINATION-END -->\n</body></html>`);
   const posts = [article("security-a", "QR Code Security & Privacy", 1), article("general-12", "General", 2), ...Array.from({ length: 11 }, (_, index) => article(`general-${index + 1}`, "General", index + 3))]; writeJson(path.join(root, "posts.json"), posts); return { root, posts };
@@ -132,4 +132,20 @@ test("pagination SEO validator rejects duplicate canonical link tags", (t) => {
   const result = spawnSync(process.execPath, [path.join(root, "scripts", "validate-pagination-seo.js")], { cwd: root, encoding: "utf8" });
   assert.notEqual(result.status, 0, "validator should reject duplicate canonical");
   assert.match(result.stderr, /contains 2 rel=canonical link tags/i);
+});
+
+test("homepage and pagination pages use clickable images from their own article batch", (t) => {
+  const { root } = createFixture();
+  t.after(() => fs.rmSync(root, "recursive", { force: true }));
+  runNode("update-homepage.js", root);
+  runNode("generate-pagination.js", root);
+  const pages = ["index.html", "page/2/index.html", "page/3/index.html"].map(file => fs.readFileSync(path.join(root, file), "utf8"));
+  const blocks = pages.map(html => html.split("<!-- AUTO-ARTICLE-MARQUEE-START -->")[1].split("<!-- AUTO-ARTICLE-MARQUEE-END -->")[0]);
+  for (const block of blocks) {
+    assert.match(block, /<a\b[^>]*href=["']\/posts\//i);
+    assert.match(block, /<img\b[^>]*src=["']https:\/\/blog\.matrixqr\.cc\/posts\/images\//i);
+    assert.match(block, /aria-hidden="true"/i);
+  }
+  assert.notEqual(blocks[0], blocks[1]);
+  assert.notEqual(blocks[1], blocks[2]);
 });
