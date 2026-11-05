@@ -48,7 +48,8 @@ test("homepage pagination renders clickable article images from the matching pag
     pageFiles.forEach((file, index) => {
         const html = fs.readFileSync(path.join(root, file), "utf8");
         const marquee = html.split("<!-- AUTO-ARTICLE-MARQUEE-START -->")[1].split("<!-- AUTO-ARTICLE-MARQUEE-END -->")[0];
-        const links = [...marquee.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(match => match[1]);
+        const primaryTrack = marquee.replace(/<div class="flex gap-6 shrink-0 pr-6" aria-hidden="true">[\s\S]*$/, "");
+        const links = [...primaryTrack.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(match => match[1]);
         const expected = expectedBatches[index].map(post => new URL(post.url).pathname);
         assert.deepEqual(links, expected, file + " must show links for its own six-article batch");
         assert.match(marquee, /<img\b[^>]*src="https:\/\/blog\.matrixqr\.cc\/posts\/images\//i);
