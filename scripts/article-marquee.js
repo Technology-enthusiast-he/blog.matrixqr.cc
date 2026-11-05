@@ -40,7 +40,7 @@ function renderArticleMarquee(posts = []) {
     if (!cards.length) return '<p class="px-6 text-sm text-slate-400">Article images will appear here when available.</p>';
     const primary = cards.join("\n");
     const duplicate = posts.map((post, index) => createCard(post, index, true)).filter(Boolean).join("\n");
-    return '<div class="animate-marquee gap-6 px-3"><div class="flex gap-6 shrink-0 pr-6">' + primary +
+    return '<div class="animate-marquee px-3"><div class="flex gap-6 shrink-0 pr-6">' + primary +
         '</div><div class="flex gap-6 shrink-0 pr-6" aria-hidden="true">' + duplicate + '</div></div>';
 }
 
