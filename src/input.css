@@ -2,6 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
+/* MatrixQR Blog Design System — editorial minimal tech */
+:root {
+  color-scheme: light;
+  --mq-page: #f7f8fa;
+  --mq-surface: #ffffff;
+  --mq-surface-soft: #f0f3f5;
+  --mq-ink: #1c2c40;
+  --mq-muted: #657487;
+  --mq-border: #dfe5ea;
+  --mq-accent: #287f78;
+  --mq-accent-hover: #216c66;
+  --mq-accent-soft: #e8f3f1;
+  --mq-navy: #172b45;
+  --mq-reading: #344457;
+  --mq-focus: rgba(40, 127, 120, .2);
+}
+html, html.dark { color-scheme: light !important; background: var(--mq-page) !important; }
+body { background: var(--mq-page) !important; color: var(--mq-reading) !important; background-image: none !important; }
+body > header { background: rgba(255,255,255,.96) !important; border-color: var(--mq-border) !important; box-shadow: 0 1px 3px rgba(23,43,69,.04); backdrop-filter: blur(14px); }
+body > header a, body > header span { color: var(--mq-ink) !important; }
+body > header a span span { color: var(--mq-accent) !important; }
+body > header a:hover { color: var(--mq-accent) !important; }
+body > header .bg-gradient-to-br { background: var(--mq-navy) !important; box-shadow: none !important; }
+body > header .bg-gradient-to-br svg { color: #fff !important; }
+body > header nav a[class*="bg-gradient"] { background: var(--mq-accent) !important; color: #fff !important; box-shadow: none !important; border-radius: 9px !important; }
+body > header nav a[class*="bg-gradient"]:hover { background: var(--mq-accent-hover) !important; }
+body > section[class*="bg-gradient"], body > section[class*="bg-[#"], body > section[aria-label="Featured article images"] { background: var(--mq-surface) !important; border-color: var(--mq-border) !important; }
+body > section .bg-cyan-500\/10 { color: var(--mq-accent) !important; background: var(--mq-accent-soft) !important; border-color: #c9e1dc !important; }
+body > section .text-white, body > section h1, body > section h2 { color: var(--mq-ink) !important; }
+body > section .text-slate-400, body > section p { color: var(--mq-muted) !important; }
+body > section .bg-gradient-to-r { background: none !important; color: var(--mq-accent) !important; -webkit-text-fill-color: var(--mq-accent) !important; }
+body > section .blur-\[80px\] { display: none !important; }
+main, main.flex-1 { color: var(--mq-reading) !important; }
+main article, main article.bg-gradient-to-br, main article[class*="bg-[#"], main article[class*="bg-slate-"] { background: var(--mq-surface) !important; border: 1px solid var(--mq-border) !important; border-radius: 16px !important; box-shadow: 0 5px 20px rgba(23,43,69,.045) !important; }
+main article h1, main article h2, main article h3 { color: var(--mq-ink) !important; }
+main article h2 { border-left-color: var(--mq-accent) !important; }
+main article p, main article li, main article .intro-text { color: var(--mq-reading) !important; }
+main article .meta-info { color: var(--mq-muted) !important; }
+main article .blog-category { color: var(--mq-accent) !important; }
+main article a:not([class*="bg-"]) { color: var(--mq-accent) !important; }
+main article a:not([class*="bg-"]):hover { color: var(--mq-accent-hover) !important; }
+main article .header-banner { background: #f0f4f6 !important; color: var(--mq-ink) !important; border: 1px solid var(--mq-border) !important; border-radius: 14px !important; padding: clamp(22px, 4vw, 38px) !important; }
+main article .header-banner h1 { color: var(--mq-ink) !important; }
+main article .callout-box { background: var(--mq-accent-soft) !important; border: 1px solid #c9e1dc !important; border-left: 4px solid var(--mq-accent) !important; border-radius: 10px !important; }
+main article .callout-box p { color: #344b5b !important; }
+main article .callout-title { color: var(--mq-accent-hover) !important; }
+main article pre { background: #172b45 !important; color: #eef3f7 !important; border: 1px solid #263e59 !important; border-radius: 10px !important; }
+main article pre code { background: transparent !important; color: #eef3f7 !important; }
+main article code:not(pre code) { background: #edf1f4 !important; color: #294a5d !important; border-radius: 4px !important; }
+main article blockquote { background: #f3f6f8 !important; border-left: 4px solid var(--mq-accent) !important; color: var(--mq-reading) !important; padding: 16px 20px !important; }
+main article .table-custom { border-collapse: separate !important; border-spacing: 0 !important; border: 1px solid var(--mq-border) !important; border-radius: 10px !important; overflow: hidden !important; }
+main article .table-custom th { background: #edf2f5 !important; color: var(--mq-ink) !important; border-color: var(--mq-border) !important; }
+main article .table-custom td { background: #fff !important; color: var(--mq-reading) !important; border-color: var(--mq-border) !important; }
+main article .table-custom tr:nth-child(even) td { background: #f8fafb !important; }
+main article img { border-radius: 10px; }
+main article .faq-item { border-color: var(--mq-border) !important; }
+main article .faq-question { color: var(--mq-ink) !important; }
+main aside, main aside > div, main .sidebar-card, main [class*="bg-slate-900"], main [class*="bg-[#080d1a"] { background: var(--mq-surface) !important; border-color: var(--mq-border) !important; color: var(--mq-reading) !important; }
+main aside h2, main aside h3, main aside .text-white, main aside .text-slate-100 { color: var(--mq-ink) !important; }
+main aside .text-slate-400, main aside .text-slate-300 { color: var(--mq-muted) !important; }
+main nav[aria-label="Breadcrumb"], main nav[aria-label="Breadcrumb"] a { color: var(--mq-muted) !important; }
+main nav[aria-label="Breadcrumb"] [aria-current="page"] { color: var(--mq-ink) !important; }
+main nav[aria-label="Breadcrumb"] a:hover { color: var(--mq-accent) !important; }
+footer { background: #edf1f4 !important; border-color: var(--mq-border) !important; color: var(--mq-muted) !important; }
+footer a { color: var(--mq-accent) !important; }
+footer a:hover { color: var(--mq-accent-hover) !important; }
+a { text-underline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--mq-focus); outline-offset: 2px; }
+@media (max-width: 640px) {
+  main article .header-banner { padding: 20px !important; }
+  main article h1 { font-size: clamp(1.8rem, 7vw, 2.35rem) !important; line-height: 1.2 !important; }
+  main article h2 { font-size: 1.35rem !important; line-height: 1.35 !important; }
+  main article .table-custom { display: block; overflow-x: auto; max-width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
 
 
+/* Contrast repair: legacy light-text utilities on newly light surfaces */
+body :is(.text-white,.text-slate-100,.text-slate-200,.text-slate-300,.text-gray-100,.text-gray-200,.text-zinc-100,.text-zinc-200) {
+  color: var(--mq-ink) !important;
+}
+body :is(.text-slate-400,.text-slate-500,.text-gray-400,.text-gray-500,.text-zinc-400,.text-zinc-500) {
+  color: var(--mq-muted) !important;
+}
+/* Preserve white text only on intentionally dark/primary surfaces */
+body pre, body pre *, body code[class*="language-"], body code[class*="language-"] * {
+  color: #eef3f7 !important;
+}
+body > header nav a[class*="bg-gradient"],
+body > header nav a[class*="bg-gradient"] * {
+  color: #ffffff !important;
+}
 
+
+/* Stronger editorial typography: darker reading text and secondary labels */
+:root {
+  --mq-ink: #14263b;
+  --mq-muted: #46576a;
+  --mq-reading: #26394d;
+}
+body { color: #26394d !important; }
+body :is(p,li,label,small,figcaption,summary) { color: #34475b; }
+body :is(.text-slate-400,.text-slate-500,.text-gray-400,.text-gray-500,.text-zinc-400,.text-zinc-500) {
+  color: #46576a !important;
+}
+body > header a, body > header span { color: #14263b !important; }
+main article p, main article li, main article .intro-text { color: #26394d !important; }
+main article .meta-info, main aside .text-slate-400, main aside .text-slate-300 {
+  color: #46576a !important;
+}
+main aside { color: #26394d !important; }
+footer { color: #46576a !important; }
