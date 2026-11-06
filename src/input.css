@@ -79,3 +79,20 @@ a { text-underline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Contrast repair: legacy light-text utilities on newly light surfaces */
+body :is(.text-white,.text-slate-100,.text-slate-200,.text-slate-300,.text-gray-100,.text-gray-200,.text-zinc-100,.text-zinc-200) {
+  color: var(--mq-ink) !important;
+}
+body :is(.text-slate-400,.text-slate-500,.text-gray-400,.text-gray-500,.text-zinc-400,.text-zinc-500) {
+  color: var(--mq-muted) !important;
+}
+/* Preserve white text only on intentionally dark/primary surfaces */
+body pre, body pre *, body code[class*="language-"], body code[class*="language-"] * {
+  color: #eef3f7 !important;
+}
+body > header nav a[class*="bg-gradient"],
+body > header nav a[class*="bg-gradient"] * {
+  color: #ffffff !important;
+}
