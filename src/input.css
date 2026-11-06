@@ -96,3 +96,23 @@ body > header nav a[class*="bg-gradient"],
 body > header nav a[class*="bg-gradient"] * {
   color: #ffffff !important;
 }
+
+
+/* Stronger editorial typography: darker reading text and secondary labels */
+:root {
+  --mq-ink: #14263b;
+  --mq-muted: #46576a;
+  --mq-reading: #26394d;
+}
+body { color: #26394d !important; }
+body :is(p,li,label,small,figcaption,summary) { color: #34475b; }
+body :is(.text-slate-400,.text-slate-500,.text-gray-400,.text-gray-500,.text-zinc-400,.text-zinc-500) {
+  color: #46576a !important;
+}
+body > header a, body > header span { color: #14263b !important; }
+main article p, main article li, main article .intro-text { color: #26394d !important; }
+main article .meta-info, main aside .text-slate-400, main aside .text-slate-300 {
+  color: #46576a !important;
+}
+main aside { color: #26394d !important; }
+footer { color: #46576a !important; }
