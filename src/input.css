@@ -22,6 +22,7 @@ html, html.dark { color-scheme: light !important; background: var(--mq-page) !im
 body { background: var(--mq-page) !important; color: var(--mq-reading) !important; background-image: none !important; }
 body > header { background: rgba(255,255,255,.96) !important; border-color: var(--mq-border) !important; box-shadow: 0 1px 3px rgba(23,43,69,.04); backdrop-filter: blur(14px); }
 body > header a, body > header span { color: var(--mq-ink) !important; }
+body > header a span span { color: var(--mq-accent) !important; }
 body > header a:hover { color: var(--mq-accent) !important; }
 body > header .bg-gradient-to-br { background: var(--mq-navy) !important; box-shadow: none !important; }
 body > header .bg-gradient-to-br svg { color: #fff !important; }
