@@ -128,3 +128,42 @@ body pre code,
 body pre code * {
   color: #eef3f7 !important;
 }
+
+
+/* Homepage badge and footer contrast repair: retain the editorial palette
+   while ensuring text remains readable on the now-light surfaces. */
+body > section [class*="bg-cyan-500/10"] {
+  color: #216c66 !important;
+}
+main article span[class*="bg-cyan-500/10"] {
+  color: #216c66 !important;
+  background: #e8f3f1 !important;
+  border-color: #c9e1dc !important;
+}
+main article span[class*="bg-indigo-500/10"] {
+  color: #344f86 !important;
+  background: #edf1fb !important;
+  border-color: #d4def3 !important;
+}
+main article span[class*="bg-orange-500/10"] {
+  color: #9a4b12 !important;
+  background: #fff2e7 !important;
+  border-color: #f4d7c2 !important;
+}
+main article span[class*="bg-amber-500/10"] {
+  color: #8a5a08 !important;
+  background: #fff5df !important;
+  border-color: #ead7a7 !important;
+}
+main article span[class*="bg-rose-500/10"] {
+  color: #a12f55 !important;
+  background: #fff0f4 !important;
+  border-color: #f0cbd7 !important;
+}
+footer a,
+footer a[class~="text-cyan-400"] {
+  color: #216c66 !important;
+}
+footer a:hover {
+  color: #174f4b !important;
+}
