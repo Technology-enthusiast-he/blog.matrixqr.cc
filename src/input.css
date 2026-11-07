@@ -292,3 +292,39 @@ main article .faq-item h3 {
 main article .faq-item p {
   color: #26394d !important;
 }
+
+
+/* Static vs dynamic QR article: accessible contrast for legacy cyan elements
+   on the light editorial surfaces, plus a non-color link indicator. */
+main article .header-banner .blog-category {
+  color: #174f4b !important;
+}
+main article a[href="https://blog.matrixqr.cc/posts/vcard-qr-setup"].bg-slate-900\/60,
+main article a[href="https://blog.matrixqr.cc/posts/image-to-qr-menu-guide"].bg-slate-900\/60 {
+  background: #f0f3f5 !important;
+  background-color: #f0f3f5 !important;
+  border-color: #dfe5ea !important;
+}
+main article a[href="https://blog.matrixqr.cc/posts/vcard-qr-setup"] .text-cyan-400,
+main article a[href="https://blog.matrixqr.cc/posts/image-to-qr-menu-guide"] .text-cyan-400 {
+  color: #216c66 !important;
+}
+main article a[href="https://www.matrixqr.cc/"].bg-cyan-500\/10 {
+  color: #174f4b !important;
+  background: #e8f3f1 !important;
+  background-color: #e8f3f1 !important;
+  border-color: #c9e1dc !important;
+}
+main article a[href="https://www.matrixqr.cc/"].bg-cyan-500\/10:hover {
+  color: #143f3b !important;
+  background: #dceeea !important;
+  border-color: #a9d2ca !important;
+}
+/* Inline text links are underlined at rest, so link identity is not conveyed
+   by color alone. Card-style resource links remain visually distinct. */
+main article p a:not([class*="bg-"]),
+main article li a:not([class*="bg-"]) {
+  text-decoration: underline !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 3px !important;
+}
