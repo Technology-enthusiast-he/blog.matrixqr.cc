@@ -251,18 +251,18 @@ main article a.text-sky-400 {
 main article a.text-sky-400:hover {
   color: #174f4b !important;
 }
-main article a.text-sky-400.bg-sky-500\\/10 {
+main article a.text-sky-400[class~="bg-sky-500/10"] {
   color: #174f4b !important;
   background: #e8f3f1 !important;
   background-color: #e8f3f1 !important;
   border-color: #c9e1dc !important;
 }
-main article a.text-sky-400.bg-sky-500\\/10:hover,
-main article a.text-sky-400.bg-sky-500\\/10:hover * {
+main article a.text-sky-400[class~="bg-sky-500/10"]:hover,
+main article a.text-sky-400[class~="bg-sky-500/10"]:hover * {
   color: #143f3b !important;
   background: #dceeea !important;
   border-color: #a9d2ca !important;
 }
-main article a.text-sky-400.bg-sky-500\\/10 span {
+main article a.text-sky-400[class~="bg-sky-500/10"] span {
   color: inherit !important;
 }
