@@ -277,3 +277,18 @@ main article .callout-box a:hover,
 main article .callout-box a.text-cyan-400:hover {
   color: #174f4b !important;
 }
+
+
+/* Static QR article FAQ: align legacy dark cards with the light editorial theme.
+   The global article typography is dark, so the FAQ surface must also be light. */
+main article .faq-item {
+  background: #f0f3f5 !important;
+  background-color: #f0f3f5 !important;
+  border-color: #dfe5ea !important;
+}
+main article .faq-item h3 {
+  color: #14263b !important;
+}
+main article .faq-item p {
+  color: #26394d !important;
+}
