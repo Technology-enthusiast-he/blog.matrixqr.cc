@@ -266,3 +266,14 @@ main article a.text-sky-400[class~="bg-sky-500/10"]:hover * {
 main article a.text-sky-400[class~="bg-sky-500/10"] span {
   color: inherit !important;
 }
+
+/* URL generator article: keep callout links readable against the light
+   editorial callout surface, including links carrying legacy cyan utilities. */
+main article .callout-box a,
+main article .callout-box a.text-cyan-400 {
+  color: #216c66 !important;
+}
+main article .callout-box a:hover,
+main article .callout-box a.text-cyan-400:hover {
+  color: #174f4b !important;
+}
