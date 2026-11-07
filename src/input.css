@@ -171,15 +171,23 @@ footer a:hover {
 
 
 /* WiFi security article contrast repair.
-   Keep the article banner light and the example code block dark,
-   while overriding legacy Tailwind text utilities with sufficient specificity. */
+   Explicitly lock BOTH sides of the code block: a later global surface rule
+   also matches .bg-slate-900 and can otherwise turn the block light. */
 main article .header-banner .blog-category {
   color: #174f4b !important;
 }
-body main article pre.bg-slate-900.text-slate-200,
+body main article pre.bg-slate-900.text-slate-200 {
+  background: #172b45 !important;
+  background-color: #172b45 !important;
+  color: #ffffff !important;
+  border: 1px solid #36516f !important;
+  opacity: 1 !important;
+}
 body main article pre.bg-slate-900.text-slate-200 code,
 body main article pre.bg-slate-900.text-slate-200 code * {
+  background: transparent !important;
   color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
   opacity: 1 !important;
   font-weight: 600 !important;
 }
