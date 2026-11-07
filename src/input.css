@@ -337,3 +337,102 @@ body > header a > .bg-gradient-to-br svg * {
   stroke: #ffd166 !important;
   opacity: 1 !important;
 }
+
+/* Mobile header navigation: keep the primary site routes visible on every
+   page that uses the shared header, including generated archives and pages. */
+@media (max-width: 640px) {
+  body > header > div {
+    height: auto !important;
+    min-height: 4.5rem;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    gap: .5rem !important;
+  }
+
+  body > header > div > a:first-child {
+    min-width: 0;
+    flex: 0 1 auto;
+    gap: .5rem !important;
+  }
+
+  body > header > div > a:first-child > .bg-gradient-to-br {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    flex-shrink: 0;
+  }
+
+  body > header > div > a:first-child > div:last-child {
+    min-width: 0;
+  }
+
+  body > header > div > a:first-child > div:last-child > span:first-child {
+    font-size: 1rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: .04em !important;
+    white-space: nowrap;
+  }
+
+  body > header > div > a:first-child > div:last-child > span:last-child {
+    font-size: 8px !important;
+    white-space: nowrap;
+  }
+
+  body > header nav {
+    display: flex !important;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: .625rem !important;
+    font-size: .7rem !important;
+    white-space: nowrap;
+  }
+
+  body > header nav a:first-child {
+    gap: 0 !important;
+  }
+
+  body > header nav a:first-child > span {
+    display: none !important;
+  }
+
+  body > header nav a:last-child {
+    padding: .5rem .625rem !important;
+    border-radius: .5rem !important;
+    font-size: .7rem !important;
+  }
+}
+
+/* Extra compact layout for narrow phones (320–380px). */
+@media (max-width: 380px) {
+  body > header > div {
+    padding-left: .75rem !important;
+    padding-right: .75rem !important;
+    gap: .375rem !important;
+  }
+
+  body > header > div > a:first-child {
+    gap: .375rem !important;
+  }
+
+  body > header > div > a:first-child > .bg-gradient-to-br {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  body > header > div > a:first-child > div:last-child > span:first-child {
+    font-size: .875rem !important;
+  }
+
+  body > header > div > a:first-child > div:last-child > span:last-child {
+    display: none;
+  }
+
+  body > header nav {
+    gap: .375rem !important;
+    font-size: .625rem !important;
+  }
+
+  body > header nav a:last-child {
+    padding: .4rem .45rem !important;
+    font-size: .625rem !important;
+  }
+}
