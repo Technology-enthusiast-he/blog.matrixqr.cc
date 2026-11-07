@@ -328,3 +328,12 @@ main article li a:not([class*="bg-"]) {
   text-decoration-thickness: 1px !important;
   text-underline-offset: 3px !important;
 }
+
+/* Brand alignment: use the same champagne-gold QR mark as the MatrixQR main site.
+   This shared header rule applies to the homepage, articles, archives and pagination. */
+body > header a > .bg-gradient-to-br svg,
+body > header a > .bg-gradient-to-br svg * {
+  color: #ffd166 !important;
+  stroke: #ffd166 !important;
+  opacity: 1 !important;
+}
