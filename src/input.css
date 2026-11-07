@@ -116,3 +116,15 @@ main article .meta-info, main aside .text-slate-400, main aside .text-slate-300 
 }
 main aside { color: #26394d !important; }
 footer { color: #46576a !important; }
+
+
+/* Keep syntax examples readable: utility text colors must not override
+   the intentionally dark code-block surface. */
+body pre :is(
+  .text-white,.text-slate-100,.text-slate-200,.text-slate-300,
+  .text-gray-100,.text-gray-200,.text-zinc-100,.text-zinc-200
+),
+body pre code,
+body pre code * {
+  color: #eef3f7 !important;
+}
