@@ -221,3 +221,23 @@ body main article pre.bg-slate-900.text-slate-300 code * {
   opacity: 1 !important;
   font-weight: 600 !important;
 }
+
+
+/* Logo guide checklist contrast repair: pair the editorial dark text with
+   a light checklist surface instead of the legacy dark card background. */
+main article .checklist {
+  background: #f0f3f5 !important;
+  background-color: #f0f3f5 !important;
+  border: 1px solid #dfe5ea !important;
+}
+main article .checklist h3 {
+  color: #14263b !important;
+}
+main article .checklist ol,
+main article .checklist ul,
+main article .checklist li {
+  color: #26394d !important;
+}
+main article .checklist li strong {
+  color: #14263b !important;
+}
