@@ -132,7 +132,7 @@ body pre code * {
 
 /* Homepage badge and footer contrast repair: retain the editorial palette
    while ensuring text remains readable on the now-light surfaces. */
-body > section .bg-cyan-500\\/10 {
+body > section [class*="bg-cyan-500/10"] {
   color: #216c66 !important;
 }
 main article span[class*="bg-cyan-500/10"] {
