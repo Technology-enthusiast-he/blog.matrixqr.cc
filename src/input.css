@@ -191,3 +191,33 @@ body main article pre.bg-slate-900.text-slate-200 code * {
   opacity: 1 !important;
   font-weight: 600 !important;
 }
+
+
+/* Canvas sanitization article: use readable light cards on the editorial
+   surface, and explicitly preserve contrast in its code sample. */
+main article .security-flow .security-step {
+  background: #f0f3f5 !important;
+  background-color: #f0f3f5 !important;
+  border: 1px solid #dfe5ea !important;
+}
+main article .security-flow .security-step strong {
+  color: #14263b !important;
+}
+main article .security-flow .security-step span {
+  color: #46576a !important;
+}
+body main article pre.bg-slate-900.text-slate-300 {
+  background: #172b45 !important;
+  background-color: #172b45 !important;
+  color: #ffffff !important;
+  border: 1px solid #36516f !important;
+  opacity: 1 !important;
+}
+body main article pre.bg-slate-900.text-slate-300 code,
+body main article pre.bg-slate-900.text-slate-300 code * {
+  background: transparent !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
+}
