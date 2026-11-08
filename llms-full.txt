@@ -107,6 +107,12 @@ The code and unit tests are useful evidence about the implementation, but they a
 
 As with any browser application, the page still needs to load its HTML, stylesheets, JavaScript, and other resources. A Network panel may therefore show ordinary page-asset or third-party resource requests. Their presence alone does not show that the WiFi password was uploaded; inspect whether the unique test values appear in request URLs or bodies and whether generation triggers a credential-bearing request.
 
+## Watch: How to Create a WiFi QR Code with MatrixQR
+
+Want to see the WiFi QR code workflow in action? This short demonstration walks through creating a WiFi QR code with MatrixQR. It complements the privacy guidance above by showing the product interface and the generation process. Use a test network when following along, and avoid entering credentials you do not want to share.
+
+Prefer to watch on YouTube? Watch the WiFi QR code generation demo.
+
 ## 6. Safer ways to share WiFi access
 
 - **Use a guest network:** Create a separate guest SSID rather than exposing the password for your primary home or office network. Where supported, enable client isolation and restrict access to internal devices.
